@@ -19,6 +19,10 @@ def general_login(request):
     return render(request,'general_login.html')
 def admission(request):
     return render(request,'admission.html')
+def signout(request):
+     return render(request,'signout.html')
+def signup(request):
+     return render(request,'signup.html')
 
 def signin(request):
     
@@ -37,4 +41,5 @@ def signin(request):
 
     else:
         return render(request, 'signin.html')
+
 
