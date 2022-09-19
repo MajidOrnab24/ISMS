@@ -127,7 +127,7 @@ class Faculty(UserAccount):
       
     def save(self , *args , **kwargs):
         self.type = UserAccount.Types.FACULTY
-        self.is_student = True
+        self.is_faculty = True
         return super().save(*args , **kwargs)
 
 
@@ -157,7 +157,7 @@ class StaffMed(UserAccount):
       
     def save(self , *args , **kwargs):
         self.type = UserAccount.Types.STAFF_MED
-        self.is_student = True
+        self.is_staff_med = True
         return super().save(*args , **kwargs)
 
 class StaffLibManager(models.Manager):
@@ -186,5 +186,5 @@ class StaffLib(UserAccount):
       
     def save(self , *args , **kwargs):
         self.type = UserAccount.Types.STAFF_LIB
-        self.is_student = True
+        self.is_staff_lib = True
         return super().save(*args , **kwargs)
