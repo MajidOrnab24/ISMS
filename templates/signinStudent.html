@@ -1,37 +1,14 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel ="stylesheet" href="{% static '/css/signinStudent.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
   <body>
-
-    <div class="container">
-      <form method="post">
-        <div class="screen">
-
-          <input type="hidden" name="csrfmiddlewaretoken" value="DU1sYsEOwqJOhnIAc8XR9JTE5Wt3mhPXP5rNQsVemakysJ1sIlJlqP0ulN9xEqyY">
-          <p>
-        <label for="id_email">Email:</label>
-        <input type="text" name="email" class="form-control" required id="id_email">
-     
-      </p>
-      <p>
-        <label for="id_password">Password:</label>
-        <input type="password" name="password" class="form-control" required id="id_password">
-      </p>
-          <br />
-          <input type="submit" value="Submit" />
-
-
-
-
-        </div>
-        
-      </form>
-
-    </div>
-    
+    <form method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+      <br />
+      <input type="submit" value="Submit" />
+      
+    </form>
   </body>
 </html>

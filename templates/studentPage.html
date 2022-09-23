@@ -8,5 +8,13 @@
 </head>
 <body>
     <h1>student page with {{ user.email }}</h1>
+    {% block content %}
+    {% if user.is_authenticated %}
+   <p><a href="{% url 'logout' %}"><button>LOG OUT</button> </a></p>
+ {% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'signinStudent' %}">Log In</a>
+{% endif %}
+{% endblock %}
 </body>
 </html>
