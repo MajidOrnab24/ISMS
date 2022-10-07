@@ -42,7 +42,6 @@ def logout_request(request):
 
 def signinStudent(request):
     form = signinformStudent(request.POST or None)
-    msg = None
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
@@ -55,15 +54,14 @@ def signinStudent(request):
                 return redirect('studentPage')
                 
             else:
-                msg= 'invalid credentials'
+                messages.error(request,'username or password not correct')
                 return redirect('signinStudent')
         else:
-            msg = 'error validating form'
-    return render(request, 'signinStudent.html', {'form': form, 'msg': msg})
+            messages.error(request,'Error Validating form')
+    return render(request, 'signinStudent.html', {'form': form})
 
 def signinFaculty(request):
     form = signinformFaculty(request.POST or None)
-    msg = None
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
@@ -76,14 +74,13 @@ def signinFaculty(request):
                 return redirect('facultyPage')
                 
             else:
-                msg= 'invalid credentials'
+                messages.error(request,'username or password not correct')
                 return redirect('signinFaculty')
         else:
-            msg = 'error validating form'
-    return render(request, 'signinFaculty.html', {'form': form, 'msg': msg})
+            messages.error(request,'Error validating form')
+    return render(request, 'signinFaculty.html', {'form': form})
 def signinStaffLib(request):
     form = signinformStaffLib(request.POST or None)
-    msg = None
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
@@ -96,14 +93,13 @@ def signinStaffLib(request):
                 return redirect('staffLibPage')
                 
             else:
-                msg= 'invalid credentials'
+                messages.error(request,'username or password not correct')
                 return redirect('signinStaffLib')
         else:
-            msg = 'error validating form'
-    return render(request, 'signinStaffLib.html', {'form': form, 'msg': msg})
+            messages.error(request,'error validating form')
+    return render(request, 'signinStaffLib.html', {'form': form})
 def signinStaffMed(request):
     form = signinformStudent(request.POST or None)
-    msg = None
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
@@ -116,11 +112,11 @@ def signinStaffMed(request):
                 return redirect('staffMedPage')
                 
             else:
-                msg= 'invalid credentials'
+                messages.error(request,'username or password not correct')
                 return redirect('signinStaffMed')
         else:
-            msg = 'error validating form'
-    return render(request, 'signinStaffMed.html', {'form': form, 'msg': msg})
+            messages.error(request,'Error validating form')
+    return render(request, 'signinStaffMed.html', {'form': form})
     
     # if request.method == 'POST':
     #     email = request.POST['email']

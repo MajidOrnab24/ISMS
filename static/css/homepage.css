@@ -12,10 +12,11 @@
     background-image: linear-gradient( rgba(0,0,0,0.50),rgba(0,0,0,0.50)),url(/static/images/homepage.jpg);
         background-size: cover;
         background-position: center;
-    
 
-    
-
+}
+.banner h1{
+    text-align: center;
+    padding: 50px 40px 80px 40px;
 
 }
 .content{
