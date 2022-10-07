@@ -1,5 +1,6 @@
 import email
 from email.message import EmailMessage
+from pickle import TRUE
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -14,7 +15,42 @@ from main.forms import *
 import random
 
 # Create your views here.
+def logError(request):
+    return render(request,'logError.html')
+def adminLogin(request):
+    curr_user=request.user
+    if  request.user.is_authenticated:
+        if curr_user.is_admin:
+            return redirect('studentPage')
+        elif curr_user.is_student or curr_user.is_faculty or curr_user.is_staff_lib or curr_user.is_staff_med :
+             return redirect('logError')
+         
 
+    else:
+     form = signinformAdmin(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            UserAccount = auth.authenticate(email=email, password=password)
+            print( UserAccount)
+            if  UserAccount is not None :
+                print(UserAccount.type)
+                login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
+                return redirect('studentPage')
+                
+            else:
+                messages.error(request,'username or password not correct')
+                return redirect('adminLogin')
+        else:
+            messages.error(request,'Error Validating form')
+    return render(request, 'adminLogin.html', {'form': form}) 
+    
+
+    # emails=curr_user.type
+    # print(emails)
+
+          
 
 def home (request):
     return render(request,'homepage.html' )
@@ -41,15 +77,27 @@ def logout_request(request):
     
 
 def signinStudent(request):
-    form = signinformStudent(request.POST or None)
+    curr_user=request.user
+    if  request.user.is_authenticated:
+        if curr_user.is_student and not curr_user.is_admin:
+            return redirect('studentPage')
+        elif curr_user.is_admin or curr_user.is_faculty or curr_user.is_staff_lib or curr_user.is_staff_med :
+             return redirect('logError')
+         
+
+    else:
+        form = signinformStudent(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
-            print( UserAccount)
-            if  UserAccount is not None :
-                # print("lol")
+            # print( UserAccount)
+            if not UserAccount.is_student:
+                messages.error(request,'Wrong user type Student only not '+UserAccount.type)
+                return redirect('signinStudent')
+            elif  UserAccount is not None :
+                print(UserAccount.type)
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('studentPage')
                 
@@ -60,15 +108,29 @@ def signinStudent(request):
             messages.error(request,'Error Validating form')
     return render(request, 'signinStudent.html', {'form': form})
 
+
+
 def signinFaculty(request):
-    form = signinformFaculty(request.POST or None)
+    curr_user=request.user
+    if  request.user.is_authenticated:
+        if curr_user.is_faculty:
+            return redirect('facultyPage')
+        elif curr_user.is_admin or curr_user.is_student or curr_user.is_staff_lib or curr_user.is_staff_med :
+             return redirect('logError')
+         
+
+    else:
+        form = signinformFaculty(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
-            print( UserAccount)
-            if  UserAccount is not None :
+            # print( UserAccount)
+            if not UserAccount.is_faculty:
+                messages.error(request,'Wrong user type, Faculty only not '+UserAccount.type)
+                return redirect('signinFaculty')
+            elif  UserAccount is not None :
                 # print("lol")
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('facultyPage')
@@ -79,14 +141,25 @@ def signinFaculty(request):
         else:
             messages.error(request,'Error validating form')
     return render(request, 'signinFaculty.html', {'form': form})
+
 def signinStaffLib(request):
-    form = signinformStaffLib(request.POST or None)
+    curr_user=request.user
+    if  request.user.is_authenticated:
+        if curr_user.is_staff_lib:
+            return redirect('staffLibPage')
+        elif curr_user.is_admin or curr_user.is_student or curr_user.is_faculty or curr_user.is_staff_med :
+             return redirect('logError')
+    else:
+        form = signinformStaffLib(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
-            print( UserAccount)
+            # print( UserAccount)
+            if not UserAccount.is_staff_lib:
+                messages.error(request,'Wrong user type Library Staff only not '+UserAccount.type)
+                return redirect('signinStaffLib')
             if  UserAccount is not None :
                 # print("lol")
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
@@ -98,14 +171,27 @@ def signinStaffLib(request):
         else:
             messages.error(request,'error validating form')
     return render(request, 'signinStaffLib.html', {'form': form})
+
+
+    
 def signinStaffMed(request):
-    form = signinformStudent(request.POST or None)
+    curr_user=request.user
+    if  request.user.is_authenticated:
+        if curr_user.is_staff_med:
+            return redirect('staffMedPage')
+        elif curr_user.is_admin or curr_user.is_student or curr_user.is_faculty or curr_user.is_staff_lib :
+             return redirect('logError')
+    else:
+        form = signinformStudent(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
-            print( UserAccount)
+            # print( UserAccount)
+            if not UserAccount.is_staff_med:
+                messages.error(request,'Wrong user type Library Staff only not '+UserAccount.type)
+                return redirect('signinStaffMed')
             if  UserAccount is not None :
                 # print("lol")
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
@@ -117,6 +203,7 @@ def signinStaffMed(request):
         else:
             messages.error(request,'Error validating form')
     return render(request, 'signinStaffMed.html', {'form': form})
+    
     
     # if request.method == 'POST':
     #     email = request.POST['email']

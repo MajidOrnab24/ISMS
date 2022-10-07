@@ -16,6 +16,8 @@ urlpatterns = [
     path('staffMedPage',views.staffMedPage, name='staffMedPage'),
     path('logout',views.logout_request, name='logout'),
     path('staffLibPage',views.staffLibPage, name='staffLibPage'),
+     path('logError',views.logError, name='logError'),
+    
 
 
     ]

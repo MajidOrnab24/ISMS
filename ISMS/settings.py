@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'ISMS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'isms_db', 
+        'NAME': 'isms', 
         'USER': 'root',
         'PASSWORD': 'majid205',
         'HOST': 'localhost', 

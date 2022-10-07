@@ -23,6 +23,7 @@ class UserAccountManager(BaseUserManager):
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
+        user.is_student = False
         user.save(using = self._db)
         return user
       
@@ -36,7 +37,7 @@ class UserAccount(AbstractBaseUser):
           
     type = models.CharField(max_length = 20 , choices = Types.choices , 
                             # Default is user is student
-                            default = Types.STUDENT)
+                            default = Types.FACULTY)
     email = models.EmailField(max_length = 200 , unique = True)
     is_active = models.BooleanField(default = True)
     is_admin = models.BooleanField(default = False)

@@ -20,6 +20,7 @@ from main import views as user_view
 from django.contrib.auth import views as auth
 
 urlpatterns = [
+    path('admin/login/', user_view.adminLogin),
     path('admin/', admin.site.urls),
     path('',include('main.urls')),
     
