@@ -1,6 +1,8 @@
 from unicodedata import name
 from django.urls import path
 from . import views
+from admin_app import views as admin_view
+
 urlpatterns = [
     path('',views.home, name='home'),
     path('general login',views.general_login, name='general_login'),
@@ -16,8 +18,7 @@ urlpatterns = [
     path('staffMedPage',views.staffMedPage, name='staffMedPage'),
     path('logout',views.logout_request, name='logout'),
     path('staffLibPage',views.staffLibPage, name='staffLibPage'),
-     path('logError',views.logError, name='logError'),
-    
-
+    path('logError',views.logError, name='logError'),
+    path('adminPage',admin_view.adminPage,name='adminPage'),
 
     ]

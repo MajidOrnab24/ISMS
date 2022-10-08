@@ -17,34 +17,7 @@ import random
 # Create your views here.
 def logError(request):
     return render(request,'logError.html')
-def adminLogin(request):
-    curr_user=request.user
-    if  request.user.is_authenticated:
-        if curr_user.is_admin:
-            return redirect('studentPage')
-        elif curr_user.is_student or curr_user.is_faculty or curr_user.is_staff_lib or curr_user.is_staff_med :
-             return redirect('logError')
-         
 
-    else:
-     form = signinformAdmin(request.POST or None)
-    if request.method == 'POST':
-        if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            UserAccount = auth.authenticate(email=email, password=password)
-            print( UserAccount)
-            if  UserAccount is not None :
-                print(UserAccount.type)
-                login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
-                return redirect('studentPage')
-                
-            else:
-                messages.error(request,'username or password not correct')
-                return redirect('adminLogin')
-        else:
-            messages.error(request,'Error Validating form')
-    return render(request, 'adminLogin.html', {'form': form}) 
     
 
     # emails=curr_user.type
@@ -79,12 +52,11 @@ def logout_request(request):
 def signinStudent(request):
     curr_user=request.user
     if  request.user.is_authenticated:
-        if curr_user.is_student and not curr_user.is_admin:
+        if curr_user.is_student:
             return redirect('studentPage')
         elif curr_user.is_admin or curr_user.is_faculty or curr_user.is_staff_lib or curr_user.is_staff_med :
              return redirect('logError')
          
-
     else:
         form = signinformStudent(request.POST or None)
     if request.method == 'POST':
@@ -93,11 +65,15 @@ def signinStudent(request):
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
             # print( UserAccount)
-            if not UserAccount.is_student:
-                messages.error(request,'Wrong user type Student only not '+UserAccount.type)
+            if UserAccount is not None and not UserAccount.is_student:
+                if UserAccount.is_admin:
+                   types='Admin'
+                else:
+                   types=UserAccount.type
+                messages.error(request,'Wrong user type Student only. '+types.title()+' type not accepted')
                 return redirect('signinStudent')
-            elif  UserAccount is not None :
-                print(UserAccount.type)
+            elif  UserAccount is not None and UserAccount.is_student:
+                # print(UserAccount.type)
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('studentPage')
                 
@@ -127,10 +103,14 @@ def signinFaculty(request):
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
             # print( UserAccount)
-            if not UserAccount.is_faculty:
-                messages.error(request,'Wrong user type, Faculty only not '+UserAccount.type)
+            if UserAccount is not None and not UserAccount.is_faculty:
+                if UserAccount.is_admin:
+                   types='Admin'
+                else:
+                   types=UserAccount.type
+                messages.error(request,'Wrong user type, Faculty only. '+types.title()+' type not accepted')
                 return redirect('signinFaculty')
-            elif  UserAccount is not None :
+            elif  UserAccount is not None and UserAccount.is_faculty :
                 # print("lol")
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('facultyPage')
@@ -157,10 +137,14 @@ def signinStaffLib(request):
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
             # print( UserAccount)
-            if not UserAccount.is_staff_lib:
-                messages.error(request,'Wrong user type Library Staff only not '+UserAccount.type)
+            if UserAccount is not None and not UserAccount.is_staff_lib:
+                if UserAccount.is_admin:
+                   types='Admin'
+                else:
+                   types=UserAccount.type
+                messages.error(request,'Wrong user type Library Staff only. '+types.title()+' type not accepted')
                 return redirect('signinStaffLib')
-            if  UserAccount is not None :
+            if  UserAccount is not None and UserAccount.is_staff_lib:
                 # print("lol")
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('staffLibPage')
@@ -188,11 +172,17 @@ def signinStaffMed(request):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
+
+
             # print( UserAccount)
-            if not UserAccount.is_staff_med:
-                messages.error(request,'Wrong user type Library Staff only not '+UserAccount.type)
+            if UserAccount is not None and not UserAccount.is_staff_med:
+                if UserAccount.is_admin:
+                   types='Admin'
+                else:
+                   types=UserAccount.type
+                messages.error(request,'Wrong user type Library Staff only. '+types.title()+' type not accepted')
                 return redirect('signinStaffMed')
-            if  UserAccount is not None :
+            if  UserAccount is not None and  UserAccount.is_staff_med:
                 # print("lol")
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('staffMedPage')

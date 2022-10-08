@@ -17,10 +17,11 @@ from distutils import core
 from django.contrib import admin
 from django.urls import path,include
 from main import views as user_view
+from admin_app import views as admin_view
 from django.contrib.auth import views as auth
 
 urlpatterns = [
-    path('admin/login/', user_view.adminLogin),
+    path('admin/login/', admin_view.adminLogin),
     path('admin/', admin.site.urls),
     path('',include('main.urls')),
     
