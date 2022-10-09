@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--<title>Sidebar Menu | Side Navigation Bar</title>-->
+    <!-- CSS -->
+    <!-- <link rel="stylesheet" href="css/style.css" /> -->
+    <!-- Boxicons CSS -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <!-- <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/> -->
+    <link rel ="stylesheet" href="{% static '/css/admin/admin_base.css' %}">
+
+  </head>
+  <body>
+    <!-- <div class="sidenav">
+      <a href="{%url 'adminHome'%}">Home</a>
+      <a href="{%url 'adminStudent'%}">Student</a>
+      <a href="/2">View</a>
+    </div> -->
+    <div class="wrapper">
+      <!--Top menu -->
+      <div class="sidebar">
+         <!--profile image & text-->
+         <div class="profile">
+          <img src="/static/images/admin.png" alt="profile_picture">
+          <h3>{{user}}</h3>
+          <p>Admin</p>
+        </div>
+        <ul>
+          <li>
+            <!-- class="active" -->
+              <a href="{%url 'adminHome'%}"  class="button-categories-link"> 
+                  <span class="icon"><i class="fas fa-home"></i></span>
+                  <span class="item">Home</span>
+              </a>
+          </li>
+          <li>
+              <a href="{%url 'adminStudent'%}" class="button-categories-link">
+                  <span class="icon"><i class="fas fa-desktop"></i></span>
+                  <span class="item">My Dashboard</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="button-categories-link">
+                  <span class="icon"><i class="fas fa-user-friends"></i></span>
+                  <span class="item">People</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="button-categories-link">
+                  <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                  <span class="item">Perfomance</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="button-categories-link">
+                  <span class="icon"><i class="fas fa-database"></i></span>
+                  <span class="item">Development</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="button-categories-link">
+                  <span class="icon"><i class="fas fa-chart-line"></i></span>
+                  <span class="item">Reports</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="button-categories-link">
+                  <span class="icon"><i class="fas fa-user-shield"></i></span>
+                  <span class="item">Admin</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="button-categories-link">
+                  <span class="icon"><i class="fas fa-cog"></i></span>
+                  <span class="item">Settings</span>
+              </a>
+          </li>
+      </ul>
+
+          <!--menu item-->
+
+      </div>
+      <div class="section">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <!-- <a href="#"> -->
+                  <button>
+                    <i class="fas fa-bars fa-1.5x"></i>
+                  </button>
+                    
+                <!-- </a> -->
+            </div>
+        </div>
+
+      </div>
+
+  </div>
+
+
+
+
+    <div id="content" name ="content" class="main">
+      {%block content%}
+      {%endblock%}
+    </div>
+    <script>
+      var hamburger = document.querySelector(".hamburger");
+       hamburger.addEventListener("click", function(){
+        document.querySelector("body").classList.toggle("active");
+    });
+    </script>
+
+  </body>
+</html>

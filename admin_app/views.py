@@ -15,13 +15,15 @@ from main.forms import *
 import random
 
 # Create your views here.
-def adminPage(request):
-    return render(request,'admin_temp/adminPage.html')
+def adminHome(request):
+    return render(request,'admin_temp/adminHome.html')
+def adminStudent(request):
+    return render(request,'admin_temp/adminStudent.html')
 def adminLogin(request):
     curr_user=request.user
     if  request.user.is_authenticated:
         if curr_user.is_admin:
-            return redirect('adminPage')
+            return redirect('adminHome')
         elif curr_user.is_student or curr_user.is_faculty or curr_user.is_staff_lib or curr_user.is_staff_med :
              return redirect('logError')      
 
@@ -45,7 +47,7 @@ def adminLogin(request):
             elif UserAccount is not None and  UserAccount.is_admin:
                 # print(UserAccount.type)
                   login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
-                  return redirect('adminPage')
+                  return redirect('adminHome')
               
             else:
                 messages.error(request,'username or password not correct')

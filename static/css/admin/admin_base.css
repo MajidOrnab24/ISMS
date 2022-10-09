@@ -1,0 +1,142 @@
+/* .sidenav {
+    height:100%;
+    width:160px;
+    position: fixed;
+    z-index:1;
+    top:0;
+    left:0;
+    background-color:#111;
+    overflow-x: hidden;
+    padding-top:20px;
+}
+
+.sidenav a {
+    padding:6px 8px 6px 16px;
+    text-decoration: none;
+    font-size:25px;
+    color: #818181;
+    display:block;
+}
+
+.sidenav a:hover{
+    color:#f1f1f1;
+}	 */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+*{
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body{
+    background: #f5f6fa;
+}
+
+.wrapper .sidebar{
+    background: #3F3C67;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 225px;
+    height: 100%;
+    padding: 20px 0;
+    transition: all 0.5s ease;
+}
+.wrapper .sidebar .profile{
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.wrapper .sidebar .profile img{
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.wrapper .sidebar .profile h3{
+    color: #ffffff;
+    margin: 10px 0 5px;
+}
+
+.wrapper .sidebar .profile p{
+    color: rgb(206, 240, 253);
+    font-size: 14px;
+}
+.wrapper .sidebar ul li a{
+    display: block;
+    padding: 13px 30px;
+    /* background:#9693be; */
+    border-bottom: 1px solid #3F3C67;
+    color: rgb(241, 237, 237);
+    font-size: 16px;
+    position: relative;
+}
+
+.wrapper .sidebar ul li a .icon{
+    color: #dee4ec;
+    width: 30px;
+    display: inline-block;
+}
+.wrapper .sidebar ul li a:hover{
+    color: #3F3C67;
+    background:white;
+    border-right: 2px solid #3F3C67;
+}
+
+.wrapper .sidebar ul li a:hover .icon{
+    color:#3F3C67;
+}
+
+.wrapper .sidebar ul li a:hover:before{
+    display: block;
+}
+.wrapper .section{
+    width: calc(100% - 225px);
+    margin-left: 225px;
+    transition: all 0.5s ease;
+}
+
+.wrapper .section .top_navbar{
+    background: #3F3C67;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 0px;
+
+}
+
+
+.wrapper .section .top_navbar .hamburger button{
+      background-color: #b0bdeb; /* Green */
+                  border: none;
+                  color: white;
+                  padding: 5px 22px;
+                  text-align: center;
+                  text-decoration: none;
+                  display: inline-block;
+                  font-size: 30px;
+}
+
+.wrapper .section .top_navbar .hamburger button:hover{
+    color: #3F3C67;
+}
+body.active .wrapper .sidebar{
+    left: -225px;
+}
+
+body.active .wrapper .section{
+    margin-left: 0;
+    width: 100%;
+}
+
+.main{
+    margin-left:225px;
+    margin-top: 0px;
+    padding: 0px 10px;
+}

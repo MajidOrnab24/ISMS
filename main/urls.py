@@ -19,6 +19,7 @@ urlpatterns = [
     path('logout',views.logout_request, name='logout'),
     path('staffLibPage',views.staffLibPage, name='staffLibPage'),
     path('logError',views.logError, name='logError'),
-    path('adminPage',admin_view.adminPage,name='adminPage'),
+    path('adminHome',admin_view.adminHome,name='adminHome'),
+    path('adminStudent',admin_view.adminStudent,name='adminStudent'),
 
     ]
