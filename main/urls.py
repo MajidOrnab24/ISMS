@@ -21,5 +21,6 @@ urlpatterns = [
     path('logError',views.logError, name='logError'),
     path('adminHome',admin_view.adminHome,name='adminHome'),
     path('adminStudent',admin_view.adminStudent,name='adminStudent'),
+    path('studentregister',admin_view.studentregister,name='studentregister'),
 
     ]

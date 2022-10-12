@@ -54,7 +54,7 @@ class signinformStudent(forms.Form):
 
 # Faculty Form
 
-class signinformFaculty(forms.Form):
+class signinformFaculty(forms.ModelForm):
     email = forms.CharField(
         widget= forms.TextInput(
             attrs={

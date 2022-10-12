@@ -1,0 +1,23 @@
+{% extends "admin_temp/admin_base.html" %}
+{%block content%}
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    {{profile_form.as_p}}
+    <br />
+    {% for message in messages %}
+    
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+           {{ message }}
+    </div>
+
+    {% endfor %}
+    <br>
+    <input type="submit" value="Submit" />
+  </form>
+  
+
+
+
+{%endblock%}

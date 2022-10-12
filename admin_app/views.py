@@ -1,20 +1,24 @@
 import email
 from email.message import EmailMessage
 from pickle import TRUE
+import profile
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from main.models import UserAccount
 from django.contrib import messages
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse
+
 from django.contrib.auth.decorators import login_required
 from itertools import chain
 from main.forms import *
+from admin_app.forms import *
 import random
 
-# Create your views here.
+# Admin views here.
 def adminHome(request):
     return render(request,'admin_temp/adminHome.html')
 def adminStudent(request):
@@ -55,3 +59,35 @@ def adminLogin(request):
         else:
             messages.error(request,'Error Validating form')
     return render(request, 'admin_temp/adminLogin.html', {'form': form}) 
+
+def studentregister(request):
+    if request.method == 'POST':
+        form = registerStudent(request.POST)
+        profile_form =profileForm(request.POST)
+
+        if form.is_valid() and profile_form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            # user = Student.objects.create_user(email = email , password = password)
+            # user.save()
+            user = form.save(commit=False)
+            user.password = make_password(password)
+            user.save()
+            profile = profile_form.save(commit = False)
+            profile.user = user
+            profile.save()
+            if user is None:
+                 messages.error(request,'username or password not correct')
+                 return redirect('studentregister')
+            elif  user is not None:
+                return redirect('adminStudent')
+            else:
+                messages.error(request,'username or password not correct')
+            return redirect('studentregister')
+        else:
+           messages.error(request,'Error Validating form')
+    else:
+        form = registerStudent()
+        profile_form =profileForm()
+
+    return render(request,'admin_temp/studentregister.html', {'form': form,'profile_form': profile_form})
