@@ -61,6 +61,7 @@ class StudentProfile(models.Model):
     image = models.ImageField(upload_to=filepath)
     gender=models.CharField(max_length=30,choices=gender_choices)
     date_of_birth = models.DateField(max_length=10)
+    # department = models.CharField(department.dept_name)
     session =  models.DateField(max_length=10)
 
     @property

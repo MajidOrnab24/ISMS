@@ -19,6 +19,9 @@ from django.urls import path,include
 from main import views as user_view
 from admin_app import views as admin_view
 from django.contrib.auth import views as auth
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/login/', admin_view.adminLogin),
@@ -26,3 +29,6 @@ urlpatterns = [
     path('',include('main.urls')),
     
 ]
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)
