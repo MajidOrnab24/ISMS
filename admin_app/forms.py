@@ -1,3 +1,4 @@
+from dataclasses import field
 import email
 from django import forms
 from main.models import *
@@ -47,6 +48,9 @@ class registerStudent(forms.ModelForm):
 
 
 class profileForm(forms.ModelForm):
+
     class Meta:
         model = StudentProfile
-        fields = '__all__'
+        fields = ('name','student_ID','address','father_name','mother_name','phone','semester','image','gender','date_of_birth' ,'department','session')
+
+

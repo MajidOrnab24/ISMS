@@ -1,3 +1,4 @@
+from audioop import add
 import email
 from email.message import EmailMessage
 from pickle import TRUE
@@ -7,11 +8,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from main.models import UserAccount
+from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from itertools import chain
 from main.forms import *
@@ -21,8 +23,26 @@ import random
 # Admin views here.
 def adminHome(request):
     return render(request,'admin_temp/adminHome.html')
+    
 def adminStudent(request):
-    return render(request,'admin_temp/adminStudent.html')
+    student_profiles=StudentProfile.objects.all()
+    query = request.GET.get('q')
+    if query:
+        student_profiles = StudentProfile.objects.filter(Q(name__icontains=query)
+        | Q(department__dept_name__icontains=query)).distinct()
+    paginator = Paginator(student_profiles, 1)
+    page = request.GET.get('page', 1)
+    
+    try:
+        profiles = paginator.page(page)
+    except PageNotAnInteger:
+        profiles = paginator.page(1)
+    except EmptyPage:
+       profiles = paginator.page(paginator.num_pages)
+    context = {
+        'profiles': profiles
+    }
+    return render(request,'admin_temp/adminStudent.html',context )
 def adminLogin(request):
     curr_user=request.user
     if  request.user.is_authenticated:
@@ -63,18 +83,38 @@ def adminLogin(request):
 def studentregister(request):
     if request.method == 'POST':
         form = registerStudent(request.POST)
-        profile_form =profileForm(request.POST)
-
-        if form.is_valid() and profile_form.is_valid():
+        profile_form =profileForm(request.POST, request.FILES)
+        if form.is_valid() and  profile_form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            # user = Student.objects.create_user(email = email , password = password)
-            # user.save()
+            name=profile_form.cleaned_data.get('name')
+            student_ID=profile_form.cleaned_data.get('student_ID')
+            address=profile_form.cleaned_data.get('address')
+            father_name=profile_form.cleaned_data.get('father_name')
+            mother_name=profile_form.cleaned_data.get('mother_name')
+            phone=profile_form.cleaned_data.get('phone')
+            semester=profile_form.cleaned_data.get('semester')
+            image=profile_form.cleaned_data.get('image')
+            gender=profile_form.cleaned_data.get('gender')
+            date_of_birth=profile_form.cleaned_data.get('date_of_birth')
+            department=profile_form.cleaned_data.get('department')
+            session=profile_form.cleaned_data.get('session')
             user = form.save(commit=False)
             user.password = make_password(password)
             user.save()
-            profile = profile_form.save(commit = False)
-            profile.user = user
+            profile=StudentProfile.objects.get(email=user.id)
+            profile.name=name
+            profile.father_name=father_name
+            profile.student_ID=student_ID
+            profile.address=address
+            profile.mother_name=mother_name
+            profile.phone=phone
+            profile.semester=semester
+            profile.image=image
+            profile.gender=gender
+            profile.date_of_birth=date_of_birth
+            profile.department=department
+            profile.session=session
             profile.save()
             if user is None:
                  messages.error(request,'username or password not correct')

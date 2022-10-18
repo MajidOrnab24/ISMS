@@ -1,10 +1,15 @@
 import email
+from email.policy import default
 from random import choices
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from datetime import date
 import datetime
 import os
 from main.models import *
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
+from django.dispatch import receiver
 
 # Create your models here.
 # Create your models here.
@@ -34,6 +39,8 @@ dept_choices = (
 class department(models.Model):
     dept_id = models.AutoField(primary_key = True)
     dept_name = models.CharField(max_length=30,choices=dept_choices)
+    def __str__(self):
+        return self.dept_name
 sem_choices ={
     (1,"1"),
     (2,"2"),
@@ -52,7 +59,7 @@ gender_choices = {
 class StudentProfile(models.Model):
     name = models.CharField(max_length=256)
     email = models.OneToOneField(Student, on_delete=models.CASCADE, primary_key=True)
-    student_ID = models.IntegerField(unique = True)
+    student_ID = models.IntegerField(unique = True,null=True)
     address = models.TextField()
     father_name = models.CharField(max_length=256)
     mother_name = models.CharField(max_length=256)
@@ -60,9 +67,9 @@ class StudentProfile(models.Model):
     semester =models.IntegerField(choices=sem_choices, default=1)
     image = models.ImageField(upload_to=filepath)
     gender=models.CharField(max_length=30,choices=gender_choices)
-    date_of_birth = models.DateField(max_length=10)
-    # department = models.CharField(department.dept_name)
-    session =  models.DateField(max_length=10)
+    date_of_birth = models.DateField(max_length=10, null =True)
+    department = models.ForeignKey(department,on_delete=models.CASCADE,null=True)
+    session =  models.DateField(max_length=10, null=True)
 
     @property
     def age(self):
@@ -70,5 +77,13 @@ class StudentProfile(models.Model):
     @property
     def session_year(self):
         return self.session.year
+    @property
+    def email_student(self):
+        return self.email.email
+        
     def __str__(self):
-        return self.name
+        return self.email.email
+    @receiver(post_save, sender=Student)
+    def create_student_profile(sender, instance, created, **kwargs):
+     if created:
+        StudentProfile.objects.create(email=instance)
