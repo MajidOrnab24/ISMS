@@ -21,15 +21,30 @@ from admin_app.forms import *
 import random
 
 # Admin views here.
+def is_valid_queryparam(param):
+    return param != '' and param is not None
 def adminHome(request):
     return render(request,'admin_temp/adminHome.html')
+def deleteStudent(request, id):
+  student_profile=StudentProfile.objects.get(email_id=id)
+  if  student_profile.image:
+         student_profile.image.delete()
+  student_profile.delete()
+  student=Student.objects.get(id=id)
+  student.delete()
+  return redirect('adminStudent')
     
 def adminStudent(request):
     student_profiles=StudentProfile.objects.all()
     query = request.GET.get('q')
-    if query:
+    queryDept = request.GET.get('deptFil')
+    if is_valid_queryparam( query):
         student_profiles = StudentProfile.objects.filter(Q(name__icontains=query)
         | Q(department__dept_name__icontains=query)).distinct()
+    if is_valid_queryparam( queryDept):
+        student_profiles = StudentProfile.objects.filter(Q(department__dept_name__icontains=queryDept)).distinct()
+    if is_valid_queryparam( queryDept) and is_valid_queryparam( query):
+        student_profiles = StudentProfile.objects.filter(Q(name__icontains=query) &Q(department__dept_name__icontains=queryDept)).distinct()
     paginator = Paginator(student_profiles, 1)
     page = request.GET.get('page', 1)
     
@@ -43,6 +58,7 @@ def adminStudent(request):
         'profiles': profiles
     }
     return render(request,'admin_temp/adminStudent.html',context )
+    
 def adminLogin(request):
     curr_user=request.user
     if  request.user.is_authenticated:

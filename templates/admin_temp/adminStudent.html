@@ -14,7 +14,7 @@
         table-layout: fixed;
   width: 100%;
     }
- ul.pagination li {
+ div.pagination a {
   display: inline-block;;
   color: rgb(0, 0, 0);
   padding: 5px 10px;
@@ -25,18 +25,16 @@
   text-decoration: none;
 } */
 
-ul.pagination li.active {
+div.pagination a.active {
   background-color: #4CAF50;
   border-radius: 5px;
   color: white;
 }
 
-ul.pagination li:hover:not(.active) {
+div.pagination a:hover:not(.active) {
     background-color: #ddd;
     border-radius: 5px;}
-ul.pagination li a:hover:not(.active) {
-    color: red;
-    border-radius: 5px;}
+
 div.container {
   text-align: center;
   padding-top: 10px;
@@ -84,6 +82,24 @@ div.input-field{
 <form method="GET" >
     <div class="input-field">
         <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search Here...">
+        <select name="deptFil">
+          <option value="" disabled selected>Select Department</option>
+        
+          <option value="CSE">CSE</option>
+        
+          <option value="EEE">EEE</option>
+        
+          <option value="MCE">MCE</option>
+        
+          <option value="CEE">CEE</option>
+        
+          <option value="SWE">SWE</option>
+        
+          <option value="IPE">IPE</option>
+        
+          <option value="BTM">BTM</option>
+        
+        </select>
        <button class="btn" type="submit" name="action">Search</button>
     </div>
 </form>
@@ -110,7 +126,7 @@ div.input-field{
           <td>{{ user.semester }}</td>
           <td>{{ user.session_year}}</td>
           <td><img src="{{ user.image.url}}" alt="" height=150 width=150 /></td>
-          <td><a href="/signinStudent" class="delete" data-confirm="Are you sure to delete this student?"> <button>Delete</button></a>
+          <td><a href="/deleteStudent/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this student?"> <button>Delete</button></a>
            </td>
 
         </tr>
@@ -119,25 +135,25 @@ div.input-field{
   </table>
   <div class="container">
     {% if profiles.has_other_pages %}
-    <ul class="pagination">
+    <div class="pagination">
       {% if profiles.has_previous %}
-        <li ><a href="?page={{ profiles.previous_page_number }}">&laquo;</a></li>
+        <a href="?page={{ profiles.previous_page_number }}">&laquo;</a>
       {% else %}
-        <li class="disabled"><span>&laquo;</span></li>
+        <a class="disabled"><span>&laquo;</span></a>
       {% endif %}
       {% for i in profiles.paginator.page_range %}
         {% if profiles.number == i %}
-          <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          <a class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></a>
         {% else %}
-          <li><a href="?page={{ i }}">{{ i }}</a></li>
+          <a href="?page={{ i }}">{{ i }}</a>
         {% endif %}
       {% endfor %}
       {% if profiles.has_next %}
-         <li><a href="?page={{ profiles.next_page_number }}">&raquo;</a></li>
+         <a href="?page={{ profiles.next_page_number }}">&raquo;</a>
       {% else %}
-         <li class="disabled"><span>&raquo;</span></li>
+         <a class="disabled"><span>&raquo;</span></a>
       {% endif %}
-    </ul>
+    </div>
   {% endif %}
 
   </div>
