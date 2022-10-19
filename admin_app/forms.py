@@ -53,4 +53,22 @@ class profileForm(forms.ModelForm):
         model = StudentProfile
         fields = ('name','student_ID','address','father_name','mother_name','phone','semester','image','gender','date_of_birth' ,'department','session')
 
-
+class updateStudentForm(forms.ModelForm):
+    # email = forms.EmailField(
+    #     widget= forms.TextInput(
+    #         attrs={
+    #             "class": "form-control"
+    #         }
+    #     )
+    # )
+    # password = forms.CharField(
+    #     widget=forms.PasswordInput(
+    #         attrs={
+    #             "class": "form-control"
+    #         }
+    #     )
+    # )
+    
+    class Meta:
+        model = Student
+        fields = ('email', 'password')

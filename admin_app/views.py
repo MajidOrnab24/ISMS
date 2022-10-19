@@ -95,6 +95,63 @@ def adminLogin(request):
         else:
             messages.error(request,'Error Validating form')
     return render(request, 'admin_temp/adminLogin.html', {'form': form}) 
+def studentUpdate(request,id):
+    student_profile=StudentProfile.objects.get(email_id=id)
+    student=Student.objects.get(id=id)
+    if request.method == 'POST':
+        form = updateStudentForm(request.POST,instance=student)
+        profile_form = profileForm(request.POST, request.FILES,instance=student_profile)
+        if form.is_valid() and  profile_form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            name=profile_form.cleaned_data.get('name')
+            student_ID=profile_form.cleaned_data.get('student_ID')
+            address=profile_form.cleaned_data.get('address')
+            father_name=profile_form.cleaned_data.get('father_name')
+            mother_name=profile_form.cleaned_data.get('mother_name')
+            phone=profile_form.cleaned_data.get('phone')
+            semester=profile_form.cleaned_data.get('semester')
+            image=profile_form.cleaned_data.get('image')
+            gender=profile_form.cleaned_data.get('gender')
+            date_of_birth=profile_form.cleaned_data.get('date_of_birth')
+            department=profile_form.cleaned_data.get('department')
+            session=profile_form.cleaned_data.get('session')
+            user = form.save(commit=False)
+            user.password = make_password(password)
+            user.save()
+            profile=StudentProfile.objects.get(email_id=user.id)
+            profile.name=name
+            profile.father_name=father_name
+            profile.student_ID=student_ID
+            profile.address=address
+            profile.mother_name=mother_name
+            profile.phone=phone
+            profile.semester=semester
+            
+            if(profile.image!=image):
+                profile.image.delete()
+
+            profile.image=image
+            profile.gender=gender
+            profile.date_of_birth=date_of_birth
+            profile.department=department
+            profile.session=session
+            profile.save()
+            if  student is None:
+                 messages.error(request,'username or password not correct')
+                 return redirect('studentUpdate')
+            elif  student is not None:
+                return redirect('adminStudent')
+            else:
+                messages.error(request,'username or password not correct')
+            return redirect('studentUpdate')
+        else:
+           messages.error(request,'Error Validating form')
+    else:
+        form = updateStudentForm(instance=student)
+        profile_form =profileForm(instance=student_profile)
+
+    return render(request,'admin_temp/studentUpdate.html', {'form': form,'profile_form': profile_form})
 
 def studentregister(request):
     if request.method == 'POST':
