@@ -12,75 +12,77 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" >
     
     <!-- <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/> -->
-    <link rel ="stylesheet" href="{% static '/css/admin/admin_base.css' %}">
+    <link rel ="stylesheet" href="{% static '/css/student/student_base.css' %}">
 
   </head>
   <body>
-    <!-- <div class="sidenav">
-      <a href="{%url 'adminHome'%}">Home</a>
-      <a href="{%url 'adminStudent'%}">Student</a>
-      <a href="/2">View</a>
-    </div> -->
     <div class="wrapper">
       <!--Top menu -->
       <div class="sidebar">
          <!--profile image & text-->
          <div class="profile">
-          <img src="/static/images/admin.png" alt="profile_picture">
-          <h3>{{user}}</h3>
-          <p>Admin</p>
+          <img src="{{profile.image}}" alt="profile_picture">
+          <h4>{{user}}</h4>
+          <p>Student</p>
         </div>
         <ul>
           <li>
             <!-- class="active" -->
-              <a href="{%url 'adminHome'%}"  class="button-categories-link"> 
+              <a href="{%url 'studentPage'%}"  class="button-categories-link"> 
                   <span class="icon"><i class="fas fa-home"></i></span>
                   <span class="item">Home</span>
               </a>
           </li>
           <li>
-              <a href="{%url 'adminStudent'%}" class="button-categories-link">
+              <a href="#" class="button-categories-link">
                   <span class="icon"><i class="fas fa-user-friends"></i></span>
-                  <span class="item">Student</span>
+                  <span class="item">Result</span>
               </a>
           </li>
           <li>
               <a href="#" class="button-categories-link">
                   <span class="icon"><i class=" fas fa-chalkboard-teacher"></i></span>
-                  <span class="item">Faculty</span>
+                  <span class="item">Academic Notice</span>
               </a>
           </li>
           <li>
               <a href="#" class="button-categories-link">
                   <span class="icon"><i class="fas fa-clinic-medical"></i></span>
-                  <span class="item">Medical Staff</span>
+                  <span class="item">Official Notice</span>
               </a>
           </li>
           <li>
               <a href="#" class="button-categories-link">
                   <span class="icon"><i class="fas fa-book-reader"></i></span>
-                  <span class="item">Library Staff</span>
+                  <span class="item">Library Book    Status</span>
               </a>
           </li>
           <li>
               <a href="#" class="button-categories-link">
                   <span class="icon"><i class="fas fa-chart-line"></i></span>
-                  <span class="item">Admission</span>
+                  <span class="item">Medical Logs</span>
               </a>
           </li>
+          <li>
+            <a href="#" class="button-categories-link">
+                <span class="icon"><i class="fas fa-chart-line"></i></span>
+                <span class="item">Tuition Fee</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="button-categories-link">
+                <span class="icon"><i class="fas fa-chart-line"></i></span>
+                <span class="item">Teacher Info</span>
+            </a>
+        </li>
+
           <li>
               <a href="#" class="button-categories-link" >
                   <span class="icon"><i class="fas fa-user-shield"></i></span>
                   <span class="item">Password change</span>
               </a>
           </li>
-          <li>
-              <a href="#" class="button-categories-link">
-                  <span class="icon"><i class="fas fa-cog"></i></span>
-                  <span class="item">Settings</span>
-              </a>
-          </li>
-          <li style="padding-top: 50px;">
+          <li style="padding-top: 10px;">
             <a href="{% url 'logout' %}" class="button-categories-link">
                 <span class="icon"><i class="fas fa-door-open"></i></span>
                 <span class="item">Logout</span>
