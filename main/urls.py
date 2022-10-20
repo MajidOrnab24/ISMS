@@ -1,6 +1,7 @@
 from unicodedata import name
 from django.urls import path
 from . import views
+from main import studentViews as student_view
 from admin_app import views as admin_view
 
 urlpatterns = [
@@ -17,7 +18,7 @@ urlpatterns = [
     path('signinStaffMed',views.signinStaffMed, name='signinStaffMed'),
     path('signup',views.signup, name='signup'),
     path('signout',views.signout, name='signout'),
-    path('studentPage',views.studentPage, name='studentPage'),
+    path('studentPage',student_view.studentPage, name='studentPage'),
     path('facultyPage',views.facultyPage, name='facultyPage'),
     path('staffMedPage',views.staffMedPage, name='staffMedPage'),
     path('logout',views.logout_request, name='logout'),
