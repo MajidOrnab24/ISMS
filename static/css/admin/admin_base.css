@@ -19,7 +19,7 @@ body{
     position: fixed;
     top: 0;
     left: 0;
-    width: 225px;
+    width: 245px;
     height: 100%;
     padding: 20px 0;
     transition: all 0.5s ease;
@@ -75,8 +75,8 @@ body{
     display: block;
 }
 .wrapper .section{
-    width: calc(100% - 225px);
-    margin-left: 225px;
+    width: calc(100% - 245px);
+    margin-left: 245px;
     transition: all 0.5s ease;
 }
 
@@ -105,7 +105,7 @@ body{
     color: #3F3C67;
 }
 body.active .wrapper .sidebar{
-    left: -225px;
+    left: -245px;
 }
 
 body.active .wrapper .section{
@@ -114,7 +114,7 @@ body.active .wrapper .section{
 }
 
 .main{
-    margin-left:225px;
+    margin-left:250px;
     margin-top: 0px;
     padding: 0px 10px;
 }

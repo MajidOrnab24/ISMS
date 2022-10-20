@@ -10,7 +10,7 @@
     <!-- <link rel="stylesheet" href="css/style.css" /> -->
     <!-- Boxicons CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" >
-    
+    {% block title %}{{ profile.name }}{% endblock %}
     <!-- <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/> -->
     <link rel ="stylesheet" href="{% static '/css/student/student_base.css' %}">
 
@@ -21,7 +21,7 @@
       <div class="sidebar">
          <!--profile image & text-->
          <div class="profile">
-          <img src="{{profile.image}}" alt="profile_picture">
+          <img src="{{profile.image.url}}" alt="profile_picture">
           <h4>{{user}}</h4>
           <p>Student</p>
         </div>
@@ -82,7 +82,7 @@
                   <span class="item">Password change</span>
               </a>
           </li>
-          <li style="padding-top: 10px;">
+          <li>
             <a href="{% url 'logout' %}" class="button-categories-link">
                 <span class="icon"><i class="fas fa-door-open"></i></span>
                 <span class="item">Logout</span>
@@ -102,6 +102,9 @@
                   </button>
                     
                 <!-- </a> -->
+            </div>
+            <div class="studentPanel" style="padding-left: 400px;">
+              <h1 style="color: white;">Student Panel</h1>
             </div>
         </div>
 

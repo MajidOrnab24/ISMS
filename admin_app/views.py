@@ -23,8 +23,10 @@ import random
 # Admin views here.
 def is_valid_queryparam(param):
     return param != '' and param is not None
+@login_required
 def adminHome(request):
     return render(request,'admin_temp/adminHome.html')
+@login_required
 def deleteStudent(request, id):
   student_profile=StudentProfile.objects.get(email_id=id)
   if  student_profile.image:
@@ -33,7 +35,7 @@ def deleteStudent(request, id):
   student=Student.objects.get(id=id)
   student.delete()
   return redirect('adminStudent')
-    
+@login_required  
 def adminStudent(request):
     student_profiles=StudentProfile.objects.all()
     query = request.GET.get('q')
@@ -95,6 +97,7 @@ def adminLogin(request):
         else:
             messages.error(request,'Error Validating form')
     return render(request, 'admin_temp/adminLogin.html', {'form': form}) 
+@login_required
 def studentUpdate(request,id):
     student_profile=StudentProfile.objects.get(email_id=id)
     student=Student.objects.get(id=id)
@@ -152,7 +155,7 @@ def studentUpdate(request,id):
         profile_form =profileForm(instance=student_profile)
 
     return render(request,'admin_temp/studentUpdate.html', {'form': form,'profile_form': profile_form})
-
+@login_required
 def studentregister(request):
     if request.method == 'POST':
         form = registerStudent(request.POST)
