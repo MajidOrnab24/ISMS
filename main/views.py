@@ -31,6 +31,14 @@ def general_login(request):
     return render(request,'general_login.html')
 def admission(request):
     return render(request,'admission.html')
+def about(request):
+    return render(request,'about.html')
+def faq(request):
+    return render(request,'faq.html')
+def questionBank(request):
+    return render(request,'questionBank.html')
+def roadMap(request):
+    return render(request,'roadmap.html')
 def signup(request):
     return render(request,'signup.html')
 def signout(request):

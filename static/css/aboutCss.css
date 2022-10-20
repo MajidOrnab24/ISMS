@@ -1,0 +1,26 @@
+.aboutpg_header{
+    background:#3F3C67
+}
+.aboutpg_header h2{
+    text-align:center;
+    color:white;
+    font-size:30px;
+    padding:12px 0px 17px 0px;
+}
+.aboutpg_content{
+    margin-top:80px;
+    text-align:justify;
+}
+.aboutpg_content li,p{
+    font-size:17px;
+    margin-bottom:10px;
+}
+
+aboutpg_video{
+    margin-top:1px;
+
+}
+aboutpg_video iframe{
+
+    margin-top:100px;
+}

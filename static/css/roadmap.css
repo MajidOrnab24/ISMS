@@ -1,0 +1,34 @@
+.roadmap_header{
+    background:#3F3C67
+}
+.roadmap_header h2{
+    text-align:center;
+    color:white;
+    font-size:30px;
+    padding:12px 0px 17px 0px;
+}
+
+
+
+@media (min-width: 490px) and (max-width: 530px){
+    .roadmap_header{
+       width:530px;
+    }
+    .back{
+        margin-left:20px;
+    }
+}
+@media (min-width: 530px) and (max-width: 650px){
+    .roadmap_header{
+       width:650px;
+    }
+    .back{
+        margin-left:20px;
+    }
+}
+@media (min-width: 650px) and (max-width: 780px){
+
+    .back{
+        margin-left:20px;
+    }
+}
