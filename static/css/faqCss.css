@@ -1,0 +1,19 @@
+.faqpg_header{
+    background:#3F3C67
+}
+.faqpg_header h2{
+    text-align:center;
+    color:white;
+    font-size:30px;
+    padding:12px 0px 17px 0px;
+}
+.faqpg_content{
+    margin-top:50px;
+    text-align:justify;
+}
+.faqpg_content p{
+    margin:0px;
+}
+span{
+    font-weight:bold;
+}
