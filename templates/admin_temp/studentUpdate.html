@@ -1,6 +1,8 @@
 {% extends "admin_temp/admin_base.html" %}
 {%block content%}
-<form method="post" enctype="multipart/form-data">
+
+<div class="container" style="padding: 10px;">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
     {{profile_form.as_p}}
@@ -16,6 +18,10 @@
     <br>
     <input type="submit" value="Submit" />
   </form>
+
+
+</div>
+
   
 
 
