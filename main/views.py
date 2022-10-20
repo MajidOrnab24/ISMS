@@ -130,39 +130,43 @@ def signinFaculty(request):
             messages.error(request,'Error validating form')
     return render(request, 'signinFaculty.html', {'form': form})
 
-def signinStaffLib(request):
+def signinStaff(request):
     curr_user=request.user
     if  request.user.is_authenticated:
         if curr_user.is_staff_lib:
             return redirect('staffLibPage')
-        elif curr_user.is_admin or curr_user.is_student or curr_user.is_faculty or curr_user.is_staff_med :
+        elif curr_user.is_staff_med:
+            return redirect('staffMedPage')
+        elif curr_user.is_admin or curr_user.is_student or curr_user.is_faculty :
              return redirect('logError')
     else:
-        form = signinformStaffLib(request.POST or None)
+        form = signinformStaff(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
             # print( UserAccount)
-            if UserAccount is not None and not UserAccount.is_staff_lib:
+            if UserAccount is not None and not UserAccount.is_staff_lib and not UserAccount.is_staff_med:
                 if UserAccount.is_admin:
                    types='Admin'
                 else:
                    types=UserAccount.type
-                messages.error(request,'Wrong user type Library Staff only. '+types.title()+' type not accepted')
-                return redirect('signinStaffLib')
+                messages.error(request,'Wrong user type  Staff only. '+types.title()+' type not accepted')
+                return redirect('signinStaff')
             if  UserAccount is not None and UserAccount.is_staff_lib:
-                # print("lol")
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('staffLibPage')
+            if  UserAccount is not None and UserAccount.is_staff_med:
+                login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
+                return redirect('staffMedPage')
                 
             else:
                 messages.error(request,'username or password not correct')
-                return redirect('signinStaffLib')
+                return redirect('signinStaff')
         else:
             messages.error(request,'error validating form')
-    return render(request, 'signinStaffLib.html', {'form': form})
+    return render(request, 'signinStaff.html', {'form': form})
 
 
     
