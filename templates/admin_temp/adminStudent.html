@@ -1,0 +1,176 @@
+{% extends "admin_temp/admin_base.html" %}
+{%block content%}
+<style>
+    table, th, td {
+      border: 1px solid white;
+      border-collapse: collapse;
+    }
+    th, td {
+      background-color: #96D4D4;
+      text-justify: auto;
+      text-align:center;
+    }
+    table .fixed{
+        table-layout: fixed;
+  width: 100%;
+    }
+ div.pagination a {
+  display: inline-block;;
+  color: rgb(0, 0, 0);
+  padding: 5px 10px;
+  text-decoration: none;
+}
+/* ul.pagination li a {
+  padding: 16px 5px;
+  text-decoration: none;
+} */
+
+div.pagination a.active {
+  background-color: #4CAF50;
+  border-radius: 5px;
+  color: white;
+}
+
+div.pagination a:hover:not(.active) {
+    background-color: #ddd;
+    border-radius: 5px;}
+
+div.container {
+  text-align: center;
+  padding-top: 10px;
+}
+div.add_button {
+  text-align: right;
+  padding-top: 10px;
+}
+div.input-field{
+  padding-bottom: 20px;
+}
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+    </style>
+    <!-- CSS only -->
+    <h1>Student</h1>
+    <div class="add_button">
+      <a href="{%url 'studentregister'%}">
+        <button class="button"><i class="fas fa-plus"></i> Add Student</button>
+     </a>
+        
+    </div>
+
+<form method="GET" >
+    <div class="input-field">
+        <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search Here...">
+        <select name="deptFil">
+          <option value="" disabled selected>Select Department</option>
+        
+          <option value="CSE">CSE</option>
+        
+          <option value="EEE">EEE</option>
+        
+          <option value="MCE">MCE</option>
+        
+          <option value="CEE">CEE</option>
+        
+          <option value="SWE">SWE</option>
+        
+          <option value="IPE">IPE</option>
+        
+          <option value="BTM">BTM</option>
+        
+        </select>
+       <button class="btn" type="submit" name="action">Search</button>
+    </div>
+</form>
+<table style="width:100%",class="fixed">
+    <thead>
+      <tr>
+        <th width="300px">Name</th>
+        <th>Student ID</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Semester</th>
+        <th>Session</th>
+        <th>Image</th>
+        <th>Edit/Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in profiles %}
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.student_ID }}</td>
+          <td>{{ user.email_student }}</td>
+          <td>{{ user.department }}</td>
+          <td>{{ user.semester }}</td>
+          <td>{{ user.session_year}}</td>
+          <td><img src="{{ user.image.url}}" alt="" height=150 width=150 /></td>
+          <td><a href="/deleteStudent/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this student?"> <button>Delete</button></a>
+            <a href="/studentUpdate/{{ user.email_id }}"> <button>Update</button></a>
+           </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="container">
+    {% if profiles.has_other_pages %}
+    <div class="pagination">
+      {% if profiles.has_previous %}
+        <a href="?page={{ profiles.previous_page_number }}">&laquo;</a>
+      {% else %}
+        <a class="disabled"><span>&laquo;</span></a>
+      {% endif %}
+      {% for i in profiles.paginator.page_range %}
+        {% if profiles.number == i %}
+          <a class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></a>
+        {% else %}
+          <a href="?page={{ i }}">{{ i }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if profiles.has_next %}
+         <a href="?page={{ profiles.next_page_number }}">&raquo;</a>
+      {% else %}
+         <a class="disabled"><span>&raquo;</span></a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  </div>
+  <script>
+    var deleteLinks = document.querySelectorAll('.delete');
+
+for (var i = 0; i < deleteLinks.length; i++) {
+  deleteLinks[i].addEventListener('click', function(event) {
+      event.preventDefault();
+
+      var choice = confirm(this.getAttribute('data-confirm'));
+
+      if (choice) {
+        window.location.href = this.getAttribute('href');
+      }
+  });
+}
+  </script>
+
+{%endblock%}

@@ -1,0 +1,41 @@
+
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Login Page</title>
+    <link rel ="stylesheet" href="{% static '/css/general login.css' %}">
+    
+  </head>
+  <body>
+    <div class="container">
+          <table class="center">
+            <thead>
+              <tr >
+                <th ><img src="/static/images/admin.png" alt="" height=225 width=225 /></th>
+                <th ><img src="/static/images/student.png" alt="" height=225 width=225 /></th>
+                <th ><img src="/static/images/faculty.jpg" alt="" height=225 width=225 /></th>  
+                <th ><img src="/static/images/staff.png" alt="" height=225 width=225 /></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr >
+                <div>
+                <td><a href="/admin/login"><button  class="button"><span></span>LOG IN AS ADMIN</button></a></td>
+                <td><a href="/signinStudent"><button class="button" ><span></span>LOG IN AS STUDENT</button></a></td>
+                <td><a href="/signinFaculty"><button  class="button"><span></span>LOG IN AS FACULTY</button></a></td>
+                 <td><a href="/signinStaffMed"><button  class="button"><span></span>LOG IN AS Staff</button></a></td>
+              </div>
+                
+              </tr>
+            </tbody>
+          </table>
+          
+    </div>
+   
+
+  </body>
+  </body>
+</html>

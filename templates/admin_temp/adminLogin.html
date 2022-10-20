@@ -1,0 +1,20 @@
+{% extends "baselogin.html" %}
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <Title>Welcome to ISMS</Title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel ="stylesheet" href="{% static '/css/login_extra.css' %}">
+    </head>
+    <body>
+        {% block content %}
+
+        <h1 style=" text-align: center; padding-top: 50px;"><span style="background:linear-gradient(120deg,rgba(196, 208, 239,0.8),rgba(196, 208, 239,0.5) );">Admin Login Page</span></h1>
+        {% endblock content %}
+        
+        
+
+    </body>
+</html>

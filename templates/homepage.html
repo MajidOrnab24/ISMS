@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <Title>Welcome to ISMS</Title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel ="stylesheet" href="{% static '/css/homepage.css' %}">
+    </head>
+    <body>
+        <div class="banner">
+            <h1>WELCOME TO THE STUDENT PORTAL OF IUT<br>ISMS</h1>
+            
+            <div class="content">
+                <div>
+                    <!-- <button type="button"><span></span> to Login Page</button> -->
+                    <a  href="/general login">
+                        <button btn from-left><span></span> to Login Page</button></a>
+                    <a  href="/admission">
+                        <button btn from-left><span></span> Admission Page</button></a>
+                    <!-- <button type="button"><span></span> Admission Page</button> -->
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>
