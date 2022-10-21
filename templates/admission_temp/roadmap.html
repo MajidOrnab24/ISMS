@@ -4,48 +4,47 @@
     {% load static %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Question Bank</title>
+    <title>Roadmap Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <link rel ="stylesheet" href="{% static '/css/questionBankCss.css' %}">
+    <link rel ="stylesheet" href="{% static '/css/admission/roadmap.css' %}">
   </head>
   <body>
-      <div class="questionBank_header">
-        <h2>Question Bank</h2>
+      <div class="roadmap_header">
+        <h2>Roadmap</h2>
       </div>
-      <div class="questionBank_body">
+      <div class="roadmap_body">
         <div class="container">
           <table class="table">
             <tr class="row">
               <th class="col-1">SL</th>
-              <th class="col-5">Year</th>
-              <th class="col-4"></th>
-              <th class="col-1">PDF</th>
-              <th class="col-1"><a href="/admission" class="btn btn-success back float-end">Back</a></th>
+              <th class="col-7">Event</th>
+              <th class="col-3">Date</th>
+              <th class="col-1"><a href="/admission" class="btn btn-success back">Back</a></th>
             </tr>
             <tr class="row">
               <td class="col-1">01</td>
-              <td class="col-9"><p>	2022-2021</p></td>
-              <td class="col-2"><a href="{% static '/pdf/94422_AdmissionTech_IUT_2018.pdf' %}" target="_blank" class="btn btn-primary">Click Here</a></td>
+              <td class="col-7"><p>	Application starting date 1st Step Payment(non-refundable Application Fee of BDT 300/=</p></td>
+              <td class="col-4"><p>Monday, 21 March 2022 (02:00 PM)</p></td>
             </tr>
             <tr class="row">
               <td class="col-1">02</td>
-              <td class="col-9"><p>	2020-2021</p></td>
-              <td class="col-2"><a href="{% static '/pdf/32454_AdmissionTech_IUT_2019.pdf' %}" target="_blank" class="btn btn-primary">Click Here</a></td>
+              <td class="col-7"><p>Application closing date</p></td>
+              <td class="col-4"><p>Monday, 24 March 2022 (02:00 PM)</p></td>
             </tr>
             <tr class="row">
               <td class="col-1">03</td>
-              <td class="col-9"><p>	2019-2020</p></td>
-              <td class="col-2"><a href="{% static '/pdf/13149_AdmissionTech_IUT_16.pdf' %}" target="_blank" class="btn btn-primary">Click Here</a></td>
+              <td class="col-7"><p>Display of grades of all applicants</p></td>
+              <td class="col-4"><p>	Wednesday, 27 April 2022 ( 02:00 PM ) - Sunday, 8 May 2022 ( 11:59 PM )</p></td>
             </tr>
             <tr class="row">
               <td class="col-1">04</td>
-              <td class="col-9"><p>	2018-2019</p></td>
-              <td class="col-2"><a href="{% static '/pdf/2016-2017.pdf' %}" target="_blank" class="btn btn-primary">Click Here</a></td>
+              <td class="col-7"><p>Verification of grades</p></td>
+              <td class="col-4"><p>Wednesday, 8 June 2022 (11:59 PM)</p></td>
             </tr>
             <tr class="row">
               <td class="col-1">05</td>
-              <td class="col-9"><p>	2017-18</p></td>
-              <td class="col-2"><a href="{% static '/pdf/94422_AdmissionTech_IUT_2018.pdf' %}" target="_blank" class="btn btn-primary">Click Here</a></td>
+              <td class="col-7"><p>	Admission Test Venue Selection</p></td>
+              <td class="col-4"><p>Wednesday, 12 June 2022 (11:59 PM)</p></td>
             </tr>
           </table>
         </div>
