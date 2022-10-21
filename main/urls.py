@@ -2,27 +2,72 @@ from unicodedata import name
 from django.urls import path
 from . import views
 from main import studentViews as student_view
+from main import admission_views as admissionView
 from admin_app import views as admin_view
 
 urlpatterns = [
     path('',views.home, name='home'),
     path('general login',views.general_login, name='general_login'),
-    path('admission',views.admission, name='admission'),
-    path('about',views.about, name='about'),
-    path('faq',views.faq, name='faq'),
-    path('questionBank',views.questionBank, name='questionBank'),
-    path('roadMap',views.roadMap, name='roadMap'),
+    # Admission urls
+    path('admission',admissionView.admission, name='admission'),
+    path('about',admissionView.about, name='about'),
+    path('faq',admissionView.faq, name='faq'),
+    path('questionBank',admissionView.questionBank, name='questionBank'),
+    path('roadMap',admissionView.roadMap, name='roadMap'),
+
+
+
+
+    # Login urls
     path('signinStudent',views.signinStudent, name='signinStudent'),
     path('signinFaculty',views.signinFaculty, name='signinFaculty'),
     path('signinStaff',views.signinStaff, name='signinStaff'),
-    path('signup',views.signup, name='signup'),
-    path('signout',views.signout, name='signout'),
-    path('studentPage',student_view.studentPage, name='studentPage'),
-    path('facultyPage',views.facultyPage, name='facultyPage'),
-    path('staffMedPage',views.staffMedPage, name='staffMedPage'),
     path('logout',views.logout_request, name='logout'),
-    path('staffLibPage',views.staffLibPage, name='staffLibPage'),
     path('logError',views.logError, name='logError'),
+    # student urls
+    path('studentPage',student_view.studentPage, name='studentPage'),
+
+
+
+
+
+
+
+
+
+
+    # faculty urls
+    path('facultyPage',views.facultyPage, name='facultyPage'),
+
+
+
+
+
+
+
+
+
+
+    # Med staff urls
+    path('staffMedPage',views.staffMedPage, name='staffMedPage'),
+
+
+
+
+
+
+
+
+    # Lib staff urls
+    path('staffLibPage',views.staffLibPage, name='staffLibPage'),
+
+
+
+
+
+
+
+    # admin urls 
     path('adminHome',admin_view.adminHome,name='adminHome'),
     path('adminStudent',admin_view.adminStudent,name='adminStudent'),
     path('studentregister',admin_view.studentregister,name='studentregister'),
