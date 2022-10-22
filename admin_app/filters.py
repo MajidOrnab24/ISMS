@@ -19,3 +19,18 @@ class StudentFilter(django_filters.FilterSet):
             },
 
         }
+class FacultyFilter(django_filters.FilterSet):
+    class Meta:
+        model = StudentProfile
+        # fields = ['name', 'department']
+        fields = {'name' :['exact'],'department':['exact'] }
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+
+        }

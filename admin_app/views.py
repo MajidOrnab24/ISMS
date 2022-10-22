@@ -38,6 +38,15 @@ def deleteStudent(request, id):
   student=Student.objects.get(id=id)
   student.delete()
   return redirect('adminStudent')
+@login_required
+def deleteFaculty(request, id):
+  faculty_profile=FacultyProfile.objects.get(email_id=id)
+  if  faculty_profile.image:
+         faculty_profile.image.delete()
+  faculty_profile.delete()
+  faculty=Faculty.objects.get(id=id)
+  faculty.delete()
+  return redirect('adminFaculty')
 @login_required  
 def adminStudent(request):
     context={}
@@ -49,6 +58,17 @@ def adminStudent(request):
 
     context['profile_page_obj']=profile_page_obj
     return render(request,'admin_temp/adminStudent.html',context=context )
+@login_required
+def adminFaculty(request):
+    context={}
+    profiles=FacultyFilter(request.GET,queryset=FacultyProfile.objects.all())
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
+
+    context['profile_page_obj']=profile_page_obj
+    return render(request,'admin_temp/adminFaculty.html',context=context )
     
 def adminLogin(request):
     curr_user=request.user
@@ -136,7 +156,7 @@ def studentUpdate(request,id):
                 messages.error(request,'username or password not correct')
             return redirect('studentUpdate')
         else:
-           
+           user.delete()
            messages.error(request,'Error Validating form')
     else:
         form = updateStudentForm(instance=student)
@@ -179,11 +199,12 @@ def facultyregister(request):
                  messages.error(request,'username or password not correct')
                  return redirect('facultyregister')
             elif  user is not None:
-                return redirect('adminStudent')
+                return redirect('adminFaculty')
             else:
                 messages.error(request,'username or password not correct')
             return redirect('facultyregister')
         else:
+            user.delete()
             messages.error(request,'Error validating registrartion please try again with correct value')
 
     else:
@@ -240,6 +261,7 @@ def studentregister(request):
                 messages.error(request,'username or password not correct')
             return redirect('studentregister')
         else:
+           user.delete()
            messages.error(request,'Error validating registrartion please try again with correct value')
     else:
         form = registerStudent()
