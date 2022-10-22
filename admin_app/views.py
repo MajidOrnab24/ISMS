@@ -1,6 +1,7 @@
 from audioop import add
 import email
 from email.message import EmailMessage
+from multiprocessing import context
 from pickle import TRUE
 import profile
 from django.shortcuts import render
@@ -19,10 +20,12 @@ from itertools import chain
 from main.forms import *
 from admin_app.forms import *
 import random
+from admin_app.filters import *
+
 
 # Admin views here.
-def is_valid_queryparam(param):
-    return param != '' and param is not None
+
+
 @login_required
 def adminHome(request):
     return render(request,'admin_temp/adminHome.html')
@@ -37,29 +40,15 @@ def deleteStudent(request, id):
   return redirect('adminStudent')
 @login_required  
 def adminStudent(request):
-    student_profiles=StudentProfile.objects.all()
-    query = request.GET.get('q')
-    queryDept = request.GET.get('deptFil')
-    if is_valid_queryparam( query):
-        student_profiles = StudentProfile.objects.filter(Q(name__icontains=query)
-        | Q(department__dept_name__icontains=query)).distinct()
-    if is_valid_queryparam( queryDept):
-        student_profiles = StudentProfile.objects.filter(Q(department__dept_name__icontains=queryDept)).distinct()
-    if is_valid_queryparam( queryDept) and is_valid_queryparam( query):
-        student_profiles = StudentProfile.objects.filter(Q(name__icontains=query) &Q(department__dept_name__icontains=queryDept)).distinct()
-    paginator = Paginator(student_profiles, 1)
-    page = request.GET.get('page', 1)
-    
-    try:
-        profiles = paginator.page(page)
-    except PageNotAnInteger:
-        profiles = paginator.page(1)
-    except EmptyPage:
-       profiles = paginator.page(paginator.num_pages)
-    context = {
-        'profiles': profiles
-    }
-    return render(request,'admin_temp/adminStudent.html',context )
+    context={}
+    profiles=StudentFilter(request.GET,queryset=StudentProfile.objects.all())
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
+
+    context['profile_page_obj']=profile_page_obj
+    return render(request,'admin_temp/adminStudent.html',context=context )
     
 def adminLogin(request):
     curr_user=request.user
@@ -77,7 +66,6 @@ def adminLogin(request):
             password = form.cleaned_data.get('password')
             UserAccount = auth.authenticate(email=email, password=password)
 
-            # print( UserAccount)
             if UserAccount is not None and not UserAccount.is_admin:
                 if UserAccount.is_admin:
                    types='Admin'
@@ -87,7 +75,6 @@ def adminLogin(request):
                 return redirect('admin/login/')
 
             elif UserAccount is not None and  UserAccount.is_admin:
-                # print(UserAccount.type)
                   login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                   return redirect('adminHome')
               
@@ -149,12 +136,64 @@ def studentUpdate(request,id):
                 messages.error(request,'username or password not correct')
             return redirect('studentUpdate')
         else:
+           
            messages.error(request,'Error Validating form')
     else:
         form = updateStudentForm(instance=student)
         profile_form =profileForm(instance=student_profile)
 
     return render(request,'admin_temp/studentUpdate.html', {'form': form,'profile_form': profile_form})
+
+@login_required
+def facultyregister(request):
+    if request.method == 'POST':
+        form = registerFaculty(request.POST)
+        profile_form =facultyprofileform(request.POST, request.FILES)
+        if form.is_valid() and profile_form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            name=profile_form.cleaned_data.get('name')
+            address=profile_form.cleaned_data.get('address')
+            phone=profile_form.cleaned_data.get('phone')
+            image=profile_form.cleaned_data.get('image')
+            gender=profile_form.cleaned_data.get('gender')
+            date_of_birth=profile_form.cleaned_data.get('date_of_birth')
+            department=profile_form.cleaned_data.get('department')
+            room =profile_form.cleaned_data.get('room')
+            education=profile_form.cleaned_data.get('education')
+            user = form.save(commit=False)
+            user.password = make_password(password)
+            user.save()
+            profile=FacultyProfile.objects.get(email=user.id)
+            profile.name=name
+            profile.address=address
+            profile.phone=phone
+            profile.image=image
+            profile.gender=gender
+            profile.date_of_birth=date_of_birth
+            profile.department=department
+            profile.room=room
+            profile.education=education
+            profile.save()
+            if user is None:
+                 messages.error(request,'username or password not correct')
+                 return redirect('facultyregister')
+            elif  user is not None:
+                return redirect('adminStudent')
+            else:
+                messages.error(request,'username or password not correct')
+            return redirect('facultyregister')
+        else:
+            messages.error(request,'Error validating registrartion please try again with correct value')
+
+    else:
+        form = registerFaculty()
+        profile_form =facultyprofileform()
+    return render(request,'admin_temp/facultyregister.html', {'form': form,'profile_form': profile_form})
+
+
+
+
 @login_required
 def studentregister(request):
     if request.method == 'POST':
@@ -201,9 +240,11 @@ def studentregister(request):
                 messages.error(request,'username or password not correct')
             return redirect('studentregister')
         else:
-           messages.error(request,'Error Validating form')
+           messages.error(request,'Error validating registrartion please try again with correct value')
     else:
         form = registerStudent()
         profile_form =profileForm()
 
     return render(request,'admin_temp/studentregister.html', {'form': form,'profile_form': profile_form})
+
+

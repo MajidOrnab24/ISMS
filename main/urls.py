@@ -73,5 +73,6 @@ urlpatterns = [
     path('studentregister',admin_view.studentregister,name='studentregister'),
     path('deleteStudent/<int:id>', admin_view.deleteStudent, name='deleteStudent'),
     path('studentUpdate/<int:id>', admin_view.studentUpdate, name='studentUpdate'),
+    path('facultyregister',admin_view.facultyregister,name='facultyregister'),
 
     ]
