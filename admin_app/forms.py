@@ -2,7 +2,10 @@ from dataclasses import field
 import email
 from django import forms
 from main.models import *
+from django.forms.widgets import DateInput
 from admin_app.models import *
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 # create a form form
 class signinformAdmin(forms.Form):
@@ -48,6 +51,8 @@ class registerStudent(forms.ModelForm):
 
 
 class profileForm(forms.ModelForm):
+    date_of_birth = forms.DateField(widget=DateInput)
+    session = forms.DateField(widget=DateInput)
 
     class Meta:
         model = StudentProfile
@@ -61,7 +66,7 @@ class updateStudentForm(forms.ModelForm):
             }
         )
     )
-
+    password = forms.CharField(widget=forms.PasswordInput( attrs={"class": "form-control"}))
     
     class Meta:
         model = Student

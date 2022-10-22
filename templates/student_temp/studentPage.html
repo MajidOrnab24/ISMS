@@ -1,0 +1,10 @@
+{% extends "student_temp/student_base.html" %}
+{% block title %}{{ section.title }}{% endblock %}
+	{%block content%}
+   <p>Student Name:  {{profile.name}}</p>
+   <p>Student ID:    {{profile.student_ID}} </p>
+   <p>Email: {{user.email}}</p>
+   <p>Department: {{profile.department}}</p>
+   <p>Age: {{profile.age}}</p>
+{%endblock%}
+

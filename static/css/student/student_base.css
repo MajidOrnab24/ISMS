@@ -19,7 +19,7 @@ body{
     position: fixed;
     top: 0;
     left: 0;
-    width: 245px;
+    width: 250px;
     height: 100%;
     padding: 20px 0;
     transition: all 0.5s ease;
@@ -37,7 +37,7 @@ body{
     margin: 0 auto;
 }
 
-.wrapper .sidebar .profile h3{
+.wrapper .sidebar .profile h4{
     color: #ffffff;
     margin: 10px 0 5px;
 }
@@ -75,8 +75,8 @@ body{
     display: block;
 }
 .wrapper .section{
-    width: calc(100% - 245px);
-    margin-left: 245px;
+    width: calc(100% - 250px);
+    margin-left: 250px;
     transition: all 0.5s ease;
 }
 
@@ -105,7 +105,7 @@ body{
     color: #3F3C67;
 }
 body.active .wrapper .sidebar{
-    left: -245px;
+    left: -250px;
 }
 
 body.active .wrapper .section{
@@ -116,5 +116,9 @@ body.active .wrapper .section{
 .main{
     margin-left:250px;
     margin-top: 0px;
-    padding: 0px 10px;
+    height: 695px;
+    width: 83.7%;
+    padding-top: 20px;
+    padding-left: 30px;
+    background-color: #d1d3db;
 }

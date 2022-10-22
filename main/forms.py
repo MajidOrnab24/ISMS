@@ -54,7 +54,7 @@ class signinformStudent(forms.Form):
 
 # Faculty Form
 
-class signinformFaculty(forms.ModelForm):
+class signinformFaculty(forms.Form):
     email = forms.CharField(
         widget= forms.TextInput(
             attrs={
@@ -74,29 +74,8 @@ class signinformFaculty(forms.ModelForm):
         model = Faculty
         fields = ('email', 'password')
 
-        # Form Med Staff
-class signinformStaffMed(forms.Form):
-    email = forms.CharField(
-        widget= forms.TextInput(
-            attrs={
-                "class": "form-control"
-            }
-        )
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control"
-            }
-        )
-    )
-    
-    class Meta:
-        model = StaffMed
-        fields = ('email', 'password')
 
-        # Form Lib Staff
-class signinformStaffLib(forms.Form):
+class signinformStaff(forms.Form):
     email = forms.CharField(
         widget= forms.TextInput(
             attrs={
@@ -113,5 +92,5 @@ class signinformStaffLib(forms.Form):
     )
     
     class Meta:
-        model = StaffLib
+        model = UserAccount
         fields = ('email', 'password')
