@@ -10,4 +10,6 @@ admin.site.register(StaffMed)
 admin.site.register(StaffLib)
 admin.site.register(department)
 admin.site.register(StudentProfile)
+admin.site.register(FacultyProfile)
+admin.site.register(DeptHeadFaculty)
 

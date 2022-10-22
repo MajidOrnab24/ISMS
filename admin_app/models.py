@@ -1,5 +1,6 @@
 import email
 from email.policy import default
+from enum import unique
 from random import choices
 from unittest.util import _MAX_LENGTH
 from django.db import models
@@ -18,6 +19,11 @@ def filepath(request, filename):
     timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
     filename = "%s%s" % (timeNow, old_filename)
     return os.path.join('uploads/', filename)
+def filepathFaculty(request, filename):
+    old_filename = filename
+    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
+    filename = "%s%s" % (timeNow, old_filename)
+    return os.path.join('faculty_images/', filename)
 
 CSE = "CSE"
 SWE = "SWE"
@@ -52,11 +58,12 @@ sem_choices ={
     (8,"8"),
 }
 gender_choices = {
-    ('Male',"MALE"),
-    ('Female',"FEMALE"),
+    ('MALE',"MALE"),
+    ('FEMALE',"FEMALE"),
 }
 
 class StudentProfile(models.Model):
+
     name = models.CharField(max_length=256)
     email = models.OneToOneField(Student, on_delete=models.CASCADE, primary_key=True)
     student_ID = models.IntegerField(unique = True,null=True)
@@ -66,9 +73,9 @@ class StudentProfile(models.Model):
     phone =  models.CharField(max_length=15)
     semester =models.IntegerField(choices=sem_choices, default=1)
     image = models.ImageField(upload_to=filepath)
-    gender=models.CharField(max_length=30,choices=gender_choices)
+    gender=models.CharField(max_length=30,choices=gender_choices,default='MALE')
     date_of_birth = models.DateField(max_length=10, null =True)
-    department = models.ForeignKey(department,on_delete=models.CASCADE,null=True)
+    department = models.ForeignKey(department,on_delete=models.SET_NULL,null=True)
     session =  models.DateField(max_length=10, null=True)
 
     @property
@@ -83,7 +90,44 @@ class StudentProfile(models.Model):
         
     def __str__(self):
         return self.email.email
+
+
     @receiver(post_save, sender=Student)
     def create_student_profile(sender, instance, created, **kwargs):
      if created:
         StudentProfile.objects.create(email=instance)
+
+class FacultyProfile(models.Model):
+    name = models.CharField(max_length=256)
+    email = models.OneToOneField(Faculty, on_delete=models.CASCADE, primary_key=True)
+    address = models.TextField()
+    room = models.CharField(max_length=256)
+    phone =  models.CharField(max_length=15)
+    image = models.ImageField(upload_to=filepathFaculty)
+    gender=models.CharField(max_length=30,choices=gender_choices,default='MALE')
+    date_of_birth = models.DateField(max_length=10, null =True)
+    department = models.ForeignKey(department,on_delete=models.CASCADE,null=True)
+    education = models.TextField()
+
+    @property
+    def email_faculty(self):
+        return self.email.email
+        
+    def __str__(self):
+        return self.email.email
+    @receiver(post_save, sender=Faculty)
+    def create_faculty_profile(sender, instance, created, **kwargs):
+     if created:
+        FacultyProfile.objects.create(email=instance)
+
+class DeptHeadFaculty(models.Model):
+    dept = models.OneToOneField(department, on_delete=models.CASCADE, primary_key=True)
+    email=models.OneToOneField(FacultyProfile, on_delete=models.SET_NULL, null =True)
+
+    def __str__(self):
+        return self.email.email.email
+    @property
+    def head_name(self):
+        return self.email.name
+    
+

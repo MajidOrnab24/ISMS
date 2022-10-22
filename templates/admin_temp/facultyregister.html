@@ -1,0 +1,42 @@
+{% extends "admin_temp/admin_base.html" %}
+{%block content%}
+<style>
+    .form-control{
+   margin: 10px 0;
+   position: relative;
+  border: 2px solid #adadad;
+  border-radius: 5px;
+
+    }
+</style>
+<div class="container" style="padding: 10px;">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Email: </label>
+        {{form.email}}
+        <br>
+        <label>Passsword: </label>
+        {{form.password}}
+         {{profile_form.as_p}}
+    
+    
+    
+    
+        {% for message in messages %}
+        <div class="alert alert-success">
+            <a class="close" href="#" data-dismiss="alert">×</a>
+               {{ message }}
+        </div>
+    
+        {% endfor %}
+        <br>
+        <input type="submit" value="Submit" />
+      </form>
+
+</div>
+
+  
+
+
+
+{%endblock%}

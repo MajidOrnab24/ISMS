@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 from itertools import chain
 from main.forms import *
 import random
+from admin_app.models import *
+
 
 
 def logError(request):

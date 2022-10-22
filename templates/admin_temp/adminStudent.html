@@ -1,5 +1,6 @@
 {% extends "admin_temp/admin_base.html" %}
 {%block content%}
+{% load admin_app_extras%}
 <style>
     table, th, td {
       border: 1px solid white;
@@ -14,16 +15,25 @@
         table-layout: fixed;
   width: 100%;
     }
- div.pagination a {
+    ul.pagination li {
   display: inline-block;;
   color: rgb(0, 0, 0);
   padding: 5px 10px;
   text-decoration: none;
 }
-/* ul.pagination li a {
-  padding: 16px 5px;
-  text-decoration: none;
-} */
+ul.pagination li.active {
+  background-color: #4CAF50;
+  border-radius: 5px;
+  color: white;
+}
+
+ul.pagination li:hover:not(.active) {
+    background-color: #ddd;
+    border-radius: 5px;}
+ul.pagination li a:hover:not(.active) {
+    color: red;
+    border-radius: 5px;}
+
 
 div.pagination a.active {
   background-color: #4CAF50;
@@ -46,9 +56,16 @@ div.add_button {
 div.input-field{
   padding-bottom: 20px;
 }
+.btn{
+  padding: 6px 15px;
+  border-radius: 3px;
+  background-color: #3e8e41;
+  color: #fff;
+
+}
 .button {
   display: inline-block;
-  padding: 15px 25px;
+  padding: 12px 25px;
   font-size: 15px;
   cursor: pointer;
   text-align: center;
@@ -70,8 +87,6 @@ div.input-field{
 }
 
     </style>
-    <!-- CSS only -->
-    <h1>Student</h1>
     <div class="add_button">
       <a href="{%url 'studentregister'%}">
         <button class="button"><i class="fas fa-plus"></i> Add Student</button>
@@ -79,31 +94,17 @@ div.input-field{
         
     </div>
 
-<form method="GET" >
-    <div class="input-field">
-        <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search Here...">
-        <select name="deptFil">
-          <option value="" disabled selected>Select Department</option>
-        
-          <option value="CSE">CSE</option>
-        
-          <option value="EEE">EEE</option>
-        
-          <option value="MCE">MCE</option>
-        
-          <option value="CEE">CEE</option>
-        
-          <option value="SWE">SWE</option>
-        
-          <option value="IPE">IPE</option>
-        
-          <option value="BTM">BTM</option>
-        
-        </select>
-       <button class="btn" type="submit" name="action">Search</button>
-    </div>
+<form method="get">
+  <label >Name: </label>
+  {{profiles.form.name}}
+  <label style="margin-left: 5px;">Department: </label>
+  {{profiles.form.department}}
+  <label style="margin-left: 5px;">Semester: </label>
+  {{profiles.form.semester}}
+
+  <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 10px;">Search</button>
 </form>
-<table style="width:100%",class="fixed">
+<table style="width:100%" class="fixed">
     <thead>
       <tr>
         <th width="300px">Name</th>
@@ -112,12 +113,12 @@ div.input-field{
         <th>Department</th>
         <th>Semester</th>
         <th>Session</th>
-        <th>Image</th>
+        <th style="height:fit-content; width:fit-content">Image</th>
         <th>Edit/Delete</th>
       </tr>
     </thead>
     <tbody>
-      {% for user in profiles %}
+      {% for user in profile_page_obj %}
         <tr>
           <td>{{ user.name }}</td>
           <td>{{ user.student_ID }}</td>
@@ -125,7 +126,7 @@ div.input-field{
           <td>{{ user.department }}</td>
           <td>{{ user.semester }}</td>
           <td>{{ user.session_year}}</td>
-          <td><img src="{{ user.image.url}}" alt="" height=150 width=150 /></td>
+          <td><img src="{{ user.image.url}}" alt="" height=100 width=100 /></td>
           <td><a href="/deleteStudent/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this student?"> <button>Delete</button></a>
             <a href="/studentUpdate/{{ user.email_id }}"> <button>Update</button></a>
            </td>
@@ -133,29 +134,33 @@ div.input-field{
       {% endfor %}
     </tbody>
   </table>
-  <div class="container">
-    {% if profiles.has_other_pages %}
-    <div class="pagination">
-      {% if profiles.has_previous %}
-        <a href="?page={{ profiles.previous_page_number }}">&laquo;</a>
+  
+    <div class="container">
+      <ul class="pagination">
+    {% if profile_page_obj.has_previous%}
+       <li><a href="{% my_url 1 'page' request.GET.urlencode%}">&laquo;First</a></li>
+       <li> <a href="{% my_url profile_page_obj.previous_page_number 'page' request.GET.urlencode%}">&laquo;Prevous</a></li>
       {% else %}
-        <a class="disabled"><span>&laquo;</span></a>
-      {% endif %}
-      {% for i in profiles.paginator.page_range %}
-        {% if profiles.number == i %}
-          <a class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></a>
-        {% else %}
-          <a href="?page={{ i }}">{{ i }}</a>
-        {% endif %}
-      {% endfor %}
-      {% if profiles.has_next %}
-         <a href="?page={{ profiles.next_page_number }}">&raquo;</a>
-      {% else %}
-         <a class="disabled"><span>&raquo;</span></a>
-      {% endif %}
-    </div>
-  {% endif %}
+        <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
 
+    {% for i in profile_page_obj.paginator.page_range %}
+    {% if profile_page_obj.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+      <li><a href="{% my_url i 'page' request.GET.urlencode%}">{{ i }}</a></li>
+    {% endif %}
+   {% endfor %}
+    {% if profile_page_obj.has_next%}
+   <li> <a href="{% my_url profile_page_obj.next_page_number 'page' request.GET.urlencode%}">Next &raquo;</a></li>
+   <li><a href="{% my_url profile_page_obj.paginator.num_pages 'page' request.GET.urlencode%}">Last &raquo;</a> </li>
+   {% else %}
+         <li class="disabled"><span>&raquo;</span></li>  
+    {% endif %}
+  </ul>
+  <span class="current">
+    Page {{profile_page_obj.number}} of {{profile_page_obj.paginator.num_pages}}
+  </span>
   </div>
   <script>
     var deleteLinks = document.querySelectorAll('.delete');
