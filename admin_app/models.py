@@ -24,6 +24,11 @@ def filepathFaculty(request, filename):
     timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
     filename = "%s%s" % (timeNow, old_filename)
     return os.path.join('faculty_images/', filename)
+def filepathStaff(request, filename):
+    old_filename = filename
+    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
+    filename = "%s%s" % (timeNow, old_filename)
+    return os.path.join('staff_images/', filename)
 
 CSE = "CSE"
 SWE = "SWE"
@@ -131,3 +136,24 @@ class DeptHeadFaculty(models.Model):
         return self.email.name
     
 
+class StaffMedProfile(models.Model):
+    name = models.CharField(max_length=256)
+    email = models.OneToOneField(StaffMed, on_delete=models.CASCADE, primary_key=True)
+    address = models.TextField()
+    designation = models.CharField(max_length=256)
+    phone =  models.CharField(max_length=15)
+    date_of_birth = models.DateField(max_length=10, null =True)
+    image = models.ImageField(upload_to=filepathStaff)
+    gender=models.CharField(max_length=30,choices=gender_choices,default='MALE')
+    duty = models.TextField()
+    
+    @property
+    def email_staff_med(self):
+        return self.email.email
+        
+    def __str__(self):
+        return self.email.email
+    @receiver(post_save, sender=StaffMed)
+    def create_med_staff_profile(sender, instance, created, **kwargs):
+     if created:
+        StaffMedProfile.objects.create(email=instance)
