@@ -144,17 +144,21 @@ class profileForm(forms.ModelForm):
         else:
             raise ValidationError("Couldn't read uploaded image")
 
-class updateStudentForm(forms.ModelForm):
-    email = forms.EmailField(
-        widget= forms.TextInput(
+
+
+class changePassByadmin(forms.Form):
+
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(
             attrs={
                 "class": "form-control"
             }
-        )
+        ),validators=[validate_passwords]
     )
-    password = forms.CharField(widget=forms.PasswordInput( attrs={"class": "form-control"}))
-    
-    class Meta:
-        model = Student
-        fields = ('email', 'password')
-
+    new_password_again = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        ),validators=[validate_passwords]
+    )

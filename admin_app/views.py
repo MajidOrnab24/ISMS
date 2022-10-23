@@ -107,15 +107,54 @@ def adminLogin(request):
             messages.error(request,'Error Validating form')
     return render(request, 'admin_temp/adminLogin.html', {'form': form}) 
 @login_required
+def facultyUpdate(request,id):
+    faculty_profile=FacultyProfile.objects.get(email_id=id)
+    if request.method == 'POST':
+        profile_form = facultyprofileform(request.POST, request.FILES,instance=faculty_profile)
+        if  profile_form.is_valid():
+            name=profile_form.cleaned_data.get('name')
+            address=profile_form.cleaned_data.get('address')
+            phone=profile_form.cleaned_data.get('phone')
+            image=profile_form.cleaned_data.get('image')
+            gender=profile_form.cleaned_data.get('gender')
+            date_of_birth=profile_form.cleaned_data.get('date_of_birth')
+            department=profile_form.cleaned_data.get('department')
+            room =profile_form.cleaned_data.get('room')
+            education=profile_form.cleaned_data.get('education')
+            profile=FacultyProfile.objects.get(email=id)
+            profile.name=name
+            profile.address=address
+            profile.phone=phone
+
+            if(profile.image!=image):
+                profile.image.delete()
+
+            profile.image=image
+
+            profile.gender=gender
+            profile.date_of_birth=date_of_birth
+            profile.department=department
+            profile.room=room
+            profile.education=education
+            profile.save()
+
+            if  profile is not None:
+                return redirect('adminFaculty')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('facultyUpdate')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        profile_form =facultyprofileform(instance=faculty_profile)
+
+    return render(request,'admin_temp/facultyUpdate.html', {'profile_form': profile_form})
+@login_required
 def studentUpdate(request,id):
     student_profile=StudentProfile.objects.get(email_id=id)
-    student=Student.objects.get(id=id)
     if request.method == 'POST':
-        form = updateStudentForm(request.POST,instance=student)
         profile_form = profileForm(request.POST, request.FILES,instance=student_profile)
-        if form.is_valid() and  profile_form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
+        if  profile_form.is_valid():
             name=profile_form.cleaned_data.get('name')
             student_ID=profile_form.cleaned_data.get('student_ID')
             address=profile_form.cleaned_data.get('address')
@@ -128,10 +167,7 @@ def studentUpdate(request,id):
             date_of_birth=profile_form.cleaned_data.get('date_of_birth')
             department=profile_form.cleaned_data.get('department')
             session=profile_form.cleaned_data.get('session')
-            user = form.save(commit=False)
-            user.password = make_password(password)
-            user.save()
-            profile=StudentProfile.objects.get(email_id=user.id)
+            profile=StudentProfile.objects.get(email_id=id)
             profile.name=name
             profile.father_name=father_name
             profile.student_ID=student_ID
@@ -149,21 +185,18 @@ def studentUpdate(request,id):
             profile.department=department
             profile.session=session
             profile.save()
-            if  student is None:
-                 messages.error(request,'username or password not correct')
-                 return redirect('studentUpdate')
-            elif  student is not None:
+
+            if  profile is not None:
                 return redirect('adminStudent')
             else:
-                messages.error(request,'username or password not correct')
+                messages.error(request,'enter valid information')
             return redirect('studentUpdate')
         else:
-           messages.error(request,'Error Validating form')
+           messages.error(request,'Error validating update form')
     else:
-        form = updateStudentForm(instance=student)
         profile_form =profileForm(instance=student_profile)
 
-    return render(request,'admin_temp/studentUpdate.html', {'form': form,'profile_form': profile_form})
+    return render(request,'admin_temp/studentUpdate.html', {'profile_form': profile_form})
 
 @login_required
 def facultyregister(request):
@@ -277,5 +310,43 @@ def studentregister(request):
         profile_form =profileForm()
 
     return render(request,'admin_temp/studentregister.html', {'form': form,'profile_form': profile_form})
+@login_required
+def studentChangePass(request,id):
+    user=Student.objects.get(id=id)
+    form = changePassByadmin(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            new_password = form.cleaned_data.get('new_password')
+            new_password_again = form.cleaned_data.get('new_password_again')
+            if new_password !=  new_password_again:  
+                messages.error(request,'Password1 and Password 2 doesnt match')
+                return redirect('studentChangePass')
+            elif  new_password ==  new_password_again:
+                user.set_password(new_password)
+                user.save()
+                return redirect('adminStudent')    
+            else:
+                return redirect('studentChangePass')
+        else:
+            messages.error(request,'error changing password please provide instructed credentials')
 
-
+    return render(request, 'admin_temp/studentChangePass.html', {'form': form})
+def facultyChangePass(request,id):
+    user=Faculty.objects.get(id=id)
+    form = changePassByadmin(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            new_password = form.cleaned_data.get('new_password')
+            new_password_again = form.cleaned_data.get('new_password_again')
+            if new_password !=  new_password_again:  
+                messages.error(request,'Password1 and Password 2 doesnt match')
+                return redirect('facultyChangePass')
+            elif  new_password ==  new_password_again:
+                user.set_password(new_password)
+                user.save()
+                return redirect('adminFaculty')    
+            else:
+                return redirect('facultyChangePass')
+        else:
+            messages.error(request,'error changing password please provide instructed credentials')
+    return render(request, 'admin_temp/facultyChangePass.html', {'form': form})

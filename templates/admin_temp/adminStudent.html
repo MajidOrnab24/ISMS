@@ -43,8 +43,13 @@
           <td>{{ user.semester }}</td>
           <td>{{ user.session_year}}</td>
           <td><img src="{{ user.image.url}}" alt="" height=100 width=100 /></td>
-          <td><a href="/deleteStudent/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this student?"> <button>Delete</button></a>
-            <a href="/studentUpdate/{{ user.email_id }}"> <button>Update</button></a>
+          <td>
+            <li style="padding-top: 5px;"><a href="/deleteStudent/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this student?"> <button class="action_button">Delete</button></a></li>
+            <li style="padding-top: 5px;"> <a href="/studentUpdate/{{ user.email_id }}"> <button class="action_button">Update</button></a></li>
+            <li style="padding-top: 5px;"><a href="/studentChangePass/{{ user.email_id }}"> <button class="action_button">Change Password</button></a></li>
+          </ul>
+            
+           
            </td>
         </tr>
       {% endfor %}
