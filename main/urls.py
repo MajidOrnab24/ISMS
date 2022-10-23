@@ -26,6 +26,7 @@ urlpatterns = [
     path('logError',views.logError, name='logError'),
     # student urls
     path('studentPage',student_view.studentPage, name='studentPage'),
+    path('changePasswordStudent',student_view.changePasswordStudent, name='changePasswordStudent'),
 
 
 

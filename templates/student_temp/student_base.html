@@ -10,7 +10,7 @@
     <!-- <link rel="stylesheet" href="css/style.css" /> -->
     <!-- Boxicons CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" >
-    {% block title %}{{ profile.name }}{% endblock %}
+    <title>{% block title %}{{profile.name}}{% endblock title %}</title>
     <!-- <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/> -->
     <link rel ="stylesheet" href="{% static '/css/student/student_base.css' %}">
 
@@ -77,7 +77,7 @@
         </li>
 
           <li>
-              <a href="#" class="button-categories-link" >
+              <a href="{% url 'changePasswordStudent'%}" class="button-categories-link" >
                   <span class="icon"><i class="fas fa-user-shield"></i></span>
                   <span class="item">Password change</span>
               </a>

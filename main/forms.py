@@ -3,6 +3,10 @@
 import email
 from django import forms
 from main.models import *
+from admin_app.forms import validate_passwords
+from admin_app.forms import ValidationError
+from admin_app.forms import validate
+
 
 
 
@@ -94,3 +98,26 @@ class signinformStaff(forms.Form):
     class Meta:
         model = UserAccount
         fields = ('email', 'password')
+
+class changePasswordForm(forms.Form):
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        )
+    )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        ),validators=[validate_passwords]
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        ),validators=[validate_passwords]
+    )

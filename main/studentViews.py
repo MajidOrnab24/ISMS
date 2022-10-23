@@ -19,3 +19,34 @@ import random
 def studentPage(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     return render(request,'student_temp/studentPage.html',{'profile':profile})
+def changePasswordStudent(request):
+    profile=StudentProfile.objects.get(email_id=request.user.id)
+    user=Student.objects.get(id=request.user.id)
+    print(user.password)
+    form = changePasswordForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            old_password = form.cleaned_data.get('old_password')
+            password1 = form.cleaned_data.get('password1')
+            password2 = form.cleaned_data.get('password2')
+            if password1 != password2 and  user.check_password(old_password):  
+                messages.error(request,'Password1 and Password 2 doesnt match')
+                return redirect('changePasswordStudent')
+            elif password1 == password2 and not user.check_password(old_password):
+                messages.error(request,'Old password wrong')
+                return redirect('changePasswordStudent')
+            elif password1 == old_password:
+                messages.error(request,'Old password and new password same')
+                return redirect('changePasswordStudent')
+            elif  password1 == password2 and  user.check_password(old_password):
+                user.set_password(password1)
+                user.save()
+                UserAccount = auth.authenticate(email=user.email, password=password1)
+                login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
+                return redirect('studentPage')    
+            else:
+                messages.error(request,'password not correct')
+                return redirect('changePasswordStudent')
+        else:
+            messages.error(request,'Error Validating form')
+    return render(request, 'student_temp/changePasswordStudent.html', {'form': form,'profile':profile})

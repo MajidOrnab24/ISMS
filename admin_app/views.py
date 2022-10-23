@@ -21,6 +21,8 @@ from main.forms import *
 from admin_app.forms import *
 import random
 from admin_app.filters import *
+from django.conf import settings
+from django.core.mail import send_mail
 
 
 # Admin views here.
@@ -156,7 +158,6 @@ def studentUpdate(request,id):
                 messages.error(request,'username or password not correct')
             return redirect('studentUpdate')
         else:
-           user.delete()
            messages.error(request,'Error Validating form')
     else:
         form = updateStudentForm(instance=student)
@@ -199,12 +200,16 @@ def facultyregister(request):
                  messages.error(request,'username or password not correct')
                  return redirect('facultyregister')
             elif  user is not None:
+                subject = 'Welcome to IUT '
+                message = f'Hi {profile.name}, You are now registered in ISMS as a faculty of {profile.department}. The student portal of IUT. Your password is {password}. Please change it immediately after receiving'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [user.email,]
+                send_mail( subject, message, email_from, recipient_list )
                 return redirect('adminFaculty')
             else:
                 messages.error(request,'username or password not correct')
             return redirect('facultyregister')
         else:
-            user.delete()
             messages.error(request,'Error validating registrartion please try again with correct value')
 
     else:
@@ -256,12 +261,16 @@ def studentregister(request):
                  messages.error(request,'username or password not correct')
                  return redirect('studentregister')
             elif  user is not None:
+                subject = 'Welcome to IUT '
+                message = f'Hi {profile.name}, You are now registered in ISMS as a student of {profile.department}. The student portal of IUT. Your password is {password}. Please change it immediately'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [user.email,]
+                send_mail( subject, message, email_from, recipient_list )
                 return redirect('adminStudent')
             else:
                 messages.error(request,'username or password not correct')
             return redirect('studentregister')
         else:
-           user.delete()
            messages.error(request,'Error validating registrartion please try again with correct value')
     else:
         form = registerStudent()

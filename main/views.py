@@ -146,40 +146,5 @@ def signinStaff(request):
             messages.error(request,'error validating form')
     return render(request, 'signinStaff.html', {'form': form})
 
-
-    
-# def signinStaffMed(request):
-#     curr_user=request.user
-#     if  request.user.is_authenticated:
-#         if curr_user.is_staff_med:
-#             return redirect('staffMedPage')
-#         elif curr_user.is_admin or curr_user.is_student or curr_user.is_faculty or curr_user.is_staff_lib :
-#              return redirect('logError')
-#     else:
-#         form = signinformStudent(request.POST or None)
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             email = form.cleaned_data.get('email')
-#             password = form.cleaned_data.get('password')
-#             UserAccount = auth.authenticate(email=email, password=password)
-
-
-#             if UserAccount is not None and not UserAccount.is_staff_med:
-#                 if UserAccount.is_admin:
-#                    types='Admin'
-#                 else:
-#                    types=UserAccount.type
-#                 messages.error(request,'Wrong user type Library Staff only. '+types.title()+' type not accepted')
-#                 return redirect('signinStaffMed')
-#             if  UserAccount is not None and  UserAccount.is_staff_med:
-#                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
-#                 return redirect('staffMedPage')
-                
-#             else:
-#                 messages.error(request,'username or password not correct')
-#                 return redirect('signinStaffMed')
-#         else:
-#             messages.error(request,'Error validating form')
-#     return render(request, 'signinStaffMed.html', {'form': form})
     
 
