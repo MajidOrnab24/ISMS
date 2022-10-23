@@ -13,4 +13,4 @@ admin.site.register(StudentProfile)
 admin.site.register(FacultyProfile)
 admin.site.register(DeptHeadFaculty)
 admin.site.register(StaffMedProfile)
-
+admin.site.register(StaffLibProfile)

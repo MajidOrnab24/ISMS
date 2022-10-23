@@ -157,3 +157,25 @@ class StaffMedProfile(models.Model):
     def create_med_staff_profile(sender, instance, created, **kwargs):
      if created:
         StaffMedProfile.objects.create(email=instance)
+
+class StaffLibProfile(models.Model):
+    name = models.CharField(max_length=256)
+    email = models.OneToOneField(StaffLib, on_delete=models.CASCADE, primary_key=True)
+    address = models.TextField()
+    designation = models.CharField(max_length=256)
+    phone =  models.CharField(max_length=15)
+    date_of_birth = models.DateField(max_length=10, null =True)
+    image = models.ImageField(upload_to=filepathStaff)
+    gender=models.CharField(max_length=30,choices=gender_choices,default='MALE')
+    duty = models.TextField()
+    
+    @property
+    def email_staff_lib(self):
+        return self.email.email
+        
+    def __str__(self):
+        return self.email.email
+    @receiver(post_save, sender=StaffLib)
+    def create_lib_staff_profile(sender, instance, created, **kwargs):
+     if created:
+        StaffLibProfile.objects.create(email=instance)

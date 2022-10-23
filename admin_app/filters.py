@@ -48,3 +48,18 @@ class StaffMedFilter(django_filters.FilterSet):
             },
 
         }
+
+class StaffLibFilter(django_filters.FilterSet):
+    class Meta:
+        model = StaffLibProfile
+        fields = {'name' :['exact'],'designation':['exact'] }
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+
+        }
