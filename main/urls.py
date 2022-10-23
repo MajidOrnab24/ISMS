@@ -80,5 +80,10 @@ urlpatterns = [
     path('facultyUpdate/<int:id>', admin_view.facultyUpdate, name='facultyUpdate'),
     path('studentChangePass/<int:id>', admin_view.studentChangePass, name='studentChangePass'),
     path('facultyChangePass/<int:id>', admin_view.facultyChangePass, name='facultyChangePass'),
+    path('staff_med_register',admin_view.staff_med_register,name='staff_med_register'),
+    path('adminStaff_med',admin_view.adminStaff_med,name='adminStaff_med'),
+    path('deleteStaffMed/<int:id>', admin_view.deleteStaffMed, name='deleteStaffMed'),
+    path('staff_medChangePass/<int:id>', admin_view.staff_medChangePass, name='staff_medChangePass'),
+     path('staff_medUpdate/<int:id>', admin_view.staff_medUpdate, name='staff_medUpdate'),
 
     ]

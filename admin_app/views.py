@@ -49,6 +49,15 @@ def deleteFaculty(request, id):
   faculty=Faculty.objects.get(id=id)
   faculty.delete()
   return redirect('adminFaculty')
+@login_required
+def deleteStaffMed(request, id):
+  staff_med_profile=StaffMedProfile.objects.get(email_id=id)
+  if  staff_med_profile.image:
+         staff_med_profile.image.delete()
+  staff_med_profile.delete()
+  staff_med=StaffMed.objects.get(id=id)
+  staff_med.delete()
+  return redirect('adminStaff_med')
 @login_required  
 def adminStudent(request):
     context={}
@@ -350,3 +359,127 @@ def facultyChangePass(request,id):
         else:
             messages.error(request,'error changing password please provide instructed credentials')
     return render(request, 'admin_temp/facultyChangePass.html', {'form': form})
+
+@login_required
+def staff_med_register(request):
+    if request.method == 'POST':
+        form = registerStaffMed(request.POST)
+        profile_form =staff_med_profileform(request.POST, request.FILES)
+        if form.is_valid() and profile_form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            name=profile_form.cleaned_data.get('name')
+            address=profile_form.cleaned_data.get('address')
+            phone=profile_form.cleaned_data.get('phone')
+            image=profile_form.cleaned_data.get('image')
+            gender=profile_form.cleaned_data.get('gender')
+            date_of_birth=profile_form.cleaned_data.get('date_of_birth')
+            designation=profile_form.cleaned_data.get('designation')
+            duty =profile_form.cleaned_data.get('duty')
+            user = form.save(commit=False)
+            user.password = make_password(password)
+            user.save()
+            profile=StaffMedProfile.objects.get(email=user.id)
+            profile.name=name
+            profile.address=address
+            profile.phone=phone
+            profile.image=image
+            profile.gender=gender
+            profile.date_of_birth=date_of_birth
+            profile.designation= designation
+            profile.duty=duty
+            profile.save()
+            if user is None:
+                 messages.error(request,'username or password not correct')
+                 return redirect('staff_med_register')
+            elif  user is not None:
+                subject = 'Welcome to IUT '
+                message = f'Hi {profile.name}, You are now registered in ISMS as a staff of medical centre in ISMS. The student portal of IUT. Your password is {password}. Please change it immediately after receiving'
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [user.email,]
+                send_mail( subject, message, email_from, recipient_list )
+                return redirect('adminMed_staff')
+            else:
+                messages.error(request,'username or password not correct')
+            return redirect('staff_med_register')
+        else:
+            messages.error(request,'Error validating registrartion please try again with correct value')
+
+    else:
+        form = registerStaffMed()
+        profile_form =staff_med_profileform()
+    return render(request,'admin_temp/staff_med_register.html', {'form': form,'profile_form': profile_form})
+@login_required  
+def adminStaff_med(request):
+    context={}
+    profiles=StaffMedFilter(request.GET,queryset=StaffMedProfile.objects.all())
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
+
+    context['profile_page_obj']=profile_page_obj
+    return render(request,'admin_temp/adminStaff_med.html',context=context )
+
+def staff_medChangePass(request,id):
+    user=StaffMed.objects.get(id=id)
+    form = changePassByadmin(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            new_password = form.cleaned_data.get('new_password')
+            new_password_again = form.cleaned_data.get('new_password_again')
+            if new_password !=  new_password_again:  
+                messages.error(request,'Password1 and Password 2 doesnt match')
+                return redirect('staff_medChangePass')
+            elif  new_password ==  new_password_again:
+                user.set_password(new_password)
+                user.save()
+                return redirect('adminStaff_med')    
+            else:
+                return redirect('staff_medChangePass')
+        else:
+            messages.error(request,'error changing password please provide instructed credentials')
+    return render(request, 'admin_temp/staff_medChangePass.html', {'form': form})
+@login_required
+def staff_medUpdate(request,id):
+    staff_med_profile=StaffMedProfile.objects.get(email_id=id)
+    if request.method == 'POST':
+        profile_form = staff_med_profileform(request.POST, request.FILES,instance=staff_med_profile)
+        if  profile_form.is_valid():
+            name=profile_form.cleaned_data.get('name')
+            address=profile_form.cleaned_data.get('address')
+            phone=profile_form.cleaned_data.get('phone')
+            image=profile_form.cleaned_data.get('image')
+            gender=profile_form.cleaned_data.get('gender')
+            date_of_birth=profile_form.cleaned_data.get('date_of_birth')
+            designation=profile_form.cleaned_data.get('designation')
+            duty =profile_form.cleaned_data.get('duty')
+
+            profile=StaffMedProfile.objects.get(email=id)
+            profile.name=name
+            profile.address=address
+            profile.phone=phone
+
+            if(profile.image!=image):
+                profile.image.delete()
+
+            profile.image=image
+
+            profile.gender=gender
+            profile.date_of_birth=date_of_birth
+            profile.designation= designation
+            profile.duty=duty
+
+            profile.save()
+
+            if  profile is not None:
+                return redirect('adminStaff_med')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('staff_medUpdate')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        profile_form = staff_med_profileform(instance=staff_med_profile)
+
+    return render(request,'admin_temp/staff_medUpdate.html', {'profile_form': profile_form})
