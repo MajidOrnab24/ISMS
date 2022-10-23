@@ -42,8 +42,12 @@
           <td style="height: 100px;">{{ user.education}}</td>
           <td><img src="{{ user.image.url}}" alt="" height=100 width=100 /></td>
 
-          <td><a href="/deleteFaculty/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this student?"> <button>Delete</button></a>
-            <a href="/facultyUpdate/{{ user.email_id }}"> <button>Update</button></a>
+          <td>
+           <ul>
+            <li style="padding-top: 5px;"><a href="/deleteFaculty/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this faculty?"> <button class="action_button">Delete</button></a></li>
+            <li style="padding-top: 5px;"><a href="/facultyUpdate/{{ user.email_id }}"> <button class="action_button">Update</button></a></li>
+            <li style="padding-top: 5px;"><a href="/facultyChangePass/{{ user.email_id }}"> <button class="action_button">Change Password</button></a></li>
+          </ul>
            </td>
         </tr>
       {% endfor %}

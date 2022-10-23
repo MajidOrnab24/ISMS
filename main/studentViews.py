@@ -22,7 +22,6 @@ def studentPage(request):
 def changePasswordStudent(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     user=Student.objects.get(id=request.user.id)
-    print(user.password)
     form = changePasswordForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():

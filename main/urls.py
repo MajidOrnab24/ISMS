@@ -77,5 +77,8 @@ urlpatterns = [
     path('facultyregister',admin_view.facultyregister,name='facultyregister'),
     path('adminFaculty',admin_view.adminFaculty,name='adminFaculty'),
     path('deleteFaculty/<int:id>', admin_view.deleteFaculty, name='deleteFaculty'),
+    path('facultyUpdate/<int:id>', admin_view.facultyUpdate, name='facultyUpdate'),
+    path('studentChangePass/<int:id>', admin_view.studentChangePass, name='studentChangePass'),
+    path('facultyChangePass/<int:id>', admin_view.facultyChangePass, name='facultyChangePass'),
 
     ]
