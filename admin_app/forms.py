@@ -191,3 +191,32 @@ class staff_med_profileform(forms.ModelForm):
             return image
         else:
             raise ValidationError("Couldn't read uploaded image")
+
+class registerStaffLib(forms.ModelForm):
+    email = forms.EmailField(widget= forms.TextInput(attrs={"class": "form-control",'size': '40','title': 'Your name'} ),validators=[validate_emails])
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control",'size': '40' }),validators=[validate_passwords])
+    class Meta:
+        model = StaffLib
+        fields = ('email', 'password')
+
+class staff_lib_profileform(forms.ModelForm):
+     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type' :'date','max':datetime.datetime.now().date(),"class": "form-control"}))
+     name=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+     designation=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+     address=forms.CharField(widget=forms.Textarea(attrs={"class": "form-control",'size': '40' }))
+     duty=forms.CharField(widget=forms.Textarea(attrs={"class": "form-control",'size': '40' }))
+     phone=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+     image=forms.ImageField(widget=forms. ClearableFileInput(attrs={"class": "form-control",'size': '40' }))
+     gender=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=gender_choices)
+
+     class Meta:
+        model=StaffLibProfile
+        fields =('name','address','designation','gender','phone','image','date_of_birth','duty')
+     def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+        if image:
+            if image.size > 2*1024*1024:
+                raise ValidationError("Image file too large Please Upload less than 2 mb")
+            return image
+        else:
+            raise ValidationError("Couldn't read uploaded image")

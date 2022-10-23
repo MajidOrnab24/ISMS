@@ -8,6 +8,7 @@ from admin_app import views as admin_view
 urlpatterns = [
     path('',views.home, name='home'),
     path('general login',views.general_login, name='general_login'),
+    
     # Admission urls
     path('admission',admissionView.admission, name='admission'),
     path('about',admissionView.about, name='about'),
@@ -24,6 +25,8 @@ urlpatterns = [
     path('signinStaff',views.signinStaff, name='signinStaff'),
     path('logout',views.logout_request, name='logout'),
     path('logError',views.logError, name='logError'),
+
+
     # student urls
     path('studentPage',student_view.studentPage, name='studentPage'),
     path('changePasswordStudent',student_view.changePasswordStudent, name='changePasswordStudent'),
@@ -70,20 +73,33 @@ urlpatterns = [
 
     # admin urls 
     path('adminHome',admin_view.adminHome,name='adminHome'),
+
+    # Admin Students urls
     path('adminStudent',admin_view.adminStudent,name='adminStudent'),
     path('studentregister',admin_view.studentregister,name='studentregister'),
     path('deleteStudent/<int:id>', admin_view.deleteStudent, name='deleteStudent'),
     path('studentUpdate/<int:id>', admin_view.studentUpdate, name='studentUpdate'),
-    path('facultyregister',admin_view.facultyregister,name='facultyregister'),
+    path('studentChangePass/<int:id>', admin_view.studentChangePass, name='studentChangePass'),
+
+    # Admin Faculty urls
     path('adminFaculty',admin_view.adminFaculty,name='adminFaculty'),
+    path('facultyregister',admin_view.facultyregister,name='facultyregister'),
     path('deleteFaculty/<int:id>', admin_view.deleteFaculty, name='deleteFaculty'),
     path('facultyUpdate/<int:id>', admin_view.facultyUpdate, name='facultyUpdate'),
-    path('studentChangePass/<int:id>', admin_view.studentChangePass, name='studentChangePass'),
     path('facultyChangePass/<int:id>', admin_view.facultyChangePass, name='facultyChangePass'),
-    path('staff_med_register',admin_view.staff_med_register,name='staff_med_register'),
+
+    # Admin Medical Staff urls
     path('adminStaff_med',admin_view.adminStaff_med,name='adminStaff_med'),
+    path('staff_med_register',admin_view.staff_med_register,name='staff_med_register'),
     path('deleteStaffMed/<int:id>', admin_view.deleteStaffMed, name='deleteStaffMed'),
     path('staff_medChangePass/<int:id>', admin_view.staff_medChangePass, name='staff_medChangePass'),
-     path('staff_medUpdate/<int:id>', admin_view.staff_medUpdate, name='staff_medUpdate'),
+    path('staff_medUpdate/<int:id>', admin_view.staff_medUpdate, name='staff_medUpdate'),
+
+    # Admin Library Staff urls
+    path('adminStaff_lib',admin_view.adminStaff_lib,name='adminStaff_lib'),
+    path('staff_lib_register',admin_view.staff_lib_register,name='staff_lib_register'),
+    path('staff_libUpdate/<int:id>', admin_view.staff_libUpdate, name='staff_libUpdate'),
+    path('deleteStaffLib/<int:id>', admin_view.deleteStaffLib, name='deleteStaffLib'),
+    path('staff_libChangePass/<int:id>', admin_view.staff_libChangePass, name='staff_libChangePass'),
 
     ]
