@@ -10,18 +10,30 @@
 .admisn_body{
     margin-top:-10px;
     background: url("/static/images/admissionpage.jpg");
+    width:100%;
     height: 700px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     position:relative;
 }
+.back_btn{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+}
+.back_btn a{
+    padding:15px 80px 15px 80px;
+}
 .admisn_menu{
     position:absolute;
+    left:0px;
+    bottom:0px;
 }
 .admisn_menu ul{
-    margin-top:362px;
+    margin-top:425px;
     padding-left:0px;
+    margin-bottom:0px;
 }
 .admisn_menu ul li{
     list-style:none;
