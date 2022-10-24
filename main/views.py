@@ -7,6 +7,16 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.urls import is_valid_path
 from main.models import UserAccount
+from admin_app.models import *
+import email
+from email.message import EmailMessage
+from pickle import TRUE
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User, auth
+
+from main.admision_models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse
@@ -14,8 +24,27 @@ from django.contrib.auth.decorators import login_required
 from itertools import chain
 from main.forms import *
 import random
-from admin_app.models import *
 
+def admission(request):
+    return render(request,'admission_temp/admission.html')
+
+def roadMap(request):
+    qry = RoadMap.objects.all()
+    context = {
+        'query':qry
+    }
+    return render(request,'admission_temp/roadmap.html',context)
+def about(request):
+    return render(request,'admission_temp/about.html')
+def faq(request):
+    forms = Faq.objects.all()
+    context = {
+        'forms': forms
+    }
+    return render(request,'admission_temp/faq.html',context)
+def questionBank(request):
+    query = QuestionBank.objects.all()
+    return render(request,'admission_temp/questionBank.html',{'forms':query})
 
 
 def logError(request):

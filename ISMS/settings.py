@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'main',
-    'admin_app'
+    'admin_app',
+    'widget_tweaks',
+    'ckeditor',
+
 ]
 
 MIDDLEWARE = [
@@ -82,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'isms', 
         'USER': 'root',
-        'PASSWORD': 'majid205',
+        'PASSWORD': '12345',
         'HOST': 'localhost', 
         'PORT': '3306',
     }
@@ -113,7 +116,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'a.isms.portal@gmail.com'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_PASSWORD = 'rvhwzqxhyyfhwhmv'
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 

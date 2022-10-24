@@ -2,19 +2,25 @@ from unicodedata import name
 from django.urls import path
 from . import views
 from main import studentViews as student_view
-from main import admission_views as admissionView
+
+from unicodedata import name
+from django.urls import path
+from . import views
 from admin_app import views as admin_view
 
 urlpatterns = [
-    path('',views.home, name='home'),
+        path('',views.home, name='home'),
     path('general login',views.general_login, name='general_login'),
-    
-    # Admission urls
-    path('admission',admissionView.admission, name='admission'),
-    path('about',admissionView.about, name='about'),
-    path('faq',admissionView.faq, name='faq'),
-    path('questionBank',admissionView.questionBank, name='questionBank'),
-    path('roadMap',admissionView.roadMap, name='roadMap'),
+    path('admission',views.admission, name='admission'),
+    path('about',views.about, name='about'),
+    path('faq',views.faq, name='faq'),
+    path('questionBank',views.questionBank, name='questionBank'),
+    path('roadMap',views.roadMap, name='roadMap'),
+
+    # path('about',admissionView.about, name='about'),
+    # path('faq',admissionView.faq, name='faq'),
+    # path('questionBank',admissionView.questionBank, name='questionBank'),
+    # path('roadMap',admissionView.roadMap, name='roadMap'),
 
 
 
