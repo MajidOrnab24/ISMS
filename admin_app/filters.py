@@ -2,6 +2,7 @@ from dataclasses import field
 import django_filters
 from django.db import models
 from admin_app.models import *
+from main.admision_models import *
 
 
 class StudentFilter(django_filters.FilterSet):
@@ -56,6 +57,46 @@ class StaffLibFilter(django_filters.FilterSet):
 
         filter_overrides = {
             models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+
+        }
+class RoadmapFilter(django_filters.FilterSet):
+    class Meta:
+        model = RoadMap
+        fields = {'event' :['exact'],'date':['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+             models.TextField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+
+        }
+class FaqFilter(django_filters.FilterSet):
+    class Meta:
+        model = Faq
+        fields = {'question' :['exact'],'answer':['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+             RichTextField: {
                 'filter_class': django_filters.CharFilter,
                 'extra': lambda f: {
                     'lookup_expr': 'icontains',

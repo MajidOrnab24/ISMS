@@ -9,18 +9,28 @@ from . import views
 from admin_app import views as admin_view
 
 urlpatterns = [
-        path('',views.home, name='home'),
+    path('',views.home, name='home'),
     path('general login',views.general_login, name='general_login'),
+
+
+    # Admission urls
     path('admission',views.admission, name='admission'),
     path('about',views.about, name='about'),
     path('faq',views.faq, name='faq'),
     path('questionBank',views.questionBank, name='questionBank'),
     path('roadMap',views.roadMap, name='roadMap'),
 
-    # path('about',admissionView.about, name='about'),
-    # path('faq',admissionView.faq, name='faq'),
-    # path('questionBank',admissionView.questionBank, name='questionBank'),
-    # path('roadMap',admissionView.roadMap, name='roadMap'),
+
+    # Admission urls of admin
+    path('admin_roadmap',admin_view.admin_roadmap,name='admin_roadmap'),
+    path('roadmap_add',admin_view.roadmap_add,name='roadmap_add'),
+    path('delete_roadmap/<int:id>', admin_view.delete_roadmap, name='delete_roadmap'),
+    path('update_roadmap/<int:id>', admin_view.update_roadmap, name='update_roadmap'),
+    path('admin_faq',admin_view.admin_faq,name='admin_faq'),
+    path('faq_add',admin_view.faq_add,name='faq_add'),
+    path('delete_faq/<int:id>', admin_view.delete_faq, name='delete_faq'),
+    path('update_faq/<int:id>', admin_view.update_faq, name='update_faq'),
+
 
 
 

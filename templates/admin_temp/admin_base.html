@@ -56,6 +56,12 @@
                   <span class="icon"><i class="fas fa-chart-line"></i></span>
                   <span class="item">Admission</span>
               </a>
+              <ol class="sub-menu">
+                <li class="menu-item"><a href="{% url 'admin_roadmap'%}"><span class="icon"><i class="far fa-calendar-alt"></i></span>
+                  <span class="item">Roadmap</span></a></li>
+                <li class="menu-item"><a href="{% url 'admin_faq'%}"><span class="icon"><i class="far fa-question-circle"></i></span>
+                  <span class="item">FAQ</span></a></li>
+            </ol>
           </li>
           <li>
               <a href="#" class="button-categories-link" >
@@ -63,12 +69,7 @@
                   <span class="item">Password change</span>
               </a>
           </li>
-          <li>
-              <a href="#" class="button-categories-link">
-                  <span class="icon"><i class="fas fa-cog"></i></span>
-                  <span class="item">Settings</span>
-              </a>
-          </li>
+
           <li style="padding-top: 50px;">
             <a href="{% url 'logout' %}" class="button-categories-link">
                 <span class="icon"><i class="fas fa-door-open"></i></span>

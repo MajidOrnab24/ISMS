@@ -641,5 +641,135 @@ def staff_libChangePass(request,id):
             messages.error(request,'error changing password please provide instructed credentials')
     return render(request, 'admin_temp/staff_libChangePass.html', {'form': form})
 
+# Admission info edit views
 
+@login_required
+def admin_roadmap(request):
+    context={}
+    profiles=RoadmapFilter(request.GET,queryset=RoadMap.objects.all())
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
 
+    context['profile_page_obj']=profile_page_obj
+    return render(request,'admission_temp/admin_roadmap.html',context=context )
+
+@login_required
+def roadmap_add(request):
+    if request.method == 'POST':
+        form = roadMapForm(request.POST)
+        if form.is_valid() :
+            event = form.cleaned_data.get('event')
+            date = form.cleaned_data.get('date')
+            time = form.cleaned_data.get('time')
+            user = form.save(commit=False)
+            user.save()
+            if user is None:
+                 messages.error(request,'roadmap not added')
+                 return redirect('roadmap_add')
+            elif  user is not None:
+                return redirect('admin_roadmap')
+            else:
+                messages.error(request,'Info not correct')
+            return redirect('roadmap_add')
+        else:
+           messages.error(request,'Error validating registrartion please try again with correct value')
+    else:
+        form = roadMapForm()
+
+    return render(request,'admission_temp/roadmap_add.html', {'form': form}) 
+
+@login_required
+def delete_roadmap(request, id):
+  roadmap=RoadMap.objects.get(id=id)
+  roadmap.delete()
+  return redirect('admin_roadmap')
+@login_required
+def update_roadmap(request, id):
+    roadmap=RoadMap.objects.get(id=id)
+    if request.method == 'POST':
+        form = roadMapForm(request.POST,instance=roadmap)
+        if form.is_valid():
+            event = form.cleaned_data.get('event')
+            date = form.cleaned_data.get('date')
+            time = form.cleaned_data.get('time')
+            object=RoadMap.objects.get(id=id)
+            object.event=event
+            object.date=date
+            object.time=time
+            object.save()
+            if  object is not None:
+                return redirect('admin_roadmap')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('update_roadmap')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        form = roadMapForm(instance=roadmap)
+
+    return render(request,'admission_temp/update_roadmap.html', {'form': form})
+
+@login_required
+def admin_faq(request):
+    context={}
+    profiles=FaqFilter(request.GET,queryset=Faq.objects.all())
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
+
+    context['profile_page_obj']=profile_page_obj
+    return render(request,'admission_temp/admin_faq.html',context=context )
+@login_required
+def delete_faq(request, id):
+  faq=Faq.objects.get(id=id)
+  faq.delete()
+  return redirect('admin_faq')
+
+@login_required
+def faq_add(request):
+    if request.method == 'POST':
+        form = faqForm(request.POST)
+        if form.is_valid() :
+            user = form.save(commit=False)
+            user.save()
+            if user is None:
+                 messages.error(request,'faq not added')
+                 return redirect('faq_add')
+            elif  user is not None:
+                return redirect('admin_faq')
+            else:
+                messages.error(request,'Info not correct')
+            return redirect('faq_add')
+        else:
+           messages.error(request,'Error validating registrartion please try again with correct value')
+    else:
+        form = faqForm()
+
+    return render(request,'admission_temp/faq_add.html', {'form': form}) 
+
+@login_required
+def update_faq(request, id):
+    faq=Faq.objects.get(id=id)
+    if request.method == 'POST':
+        form = faqForm(request.POST,instance=faq)
+        if form.is_valid():
+            question = form.cleaned_data.get('question')
+            answer = form.cleaned_data.get('answer')
+            object=Faq.objects.get(id=id)
+            object.question=question
+            object.answer=answer
+            object.save()
+            if  object is not None:
+                return redirect('admin_faq')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('update_faq')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        form = faqForm(instance=faq)
+
+    return render(request,'admission_temp/update_faq.html', {'form': form})
