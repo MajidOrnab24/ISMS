@@ -1,33 +1,8 @@
 {% extends "admin_temp/admin_base.html" %}
+{% load static %}
 {% block title %}Update Staff{% endblock %}
 {%block content%}
-
-<style>
-  .form-control{
- margin: 10px 0;
- position: relative;
-border: 2px solid #adadad;
-border-radius: 5px;
-
-  }
-  .button_register__submit{
-  width: 30%;
-  height: 50px;
-  border: 1px solid;
-  margin-left: 10%;
-  background: #5043dc;
-  border-radius: 10px;
-  font-size: 18px;
-  color: #e9f4fb;
-  font-weight: 700;
-  cursor: pointer;
-  outline: none;
-}
-.button_register__submit:hover{
-  border-color: #102297;
-  transition: .5s;
-}
-</style>
+<link rel ="stylesheet" href="{% static '/css/admin/register_update.css' %}">
 <div class="container" style="padding: 10px;">
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}

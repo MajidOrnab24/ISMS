@@ -71,21 +71,21 @@ def changePasswordAdmin(request):
     if request.method == 'POST':
         if form.is_valid():
             old_password = form.cleaned_data.get('old_password')
-            password1 = form.cleaned_data.get('password1')
-            password2 = form.cleaned_data.get('password2')
-            if password1 != password2 and  user.check_password(old_password):  
-                messages.error(request,'Password1 and Password 2 doesnt match')
+            new_password = form.cleaned_data.get('new_password')
+            new_password_again = form.cleaned_data.get('new_password_again')
+            if new_password != new_password_again and  user.check_password(old_password):  
+                messages.error(request,'Two password do not match')
                 return redirect('changePasswordAdmin')
-            elif password1 == password2 and not user.check_password(old_password):
+            elif new_password == new_password_again and not user.check_password(old_password):
                 messages.error(request,'Old password wrong')
                 return redirect('changePasswordAdmin')
-            elif password1 == old_password:
+            elif new_password == old_password:
                 messages.error(request,'Old password and new password same')
                 return redirect('changePasswordAdmin')
-            elif  password1 == password2 and  user.check_password(old_password):
-                user.set_password(password1)
+            elif  new_password == new_password_again and  user.check_password(old_password):
+                user.set_password(new_password)
                 user.save()
-                UserAccount = auth.authenticate(email=user.email, password=password1)
+                UserAccount = auth.authenticate(email=user.email, password=new_password)
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
                 return redirect('adminHome')    
             else:

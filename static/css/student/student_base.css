@@ -11,7 +11,7 @@
 }
 
 body{
-    background: #f5f6fa;
+    background-color:  rgb(251, 251, 251);
 }
 
 .wrapper .sidebar{
@@ -49,7 +49,6 @@ body{
 .wrapper .sidebar ul li a{
     display: block;
     padding: 13px 30px;
-    /* background:#9693be; */
     border-bottom: 1px solid #3F3C67;
     color: rgb(241, 237, 237);
     font-size: 16px;
@@ -91,7 +90,7 @@ body{
 
 
 .wrapper .section .top_navbar .hamburger button{
-      background-color: #b0bdeb; /* Green */
+      background-color: #b0bdeb;
                   border: none;
                   color: white;
                   padding: 5px 22px;
@@ -116,9 +115,7 @@ body.active .wrapper .section{
 .main{
     margin-left:250px;
     margin-top: 0px;
-    height: 695px;
-    width: 83.7%;
     padding-top: 20px;
     padding-left: 30px;
-    background-color: #d1d3db;
-}
+} 
+
