@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Admin Panel{% endblock title %}</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" >
     <link rel ="stylesheet" href="{% static '/css/admin/admin_base.css' %}">
 
@@ -64,7 +65,7 @@
             </ol>
           </li>
           <li>
-              <a href="#" class="button-categories-link" >
+              <a href="{%url 'changePasswordAdmin'%}" class="button-categories-link" >
                   <span class="icon"><i class="fas fa-user-shield"></i></span>
                   <span class="item">Password change</span>
               </a>

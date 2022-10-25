@@ -89,6 +89,7 @@ urlpatterns = [
 
     # admin urls 
     path('adminHome',admin_view.adminHome,name='adminHome'),
+     path('changePasswordAdmin',admin_view.changePasswordAdmin, name='changePasswordAdmin'),
 
     # Admin Students urls
     path('adminStudent',admin_view.adminStudent,name='adminStudent'),
