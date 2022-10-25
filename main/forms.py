@@ -107,14 +107,14 @@ class changePasswordForm(forms.Form):
             }
         )
     )
-    password1 = forms.CharField(
+    new_password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-control"
             }
         ),validators=[validate_passwords]
     )
-    password2 = forms.CharField(
+    new_password_again = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-control"

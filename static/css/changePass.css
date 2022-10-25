@@ -1,0 +1,40 @@
+.form-control{
+    margin: 10px 0;
+    position: relative;
+   border: 2px solid #adadad;
+   border-radius: 5px;
+   
+     }
+     .button_register__submit{
+     width: 15%;
+     height: 35px;
+     border: 1px solid;
+     margin-left: 185px;
+     margin-top: 50px;
+     background: #5043dc;
+     border-radius: 10px;
+     font-size: 15px;
+     color: #e9f4fb;
+     font-weight: 700;
+     cursor: pointer;
+     outline: none;
+   }
+   .button_register__submit:hover{
+     border-color: #102297;
+     transition: .5s;
+   }
+   label {
+    display: inline-block;
+    width: 180px;
+     color: #000000; 
+  }
+  input {
+    padding: 5px 10px;
+    box-shadow: 0 0 0 .4px rgba(122, 124, 130, 0.8);
+    size: 40px;
+  }
+ input:focus {
+   border-color: rgb(27, 50, 218);
+   box-shadow: 0 0 0 2px rgba(18, 82, 219, 0.8);
+   outline: 2px solid transparent;
+}
