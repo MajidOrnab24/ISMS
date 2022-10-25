@@ -66,7 +66,33 @@ body{
     background:white;
     border-right: 2px solid #3F3C67;
 }
+.wrapper .sidebar ul :hover .sub-menu{
+    display: block;
 
+}
+.wrapper .sidebar ul li .sub-menu{
+    display: none;
+}
+
+
+.wrapper .sidebar ul li .sub-menu a{
+    font-size: .9em;
+    border-bottom: 1px solid #3F3C67;
+    color: rgb(241, 237, 237);
+        border-left: 3em solid  #3F3C67;
+        padding: .75em;
+
+    
+}
+.wrapper .sidebar ul li .sub-menu a:hover {
+    color: #3F3C67;
+    background:white;
+}
+.wrapper .sidebar ul li ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
 .wrapper .sidebar ul li a:hover .icon{
     color:#3F3C67;
 }
@@ -91,7 +117,7 @@ body{
 
 
 .wrapper .section .top_navbar .hamburger button{
-      background-color: #b0bdeb; /* Green */
+      background-color: #b0bdeb; 
                   border: none;
                   color: white;
                   padding: 5px 22px;
