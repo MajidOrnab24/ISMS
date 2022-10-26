@@ -1,0 +1,148 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+*{
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body{
+    background-color:  rgb(251, 251, 251);
+}
+
+.wrapper .sidebar{
+    background: #3F3C67;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    padding: 20px 0;
+    transition: all 0.5s ease;
+}
+.wrapper .sidebar .profile{
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.wrapper .sidebar .profile img{
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+.wrapper .sidebar .profile h4{
+    color: #ffffff;
+    margin: 10px 0 5px;
+}
+
+.wrapper .sidebar .profile p{
+    color: rgb(206, 240, 253);
+    font-size: 14px;
+}
+.wrapper .sidebar ul li a{
+    display: block;
+    padding: 13px 30px;
+    border-bottom: 1px solid #3F3C67;
+    color: rgb(241, 237, 237);
+    font-size: 16px;
+    position: relative;
+}
+
+.wrapper .sidebar ul li a .icon{
+    color: #dee4ec;
+    width: 30px;
+    display: inline-block;
+}
+.wrapper .sidebar ul li a:hover{
+    color: #3F3C67;
+    background:white;
+    border-right: 2px solid #3F3C67;
+}
+
+.wrapper .sidebar ul li a:hover .icon{
+    color:#3F3C67;
+}
+.wrapper .sidebar ul :hover .sub-menu{
+    display: block;
+
+}
+.wrapper .sidebar ul li .sub-menu{
+    display: none;
+}
+
+
+.wrapper .sidebar ul li .sub-menu a{
+    font-size: .9em;
+    border-bottom: 1px solid #3F3C67;
+    color: rgb(241, 237, 237);
+        border-left: 3em solid  #3F3C67;
+        padding: .75em;
+
+    
+}
+.wrapper .sidebar ul li .sub-menu a:hover {
+    color: #3F3C67;
+    background:white;
+}
+.wrapper .sidebar ul li ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper .sidebar ul li a:hover:before{
+    display: block;
+}
+.wrapper .section{
+    width: calc(100% - 250px);
+    margin-left: 250px;
+    transition: all 0.5s ease;
+}
+
+.wrapper .section .top_navbar{
+    background: #3F3C67;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 0px;
+
+}
+
+
+.wrapper .section .top_navbar .hamburger button{
+      background-color: #b0bdeb;
+                  border: none;
+                  color: white;
+                  padding: 5px 22px;
+                  text-align: center;
+                  text-decoration: none;
+                  display: inline-block;
+                  font-size: 30px;
+}
+
+.wrapper .section .top_navbar .hamburger button:hover{
+    color: #3F3C67;
+}
+body.active .wrapper .sidebar{
+    left: -250px;
+}
+
+body.active .wrapper .section{
+    margin-left: 0;
+    width: 100%;
+}
+
+.main{
+    margin-left:250px;
+    margin-top: 0px;
+    padding-top: 20px;
+    padding-left: 30px;
+} 
+

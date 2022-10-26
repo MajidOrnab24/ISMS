@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" >
+    <title>{% block title %}{{profile.name}}{% endblock title %}</title>
+    <link rel ="stylesheet" href="{% static '/css/staff_lib/staff_lib_base.css' %}">
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+         <div class="profile">
+          <img src="{{profile.image.url}}" alt="profile_picture">
+          <h4>{{user}}</h4>
+          <p>{{profile.designation}}</p>
+        </div>
+        <ul>
+          <li>
+              <a href="{%url 'staffLibPage'%}"  class="button-categories-link"> 
+                  <span class="icon"><i class="fas fa-home"></i></span>
+                  <span class="item">Home</span>
+              </a>
+          </li>
+          <li>
+            <a href="#" class="button-categories-link">
+                <span class="icon"><i class="fas fa-user-friends"></i></span>
+                <span class="item">New Arrivals</span>
+            </a>
+        </li>
+          <li>
+              <a href="#" class="button-categories-link">
+                  <span class="icon"><i class="fas fa-user-friends"></i></span>
+                  <span class="item">Students</span>
+              </a>
+          </li>
+          <li>
+            <a href="#" class="button-categories-link">
+                <span class="icon"><i class="fas fa-user-friends"></i></span>
+                <span class="item">Books</span>
+            </a>
+        </li>
+
+          <li>
+            <a href="#" class="button-categories-link">
+                <span class="icon"><i class=" fas fa-chalkboard-teacher"></i></span>
+                <span class="item">Question Bank</span>
+            </a>
+            <ol class="sub-menu">
+              <li class="menu-item"><a href="#"><span class="icon"><i class="far fa-calendar-alt"></i></span>
+                <span class="item">Students</span></a></li>
+              <li class="menu-item"><a href="#"><span class="icon"><i class="far fa-question-circle"></i></span>
+                <span class="item">Admission</span></a></li>
+          </ol>
+        </li>
+
+          <li>
+              <a href="{% url 'changePasswordStaff_lib'%}" class="button-categories-link" >
+                  <span class="icon"><i class="fas fa-user-shield"></i></span>
+                  <span class="item">Password change</span>
+              </a>
+          </li>
+          <li style="margin-top: 50px;">
+            <a href="{% url 'logout' %}" class="button-categories-link">
+                <span class="icon"><i class="fas fa-door-open"></i></span>
+                <span class="item">Logout</span>
+            </a>
+        </li>
+      </ul>
+
+          <!--menu item-->
+
+      </div>
+      <div class="section">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <!-- <a href="#"> -->
+                  <button>
+                    <i class="fas fa-bars fa-1.5x"></i>
+                  </button>
+                    
+                <!-- </a> -->
+            </div>
+            <div class="studentPanel" style="padding-left: 400px;">
+              <h1 style="color: white;">Library Staff Panel</h1>
+            </div>
+        </div>
+
+      </div>
+
+  </div>
+
+
+
+
+    <div id="content" name ="content" class="main">
+      {%block content%}
+      {%endblock%}
+    </div>
+    <script>
+      var hamburger = document.querySelector(".hamburger");
+       hamburger.addEventListener("click", function(){
+        document.querySelector("body").classList.toggle("active");
+    });
+    </script>
+
+  </body>
+</html>
