@@ -2,6 +2,9 @@ from unicodedata import name
 from django.urls import path
 from . import views
 from main import studentViews as student_view
+from main import facultyViews as faculty_view
+from main import staff_medViews as staff_med_view
+from main import staff_libViews as staff_lib_view
 
 from unicodedata import name
 from django.urls import path
@@ -57,7 +60,8 @@ urlpatterns = [
 
 
     # faculty urls
-    path('facultyPage',views.facultyPage, name='facultyPage'),
+    path('facultyPage',faculty_view.facultyPage, name='facultyPage'),
+    path('changePasswordFaculty',faculty_view.changePasswordFaculty, name='changePasswordFaculty'),
 
 
 
@@ -69,7 +73,8 @@ urlpatterns = [
 
 
     # Med staff urls
-    path('staffMedPage',views.staffMedPage, name='staffMedPage'),
+    path('staffMedPage',staff_med_view.staffMedPage, name='staffMedPage'),
+    path('changePasswordStaff_med',staff_med_view.changePasswordStaff_med, name='changePasswordStaff_med'),
 
 
 
@@ -79,8 +84,8 @@ urlpatterns = [
 
 
     # Lib staff urls
-    path('staffLibPage',views.staffLibPage, name='staffLibPage'),
-
+    path('staffLibPage',staff_lib_view.staffLibPage, name='staffLibPage'),
+    path('changePasswordStaff_lib',staff_lib_view.changePasswordStaff_lib, name='changePasswordStaff_lib'),
 
 
 

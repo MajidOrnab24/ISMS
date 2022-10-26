@@ -57,13 +57,6 @@ def home (request):
 def general_login(request):
     return render(request,'general_login.html')
 
-
-def facultyPage(request):
-    return render(request,'facultyPage.html')
-def staffLibPage(request):
-    return render(request,'staffLibPage.html')
-def staffMedPage(request):
-    return render(request,'staffMedPage.html')
 def logout_request(request):
     logout(request)
     return redirect('general_login')
