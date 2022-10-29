@@ -1,6 +1,46 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser , BaseUserManager
-  
+import os
+# from admin_app.models import department
+
+
+def path_SemesterQ(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s%s%s%s.%s" % ('Question of ',instance.department,instance.year,instance.semester,ext)
+    return os.path.join('exam_questions/', filename)
+
+CSE = "CSE"
+SWE = "SWE"
+EEE = "EEE"
+ME = "MCE"
+IPE = "IPE"
+CEE ="CEE"
+BTM ="BTM"
+
+dept_choices = (
+    (CSE, "CSE"),
+    (EEE, "EEE"),
+    (SWE, "SWE"),
+    (ME, "ME"),
+    (IPE, "IPE"),
+    (CEE,"CEE"),
+    (BTM,"BTM"),
+)
+semester_choices = [
+    ('Winter',"Winter"),
+    ('Summer',"Summer"),
+]
+class SemesterQuestionBank(models.Model):
+    year = models.CharField(max_length=50)
+    semester=models.CharField(max_length=30,choices=semester_choices,default='Winter')
+    department=models.CharField(max_length=30,choices=dept_choices)
+    file = models.FileField(upload_to=path_SemesterQ)
+    def __str__(self):
+        return self.year 
+
+
+
+
 class UserAccountManager(BaseUserManager):
     def create_user(self , email , password = None):
         if not email or len(email) <= 0 : 

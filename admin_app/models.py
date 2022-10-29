@@ -12,22 +12,19 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 
-# Create your models here.
-# Create your models here.
-def filepath(request, filename):
-    old_filename = filename
-    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
-    filename = "%s%s" % (timeNow, old_filename)
+
+def filepath(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s%s.%s" % (instance.name,instance.student_ID,ext)
     return os.path.join('uploads/', filename)
-def filepathFaculty(request, filename):
-    old_filename = filename
-    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
-    filename = "%s%s" % (timeNow, old_filename)
+
+def filepathFaculty(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s%s.%s" % (instance.name,instance.email_id,ext)
     return os.path.join('faculty_images/', filename)
-def filepathStaff(request, filename):
-    old_filename = filename
-    timeNow = datetime.datetime.now().strftime('%Y%m%d%H:%M:%S')
-    filename = "%s%s" % (timeNow, old_filename)
+def filepathStaff(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s%s.%s" % (instance.name,instance.email_id,ext)
     return os.path.join('staff_images/', filename)
 
 CSE = "CSE"

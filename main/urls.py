@@ -86,7 +86,15 @@ urlpatterns = [
     # Lib staff urls
     path('staffLibPage',staff_lib_view.staffLibPage, name='staffLibPage'),
     path('changePasswordStaff_lib',staff_lib_view.changePasswordStaff_lib, name='changePasswordStaff_lib'),
-
+    path('admissionQuestion',staff_lib_view.admissionQuestion, name='admissionQuestion'),
+    path('admissionQuestion_add',staff_lib_view.admissionQuestion_add, name='admissionQuestion_add'),
+    path('admissionQuestion_update/<int:id>', staff_lib_view.admissionQuestion_update, name='admissionQuestion_update'),
+    path('admissionQuestion_delete/<int:id>', staff_lib_view.admissionQuestion_delete, name='admissionQuestion_delete'),
+    path('semesterQuestion',staff_lib_view.semesterQuestion, name='semesterQuestion'),
+    path('semesterQuestion_add',staff_lib_view.semesterQuestion_add, name='semesterQuestion_add'),
+    path('semesterQuestion_update/<int:id>', staff_lib_view.semesterQuestion_update, name='semesterQuestion_update'),
+    path('semesterQuestion_delete/<int:id>', staff_lib_view.semesterQuestion_delete, name='semesterQuestion_delete'),
+    
 
 
 
