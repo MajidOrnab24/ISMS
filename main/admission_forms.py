@@ -16,6 +16,7 @@ from validate_email import validate_email
 from django.utils.translation import gettext_lazy as _
 import re
 from main.admision_models import *
+from admin_app.forms import validate_file_size
 
 
 class dateInput(forms.DateInput):
@@ -32,17 +33,12 @@ class roadMapForm(forms.ModelForm):
         }
 
 class questionBankForm(forms.ModelForm):
+    file=forms.FileField(widget=forms.ClearableFileInput(attrs={"class": "form-control",'size': '40' }),validators=[validate_file_size])
+    year=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
     class Meta:
         model = QuestionBank
         fields = "__all__"
-    def clean_pdf(self):
-        file = self.cleaned_data.get('file', False)
-        if file:
-            if file.size > 2*1024*1024:
-                raise ValidationError("PDF file too large Please Upload less than 2 mb")
-            return file
-        else:
-            raise ValidationError("Couldn't read uploaded file")
+
 
 class faqForm(forms.ModelForm):
     class Meta:
