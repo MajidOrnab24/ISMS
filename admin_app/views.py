@@ -124,6 +124,7 @@ def studentregister(request):
             mother_name=profile_form.cleaned_data.get('mother_name')
             phone=profile_form.cleaned_data.get('phone')
             semester=profile_form.cleaned_data.get('semester')
+            section=profile_form.cleaned_data.get('section')
             image=profile_form.cleaned_data.get('image')
             gender=profile_form.cleaned_data.get('gender')
             date_of_birth=profile_form.cleaned_data.get('date_of_birth')
@@ -140,6 +141,7 @@ def studentregister(request):
             profile.mother_name=mother_name
             profile.phone=phone
             profile.semester=semester
+            profile.section=section
             profile.image=image
             profile.gender=gender
             profile.date_of_birth=date_of_birth
@@ -202,6 +204,7 @@ def studentUpdate(request,id):
             mother_name=profile_form.cleaned_data.get('mother_name')
             phone=profile_form.cleaned_data.get('phone')
             semester=profile_form.cleaned_data.get('semester')
+            section=profile_form.cleaned_data.get('section')
             image=profile_form.cleaned_data.get('image')
             gender=profile_form.cleaned_data.get('gender')
             date_of_birth=profile_form.cleaned_data.get('date_of_birth')
@@ -214,6 +217,7 @@ def studentUpdate(request,id):
             profile.address=address
             profile.mother_name=mother_name
             profile.phone=phone
+            profile.section=section
             profile.semester=semester
             
             if(profile.image!=image):
@@ -275,6 +279,7 @@ def facultyregister(request):
             phone=profile_form.cleaned_data.get('phone')
             image=profile_form.cleaned_data.get('image')
             gender=profile_form.cleaned_data.get('gender')
+            designation=profile_form.cleaned_data.get('designation')
             date_of_birth=profile_form.cleaned_data.get('date_of_birth')
             department=profile_form.cleaned_data.get('department')
             room =profile_form.cleaned_data.get('room')
@@ -290,6 +295,7 @@ def facultyregister(request):
             profile.gender=gender
             profile.date_of_birth=date_of_birth
             profile.department=department
+            profile.designation=designation
             profile.room=room
             profile.education=education
             profile.save()
@@ -326,6 +332,7 @@ def facultyUpdate(request,id):
             image=profile_form.cleaned_data.get('image')
             gender=profile_form.cleaned_data.get('gender')
             date_of_birth=profile_form.cleaned_data.get('date_of_birth')
+            designation=profile_form.cleaned_data.get('designation')
             department=profile_form.cleaned_data.get('department')
             room =profile_form.cleaned_data.get('room')
             education=profile_form.cleaned_data.get('education')
@@ -342,6 +349,7 @@ def facultyUpdate(request,id):
             profile.gender=gender
             profile.date_of_birth=date_of_birth
             profile.department=department
+            profile.designation=designation
             profile.room=room
             profile.education=education
             profile.save()

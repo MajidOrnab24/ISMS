@@ -52,7 +52,7 @@ class department(models.Model):
     dept_name = models.CharField(max_length=30,choices=dept_choices)
     def __str__(self):
         return self.dept_name
-sem_choices ={
+sem_choices =[
     (1,"1"),
     (2,"2"),
     (3,"3"),
@@ -61,11 +61,17 @@ sem_choices ={
     (6,"6"),
     (7,"7"),
     (8,"8"),
-}
-gender_choices = {
+]
+section_choices =[
+    (1,"1"),
+    (2,"2"),
+    (3,"3"),
+
+]
+gender_choices = [
     ('MALE',"MALE"),
     ('FEMALE',"FEMALE"),
-}
+]
 
 class StudentProfile(models.Model):
 
@@ -82,6 +88,7 @@ class StudentProfile(models.Model):
     date_of_birth = models.DateField(max_length=10, null =True)
     department = models.ForeignKey(department,on_delete=models.SET_NULL,null=True)
     session =  models.DateField(max_length=10, null=True)
+    section = models.IntegerField(choices=section_choices, default=1)
 
     @property
     def age(self):
@@ -102,6 +109,13 @@ class StudentProfile(models.Model):
      if created:
         StudentProfile.objects.create(email=instance)
 
+
+designation_choices = [
+    ('Lecturer',"Lecturer"),
+    ('Assistant Professor',"Assistant Professor"),
+    ('Associate Professor',"Associate  Professor"),
+    ('Professor',"Professor"),
+]
 class FacultyProfile(models.Model):
     name = models.CharField(max_length=256)
     email = models.OneToOneField(Faculty, on_delete=models.CASCADE, primary_key=True)
@@ -109,6 +123,7 @@ class FacultyProfile(models.Model):
     room = models.CharField(max_length=256)
     phone =  models.CharField(max_length=15)
     image = models.ImageField(upload_to=filepathFaculty)
+    designation=models.CharField(max_length=30,choices=designation_choices,default='Lecturer')
     gender=models.CharField(max_length=30,choices=gender_choices,default='MALE')
     date_of_birth = models.DateField(max_length=10, null =True)
     department = models.ForeignKey(department,on_delete=models.CASCADE,null=True)
