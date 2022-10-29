@@ -104,3 +104,32 @@ class FaqFilter(django_filters.FilterSet):
             },
 
         }
+class AdmissionQuestionFilter(django_filters.FilterSet):
+    class Meta:
+        model = QuestionBank
+        fields = {'year' :['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+
+        }
+
+class semesterQuestionFilter(django_filters.FilterSet):
+    class Meta:
+        model = SemesterQuestionBank
+        fields = {'year' :['exact'],'department' :['exact'],'semester' :['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+
+        }

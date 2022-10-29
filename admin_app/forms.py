@@ -243,10 +243,18 @@ class roadMapForm(forms.ModelForm):
             'date': dateInput(attrs={'min':datetime.datetime.now().date(),"class": "form-control"}),
         }
 
-class questionBankForm(forms.ModelForm):
+class semesterQuestionBankForm(forms.ModelForm):
     class Meta:
-        model = QuestionBank
+        model = SemesterQuestionBank
         fields = "__all__"
+    def clean_pdf(self):
+        file = self.cleaned_data.get('file', False)
+        if file:
+            if file.size > 2*1024*1024:
+                raise ValidationError("PDF file too large Please Upload less than 2 mb")
+            return file
+        else:
+            raise ValidationError("Couldn't read uploaded file")
 
 class faqForm(forms.ModelForm):
     class Meta:
