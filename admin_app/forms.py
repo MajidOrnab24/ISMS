@@ -103,13 +103,14 @@ class facultyprofileform(forms.ModelForm):
      address=forms.CharField(widget=forms.Textarea(attrs={"class": "form-control",'size': '40' }))
      department=forms.ModelChoiceField(widget=forms.Select(attrs={"class": "form-control" }),queryset=department.objects.all(),empty_label="Select Department")
      education=forms.CharField(widget=forms.Textarea(attrs={"class": "form-control",'size': '40' }))
+     designation=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=designation_choices)
      phone=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
      image=forms.ImageField(widget=forms. ClearableFileInput(attrs={"class": "form-control",'size': '40' }))
      gender=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=gender_choices)
 
      class Meta:
         model=FacultyProfile
-        fields =('name','room','address','department','education','gender','phone','image','date_of_birth')
+        fields =('name','room','address','department','designation','education','gender','phone','image','date_of_birth')
      def clean_image(self):
         image = self.cleaned_data.get('image', False)
         if image:
@@ -133,10 +134,13 @@ class profileForm(forms.ModelForm):
     phone=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
     image=forms.ImageField(widget=forms. ClearableFileInput(attrs={"class": "form-control",'size': '40' }))
     gender=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=gender_choices)
+    semester=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=sem_choices)
+    section=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=section_choices)
+
 
     class Meta:
         model = StudentProfile
-        fields = ('name','student_ID','address','father_name','mother_name','phone','semester','image','gender',
+        fields = ('name','student_ID','address','father_name','mother_name','phone','semester','section','image','gender',
         'date_of_birth' ,'department','session')
     def clean_image(self):
         image = self.cleaned_data.get('image', False)
