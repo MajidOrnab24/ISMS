@@ -6,6 +6,7 @@ from wsgiref import validate
 from django import forms
 from django.forms import TextInput
 from main.models import *
+from admin_app.models import *
 from datetime import date
 import datetime
 from django.forms.widgets import DateInput
@@ -45,6 +46,11 @@ def validate_passwords(value):
                 params={'value': value},
             )
         
+def validate_file_size(value):
+    filesize= value.size
+    if filesize > 5*1024*1024:
+        raise ValidationError("The maximum file size that can be uploaded is 5MB")
+
 
 
 # create a form form
@@ -244,17 +250,14 @@ class roadMapForm(forms.ModelForm):
         }
 
 class semesterQuestionBankForm(forms.ModelForm):
+    year=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    file=forms.FileField(widget=forms.ClearableFileInput(attrs={"class": "form-control",'size': '40' }),validators=[validate_file_size])
+    department=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=dept_choices)
+    semester=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=semester_choices)
     class Meta:
         model = SemesterQuestionBank
-        fields = "__all__"
-    def clean_pdf(self):
-        file = self.cleaned_data.get('file', False)
-        if file:
-            if file.size > 2*1024*1024:
-                raise ValidationError("PDF file too large Please Upload less than 2 mb")
-            return file
-        else:
-            raise ValidationError("Couldn't read uploaded file")
+        fields = ('year','department','semester','file')
+
 
 class faqForm(forms.ModelForm):
     class Meta:
