@@ -98,6 +98,10 @@ urlpatterns = [
     path('semesterQuestion_add',staff_lib_view.semesterQuestion_add, name='semesterQuestion_add'),
     path('semesterQuestion_update/<int:id>', staff_lib_view.semesterQuestion_update, name='semesterQuestion_update'),
     path('semesterQuestion_delete/<int:id>', staff_lib_view.semesterQuestion_delete, name='semesterQuestion_delete'),
+    path('lib_books',staff_lib_view.lib_books, name='lib_books'),
+    path('lib_books_add',staff_lib_view.lib_books_add, name='lib_books_add'),
+    path('lib_books_delete/<int:id>',staff_lib_view.lib_books_delete, name='lib_books_delete'),
+    path('lib_books_update/<int:id>', staff_lib_view.lib_books_update, name='lib_books_update'),
     
 
 

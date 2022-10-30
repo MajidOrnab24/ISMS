@@ -24,8 +24,14 @@ import random
 from admin_app.filters import *
 from django.conf import settings
 from django.core.mail import send_mail
+import string
 
-
+def get_book_code():
+    length=8
+    letter=string.ascii_lowercase+'unique'
+    letters = letter.lower()+ string.digits
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
 
 @login_required
 def staffLibPage(request):
@@ -211,3 +217,77 @@ def semesterQuestion_update(request, id):
         form = semesterQuestionBankForm(instance=question)
 
     return render(request,'staff_lib_temp/semesterQuestion_update.html', {'form': form,'profile':profile})
+
+@login_required
+def lib_books(request):
+    profile=StaffLibProfile.objects.get(email_id=request.user.id)
+    context={}
+    profiles=BooksFilter(request.GET,queryset=Books.objects.all())
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
+
+    context['profile_page_obj']=profile_page_obj
+    context['profile']=profile
+    return render(request,'staff_lib_temp/lib_books.html',context=context )
+
+@login_required
+def lib_books_add(request):
+    profile=StaffLibProfile.objects.get(email_id=request.user.id)
+    if request.method == 'POST':
+        form = bookForm(request.POST,request.FILES)
+        if form.is_valid() :
+            book_code=get_book_code()
+            user = form.save(commit=False)
+            user.book_code=book_code
+            user.save()
+            if user is None:
+                 messages.error(request,'book not added')
+                 return redirect('lib_books_add')
+            elif  user is not None:
+                return redirect('lib_books')
+            else:
+                messages.error(request,'Info not correct')
+            return redirect('lib_books_add')
+        else:
+           messages.error(request,'Error validating registration please try again with correct value')
+    else:
+        form = bookForm()
+
+    return render(request,'staff_lib_temp/lib_books_add.html', {'form': form,'profile':profile})
+
+@login_required
+def lib_books_delete(request, id):
+  book=Books.objects.get(id=id)
+  book.delete()
+  return redirect('lib_books')
+
+@login_required
+def lib_books_update(request, id):
+    profile=StaffLibProfile.objects.get(email_id=request.user.id)
+    book=Books.objects.get(id=id)
+    if request.method == 'POST':
+        form = bookForm(request.POST,instance=book)
+        if form.is_valid():
+            author = form.cleaned_data.get('author')
+            title=form.cleaned_data.get('title')
+            shelf_no=form.cleaned_data.get('shelf_no')
+            category = form.cleaned_data.get('category')
+            object=Books.objects.get(id=id)
+            object.author=author
+            object.category=category
+            object.title=title
+            object.shelf_no=shelf_no
+            object.save()
+            if  object is not None:
+                return redirect('lib_books')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('lib_books_update')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        form = bookForm(instance=book)
+
+    return render(request,'staff_lib_temp/lib_books_update.html', {'form': form,'profile':profile})
