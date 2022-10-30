@@ -1,7 +1,7 @@
 
 from dataclasses import field
 import email
-from turtle import textinput
+from turtle import textinput, title
 from wsgiref import validate
 from django import forms
 from django.forms import TextInput
@@ -276,3 +276,12 @@ class faqForm(forms.ModelForm):
                 }
             ),
         }
+
+class bookForm(forms.ModelForm):
+    title=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    author=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    category=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=category_choices)
+    shelf_no= forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control"}))
+    class Meta:
+        model = Books
+        fields = ('title','author','category','shelf_no')

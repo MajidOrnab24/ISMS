@@ -133,3 +133,18 @@ class semesterQuestionFilter(django_filters.FilterSet):
             },
 
         }
+
+class BooksFilter(django_filters.FilterSet):
+    class Meta:
+        model = Books
+        fields = {'title' :['exact'],'author' :['exact'],'book_code' :['exact'],'category' :['exact'],'shelf_no' :['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+
+        }

@@ -1,6 +1,7 @@
 import email
 from email.policy import default
 from enum import unique
+from operator import truediv
 from pickle import TRUE
 from random import choices
 from unittest.util import _MAX_LENGTH
@@ -193,3 +194,65 @@ class StaffLibProfile(models.Model):
     def create_lib_staff_profile(sender, instance, created, **kwargs):
      if created:
         StaffLibProfile.objects.create(email=instance)
+grade_choices =[
+    (4.00,"A+"),
+    (3.75,"A"),
+    (3.50,"A-"),
+    (3.25,"B+"),
+    (3.00,"B"),
+    (2.75,"B-"),
+    (2.50,"C+"),
+    (2.25,"C"),
+    (2.00,"D"),
+    (0.00,"F"),
+]
+class Courses(models.Model):
+    name = models.CharField(max_length=128)
+    semester=models.IntegerField(null=True)
+    credit =models.FloatField(null=True)
+    faculty=models.ForeignKey(FacultyProfile,on_delete=models.SET_NULL,null=TRUE,blank=True,)
+    students = models.ManyToManyField(StudentProfile, through='Enrollment')
+    dept_name = models.CharField(max_length=30,choices=dept_choices)
+    def __str__(self):
+        return self.name
+  
+class Enrollment(models.Model):
+    students = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
+    courses = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    result = models.FloatField(choices=grade_choices,null=True,blank=True)
+    date_joined = models.DateField(max_length=10, null =True)
+    date_finished = models.DateField(max_length=10,null=True,blank=True)
+    def __str__(self):
+        return self.courses.name
+
+category_choices = [
+    ('MATH',"MATH"),
+    ('PHYSICS',"PHYSICS"),
+    ('CHEMISTRY',"CHEMISTRY"),
+    ('HUMANITIES',"HUMANITIES"),
+    ('ELECTRICAL',"ELECTRICAL"),
+    ('COMPUTER SCIENCE',"COMPUTER SCIENCE"),
+    ('MECHANICAL',"MECHANIAL"),
+    ('CIVIL',"CIVIL"),
+    ('INDUSTRIAL',"INDUSTRIAL"),
+    ('BUSINESS',"BUSINESS"),
+    ('MAANGEMENT',"MANAGEMENT"),
+
+
+    
+]
+class Books(models.Model):
+    title=  models.CharField(max_length=256)
+    author=  models.CharField(max_length=256)
+    book_code=models.CharField(max_length=256)
+    shelf_no= models.IntegerField(null=True)
+    student = models.ForeignKey(StudentProfile, on_delete=models.SET_NULL,null=True,blank=True)
+    category=models.CharField(max_length=30,choices=category_choices,null=True,blank=True,default=None)
+    borrow_date= models.DateField(max_length=10, null =True,blank=True)
+    due_date= models.DateField(max_length=10,null=True,blank=True)
+
+    def __str__(self):
+        return self.title
+    @property
+    def student_borrowed(self):
+        return self.stduent.name
