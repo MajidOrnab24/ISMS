@@ -19,6 +19,9 @@ import random
 def studentPage(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     return render(request,'student_temp/studentPage.html',{'profile':profile})
+def studentCR_page(request):
+    profile=StudentProfile.objects.get(email_id=request.user.id)
+    return render(request,'student_temp/studentCR_page.html',{'profile':profile})
 def changePasswordStudent(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     user=Student.objects.get(id=request.user.id)

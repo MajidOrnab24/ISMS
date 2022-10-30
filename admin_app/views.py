@@ -127,6 +127,7 @@ def studentregister(request):
             section=profile_form.cleaned_data.get('section')
             image=profile_form.cleaned_data.get('image')
             gender=profile_form.cleaned_data.get('gender')
+            cr=profile_form.cleaned_data.get('CR')
             date_of_birth=profile_form.cleaned_data.get('date_of_birth')
             department=profile_form.cleaned_data.get('department')
             session=profile_form.cleaned_data.get('session')
@@ -142,6 +143,7 @@ def studentregister(request):
             profile.phone=phone
             profile.semester=semester
             profile.section=section
+            profile.CR=cr
             profile.image=image
             profile.gender=gender
             profile.date_of_birth=date_of_birth
@@ -209,6 +211,7 @@ def studentUpdate(request,id):
             gender=profile_form.cleaned_data.get('gender')
             date_of_birth=profile_form.cleaned_data.get('date_of_birth')
             department=profile_form.cleaned_data.get('department')
+            cr=profile_form.cleaned_data.get('CR')
             session=profile_form.cleaned_data.get('session')
             profile=StudentProfile.objects.get(email_id=id)
             profile.name=name
@@ -217,6 +220,7 @@ def studentUpdate(request,id):
             profile.address=address
             profile.mother_name=mother_name
             profile.phone=phone
+            profile.CR=cr
             profile.section=section
             profile.semester=semester
             

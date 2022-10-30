@@ -1,0 +1,8 @@
+{% extends "faculty_temp/dept_head_base.html" %}
+{% block title %}{{profile.name}} page{% endblock %}
+	{%block content%}
+   <p>Faculty Name:  {{profile.name}}</p>
+   <p>Email: {{user.email}}</p>
+   <p>Department: {{profile.department}}</p>
+{%endblock%}
+
