@@ -33,6 +33,10 @@ def facultyPage(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
     return render(request,'faculty_temp/facultyPage.html',{'profile':profile})
 
+def dept_head_page(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    return render(request,'faculty_temp/dept_head_page.html',{'profile':profile})
+
 def changePasswordFaculty(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
     user=Faculty.objects.get(id=request.user.id)

@@ -1,6 +1,7 @@
 import email
 from email.policy import default
 from enum import unique
+from pickle import TRUE
 from random import choices
 from unittest.util import _MAX_LENGTH
 from django.db import models
@@ -86,6 +87,7 @@ class StudentProfile(models.Model):
     department = models.ForeignKey(department,on_delete=models.SET_NULL,null=True)
     session =  models.DateField(max_length=10, null=True)
     section = models.IntegerField(choices=section_choices, default=1)
+    CR=models.BooleanField(default=False)
 
     @property
     def age(self):
@@ -98,7 +100,7 @@ class StudentProfile(models.Model):
         return self.email.email
         
     def __str__(self):
-        return self.email.email
+        return self.name
 
 
     @receiver(post_save, sender=Student)
@@ -131,7 +133,7 @@ class FacultyProfile(models.Model):
         return self.email.email
         
     def __str__(self):
-        return self.email.email
+        return self.name
     @receiver(post_save, sender=Faculty)
     def create_faculty_profile(sender, instance, created, **kwargs):
      if created:
@@ -139,10 +141,10 @@ class FacultyProfile(models.Model):
 
 class DeptHeadFaculty(models.Model):
     dept = models.OneToOneField(department, on_delete=models.CASCADE, primary_key=True)
-    email=models.OneToOneField(FacultyProfile, on_delete=models.SET_NULL, null =True)
+    email=models.OneToOneField(FacultyProfile, on_delete=models.SET_NULL, null =True,blank =True)
 
     def __str__(self):
-        return self.email.email.email
+        return self.dept.dept_name
     @property
     def head_name(self):
         return self.email.name
@@ -161,10 +163,10 @@ class StaffMedProfile(models.Model):
     
     @property
     def email_staff_med(self):
-        return self.email.email
+        return self.name
         
     def __str__(self):
-        return self.email.email
+        return self.name
     @receiver(post_save, sender=StaffMed)
     def create_med_staff_profile(sender, instance, created, **kwargs):
      if created:
@@ -186,7 +188,7 @@ class StaffLibProfile(models.Model):
         return self.email.email
         
     def __str__(self):
-        return self.email.email
+        return self.name
     @receiver(post_save, sender=StaffLib)
     def create_lib_staff_profile(sender, instance, created, **kwargs):
      if created:

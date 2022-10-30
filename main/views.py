@@ -86,7 +86,10 @@ def signinStudent(request):
                 return redirect('signinStudent')
             elif  UserAccount is not None and UserAccount.is_student:
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
-                return redirect('studentPage')
+                if(request.user.studentprofile.CR==True):
+                  return redirect('studentCR_page')
+                else:
+                  return redirect('studentPage')
                 
             else:
                 messages.error(request,'username or password not correct')
@@ -122,7 +125,12 @@ def signinFaculty(request):
                 return redirect('signinFaculty')
             elif  UserAccount is not None and UserAccount.is_faculty :
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
-                return redirect('facultyPage')
+                head=DeptHeadFaculty.objects.get(dept_id=request.user.facultyprofile.department_id)
+                if(head.email):
+                    if(head.email.email.email==request.user.email):
+                     return redirect('dept_head_page')
+                else: 
+                  return redirect('facultyPage')
                 
             else:
                 messages.error(request,'username or password not correct')

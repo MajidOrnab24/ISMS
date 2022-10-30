@@ -114,6 +114,7 @@ class facultyprofileform(forms.ModelForm):
      image=forms.ImageField(widget=forms. ClearableFileInput(attrs={"class": "form-control",'size': '40' }))
      gender=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=gender_choices)
 
+
      class Meta:
         model=FacultyProfile
         fields =('name','room','address','department','designation','education','gender','phone','image','date_of_birth')
@@ -126,7 +127,10 @@ class facultyprofileform(forms.ModelForm):
         else:
             raise ValidationError("Couldn't read uploaded image")
 
-
+cr_CHOICES = [
+    (True, 'Yes'),
+    (False, 'No')
+]
 
 class profileForm(forms.ModelForm):
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type' :'date','max':datetime.datetime.now().date(),"class": "form-control"}))
@@ -142,12 +146,13 @@ class profileForm(forms.ModelForm):
     gender=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=gender_choices)
     semester=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=sem_choices)
     section=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=section_choices)
+    CR = forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=cr_CHOICES,label='CR')
 
 
     class Meta:
         model = StudentProfile
         fields = ('name','student_ID','address','father_name','mother_name','phone','semester','section','image','gender',
-        'date_of_birth' ,'department','session')
+        'date_of_birth' ,'department','CR','session')
     def clean_image(self):
         image = self.cleaned_data.get('image', False)
         if image:
