@@ -1,0 +1,36 @@
+{% extends "staff_lib_temp/staff_lib_base.html" %}
+{% load static %}
+{% block title %}Student book issue update{% endblock %}
+{%block content%}
+<link rel ="stylesheet" href="{% static '/css/admin/register_update.css' %}">
+<div class="container" style="padding: 10px;">
+    <h4>Book issued to: </h4>
+    <p>{{book.student.name}}</p><br>
+    <h4>Student ID:</h4>
+    <p>{{book.student.student_ID}}</p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <br />
+    {% for message in messages %}
+    
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+           {{ message }}
+    </div>
+
+    {% endfor %}
+    <br>
+    <button type="Submit" value="Submit"class="button_register__submit">
+      <span class="button__text">Update </span>
+  </button>
+  </form>
+
+
+</div>
+
+  
+
+
+
+{%endblock%}

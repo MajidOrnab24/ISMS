@@ -20,7 +20,7 @@ from main.admision_models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from itertools import chain
 from main.forms import *
 import random
@@ -28,15 +28,23 @@ import random
 
 
 
+def is_faculty(user):
+    try:
+        return user.is_authenticated and user.is_faculty
+    except Faculty.DoesNotExist :
+        return False
 
+@user_passes_test(is_faculty,login_url='/general login')
 def facultyPage(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
     return render(request,'faculty_temp/facultyPage.html',{'profile':profile})
 
+@user_passes_test(is_faculty,login_url='/general login')
 def dept_head_page(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
     return render(request,'faculty_temp/dept_head_page.html',{'profile':profile})
-
+    
+@user_passes_test(is_faculty,login_url='/general login')
 def changePasswordFaculty(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
     user=Faculty.objects.get(id=request.user.id)

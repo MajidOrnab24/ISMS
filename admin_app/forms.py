@@ -1,6 +1,7 @@
 
-from dataclasses import field
+from dataclasses import field, fields
 import email
+from pyexpat import model
 from turtle import textinput, title
 from wsgiref import validate
 from django import forms
@@ -16,6 +17,8 @@ from validate_email import validate_email
 from django.utils.translation import gettext_lazy as _
 import re
 from main.admision_models import *
+import DNS
+DNS.defaults['server']=['8.8.8.8', '8.8.4.4']
 
 def validate_emails(value):
     is_valid=validate_email(value,verify=True)
@@ -128,8 +131,9 @@ class facultyprofileform(forms.ModelForm):
             raise ValidationError("Couldn't read uploaded image")
 
 cr_CHOICES = [
-    (True, 'Yes'),
-    (False, 'No')
+    (False, 'No'),
+    (True, 'Yes')
+
 ]
 
 class profileForm(forms.ModelForm):
@@ -285,3 +289,17 @@ class bookForm(forms.ModelForm):
     class Meta:
         model = Books
         fields = ('title','author','category','shelf_no')
+
+class StudentbookForm(forms.Form):
+    student_ID=forms.CharField(widget=forms.NumberInput(attrs={"class": "form-control",'size': '40' }))
+    borrow_date=forms.DateField(widget=forms.DateInput(attrs={'type' :'date','max':datetime.datetime.now().date(),"class": "form-control"}))
+    due_date=forms.DateField(widget=forms.DateInput(attrs={'type' :'date','min':datetime.datetime.now().date(),"class": "form-control"}))
+    book_code=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    
+class bookupdateform(forms.ModelForm):
+    borrow_date=forms.DateField(widget=forms.DateInput(attrs={'type' :'date','max':datetime.datetime.now().date(),"class": "form-control"}))
+    due_date=forms.DateField(widget=forms.DateInput(attrs={'type' :'date','min':datetime.datetime.now().date(),"class": "form-control"}))
+    class Meta:
+        model =Books
+        fields=('borrow_date','due_date')
+

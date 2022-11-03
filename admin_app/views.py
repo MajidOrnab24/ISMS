@@ -15,7 +15,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from itertools import chain
 from main.forms import *
 from admin_app.forms import *
@@ -24,7 +24,11 @@ from admin_app.filters import *
 from django.conf import settings
 from django.core.mail import send_mail
 
-
+def is_admin(user):
+    try:
+        return user.is_authenticated and user.is_superuser 
+    except Faculty.DoesNotExist :
+        return False
 # Admin views here.
 
 def adminLogin(request):
@@ -62,9 +66,11 @@ def adminLogin(request):
             messages.error(request,'Error Validating form')
     return render(request, 'admin_temp/adminLogin.html', {'form': form})
 
-@login_required
+
+@user_passes_test(is_admin,login_url='/general login')
 def adminHome(request):
     return render(request,'admin_temp/adminHome.html')
+@user_passes_test(is_admin,login_url='/general login')   
 def changePasswordAdmin(request):
     user= Faculty.objects.get(id=request.user.id)
     form = changePasswordForm(request.POST or None)
@@ -97,7 +103,7 @@ def changePasswordAdmin(request):
 
 
 # Admin Students views
-@login_required  
+@user_passes_test(is_admin,login_url='/general login')
 def adminStudent(request):
     context={}
     profiles=StudentFilter(request.GET,queryset=StudentProfile.objects.all())
@@ -109,7 +115,7 @@ def adminStudent(request):
     context['profile_page_obj']=profile_page_obj
     return render(request,'admin_temp/adminStudent.html',context=context )
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def studentregister(request):
     if request.method == 'POST':
         form = registerStudent(request.POST)
@@ -171,7 +177,7 @@ def studentregister(request):
 
     return render(request,'admin_temp/studentregister.html', {'form': form,'profile_form': profile_form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def studentChangePass(request,id):
     user=Student.objects.get(id=id)
     form = changePassByadmin(request.POST or None)
@@ -193,7 +199,7 @@ def studentChangePass(request,id):
 
     return render(request, 'admin_temp/studentChangePass.html', {'form': form})
  
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def studentUpdate(request,id):
     student_profile=StudentProfile.objects.get(email_id=id)
     if request.method == 'POST':
@@ -246,7 +252,7 @@ def studentUpdate(request,id):
 
     return render(request,'admin_temp/studentUpdate.html', {'profile_form': profile_form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def deleteStudent(request, id):
   student_profile=StudentProfile.objects.get(email_id=id)
   if  student_profile.image:
@@ -258,7 +264,7 @@ def deleteStudent(request, id):
 
 
 # Admin Faculty views
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def adminFaculty(request):
     context={}
     profiles=FacultyFilter(request.GET,queryset=FacultyProfile.objects.all())
@@ -270,7 +276,7 @@ def adminFaculty(request):
     context['profile_page_obj']=profile_page_obj
     return render(request,'admin_temp/adminFaculty.html',context=context )
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def facultyregister(request):
     if request.method == 'POST':
         form = registerFaculty(request.POST)
@@ -324,7 +330,7 @@ def facultyregister(request):
         profile_form =facultyprofileform()
     return render(request,'admin_temp/facultyregister.html', {'form': form,'profile_form': profile_form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def facultyUpdate(request,id):
     faculty_profile=FacultyProfile.objects.get(email_id=id)
     if request.method == 'POST':
@@ -370,7 +376,7 @@ def facultyUpdate(request,id):
 
     return render(request,'admin_temp/facultyUpdate.html', {'profile_form': profile_form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def deleteFaculty(request, id):
   faculty_profile=FacultyProfile.objects.get(email_id=id)
   if  faculty_profile.image:
@@ -379,7 +385,7 @@ def deleteFaculty(request, id):
   faculty=Faculty.objects.get(id=id)
   faculty.delete()
   return redirect('adminFaculty')
-
+@user_passes_test(is_admin,login_url='/general login')
 def facultyChangePass(request,id):
     user=Faculty.objects.get(id=id)
     form = changePassByadmin(request.POST or None)
@@ -403,7 +409,7 @@ def facultyChangePass(request,id):
 
 
 # Admin Medical Staff views
-@login_required  
+@user_passes_test(is_admin,login_url='/general login') 
 def adminStaff_med(request):
     context={}
     profiles=StaffMedFilter(request.GET,queryset=StaffMedProfile.objects.all())
@@ -415,7 +421,7 @@ def adminStaff_med(request):
     context['profile_page_obj']=profile_page_obj
     return render(request,'admin_temp/adminStaff_med.html',context=context )
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def staff_med_register(request):
     if request.method == 'POST':
         form = registerStaffMed(request.POST)
@@ -465,7 +471,7 @@ def staff_med_register(request):
         profile_form =staff_med_profileform()
     return render(request,'admin_temp/staff_med_register.html', {'form': form,'profile_form': profile_form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def staff_medChangePass(request,id):
     user=StaffMed.objects.get(id=id)
     form = changePassByadmin(request.POST or None)
@@ -486,7 +492,7 @@ def staff_medChangePass(request,id):
             messages.error(request,'error changing password please provide instructed credentials')
     return render(request, 'admin_temp/staff_medChangePass.html', {'form': form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def staff_medUpdate(request,id):
     staff_med_profile=StaffMedProfile.objects.get(email_id=id)
     if request.method == 'POST':
@@ -530,7 +536,7 @@ def staff_medUpdate(request,id):
 
     return render(request,'admin_temp/staff_medUpdate.html', {'profile_form': profile_form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def deleteStaffMed(request, id):
   staff_med_profile=StaffMedProfile.objects.get(email_id=id)
   if  staff_med_profile.image:
@@ -545,7 +551,7 @@ def deleteStaffMed(request, id):
 
 # Admin Library Staff views
 
-@login_required  
+@user_passes_test(is_admin,login_url='/general login') 
 def adminStaff_lib(request):
     context={}
     profiles=StaffLibFilter(request.GET,queryset=StaffLibProfile.objects.all())
@@ -557,7 +563,7 @@ def adminStaff_lib(request):
     context['profile_page_obj']=profile_page_obj
     return render(request,'admin_temp/adminStaff_lib.html',context=context )
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def staff_lib_register(request):
     if request.method == 'POST':
         form = registerStaffLib(request.POST)
@@ -607,7 +613,7 @@ def staff_lib_register(request):
         profile_form =staff_lib_profileform()
     return render(request,'admin_temp/staff_lib_register.html', {'form': form,'profile_form': profile_form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def staff_libUpdate(request,id):
     staff_med_profile=StaffLibProfile.objects.get(email_id=id)
     if request.method == 'POST':
@@ -651,7 +657,7 @@ def staff_libUpdate(request,id):
 
     return render(request,'admin_temp/staff_libUpdate.html', {'profile_form': profile_form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def deleteStaffLib(request, id):
   staff_lib_profile=StaffLibProfile.objects.get(email_id=id)
   if  staff_lib_profile.image:
@@ -661,7 +667,7 @@ def deleteStaffLib(request, id):
   staff_lib.delete()
   return redirect('adminStaff_lib')
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def staff_libChangePass(request,id):
     user=StaffLib.objects.get(id=id)
     form = changePassByadmin(request.POST or None)
@@ -684,7 +690,7 @@ def staff_libChangePass(request,id):
 
 # Admission info edit views
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def admin_roadmap(request):
     context={}
     profiles=RoadmapFilter(request.GET,queryset=RoadMap.objects.all())
@@ -696,7 +702,7 @@ def admin_roadmap(request):
     context['profile_page_obj']=profile_page_obj
     return render(request,'admission_temp/admin_roadmap.html',context=context )
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def roadmap_add(request):
     if request.method == 'POST':
         form = roadMapForm(request.POST)
@@ -721,12 +727,12 @@ def roadmap_add(request):
 
     return render(request,'admission_temp/roadmap_add.html', {'form': form}) 
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def delete_roadmap(request, id):
   roadmap=RoadMap.objects.get(id=id)
   roadmap.delete()
   return redirect('admin_roadmap')
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def update_roadmap(request, id):
     roadmap=RoadMap.objects.get(id=id)
     if request.method == 'POST':
@@ -752,7 +758,7 @@ def update_roadmap(request, id):
 
     return render(request,'admission_temp/update_roadmap.html', {'form': form})
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def admin_faq(request):
     context={}
     profiles=FaqFilter(request.GET,queryset=Faq.objects.all())
@@ -763,13 +769,13 @@ def admin_faq(request):
 
     context['profile_page_obj']=profile_page_obj
     return render(request,'admission_temp/admin_faq.html',context=context )
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def delete_faq(request, id):
   faq=Faq.objects.get(id=id)
   faq.delete()
   return redirect('admin_faq')
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def faq_add(request):
     if request.method == 'POST':
         form = faqForm(request.POST)
@@ -791,7 +797,7 @@ def faq_add(request):
 
     return render(request,'admission_temp/faq_add.html', {'form': form}) 
 
-@login_required
+@user_passes_test(is_admin,login_url='/general login')
 def update_faq(request, id):
     faq=Faq.objects.get(id=id)
     if request.method == 'POST':

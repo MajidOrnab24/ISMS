@@ -102,6 +102,13 @@ urlpatterns = [
     path('lib_books_add',staff_lib_view.lib_books_add, name='lib_books_add'),
     path('lib_books_delete/<int:id>',staff_lib_view.lib_books_delete, name='lib_books_delete'),
     path('lib_books_update/<int:id>', staff_lib_view.lib_books_update, name='lib_books_update'),
+    path('books_student',staff_lib_view.books_student, name='books_student'),
+    path('books_student_delete/<int:id>',staff_lib_view.books_student_delete, name='books_student_delete'),
+    path('books_student_update/<int:id>',staff_lib_view.books_student_update, name='books_student_update'),
+    path('books_student_add',staff_lib_view.books_student_add, name='books_student_add'),
+
+
+
     
 
 

@@ -20,18 +20,24 @@ from main.admision_models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from itertools import chain
 from main.forms import *
 import random
 
 
+def is_staffMed(user):
+    try:
+        return user.is_authenticated and user.is_staff_med 
+    except StaffMed.DoesNotExist :
+        return False
 
-
+@user_passes_test(is_staffMed,login_url='/general login')
 def staffMedPage(request):
     profile=StaffMedProfile.objects.get(email_id=request.user.id)
     return render(request,'staff_med_temp/staffMedPage.html',{'profile':profile})
 
+@user_passes_test(is_staffMed,login_url='/general login')
 def changePasswordStaff_med(request):
     profile=StaffMedProfile.objects.get(email_id=request.user.id)
     user=StaffMed.objects.get(id=request.user.id)

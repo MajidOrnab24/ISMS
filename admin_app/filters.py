@@ -2,7 +2,9 @@ from dataclasses import field
 import django_filters
 from django.db import models
 from admin_app.models import *
+from django import forms
 from main.admision_models import *
+from django.forms.widgets import DateInput
 
 
 class StudentFilter(django_filters.FilterSet):
@@ -146,5 +148,28 @@ class BooksFilter(django_filters.FilterSet):
                     'lookup_expr': 'icontains',
                 },
             },
+
+        }
+
+class BooksStudentFilter(django_filters.FilterSet):
+    class Meta:
+        model = Books
+        fields = {'title' :['exact'],'author' :['exact'],'book_code' :['exact'],'due_date' :['exact'],'student_id__student_ID' :['exact'],'borrow_date' :['exact'],}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+            models.DateField: {
+                'filter_class': django_filters.DateFilter,
+                'extra': lambda f: {
+                     'widget': forms.DateInput(attrs={'type' :'date'}),
+                    # 'lookup_expr': 'icontains',
+                },
+            },
+            
 
         }

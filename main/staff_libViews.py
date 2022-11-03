@@ -15,7 +15,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from itertools import chain
 from main.forms import *
 from admin_app.forms import *
@@ -25,6 +25,12 @@ from admin_app.filters import *
 from django.conf import settings
 from django.core.mail import send_mail
 import string
+def is_staffLib(user):
+    try:
+        return user.is_authenticated and user.is_staff_lib 
+    except StaffLib.DoesNotExist :
+        return False
+
 
 def get_book_code():
     length=8
@@ -33,11 +39,11 @@ def get_book_code():
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def staffLibPage(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     return render(request,'staff_lib_temp/staffLibPage.html',{'profile':profile})
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def changePasswordStaff_lib(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     user=StaffLib.objects.get(id=request.user.id)
@@ -69,7 +75,7 @@ def changePasswordStaff_lib(request):
             messages.error(request,'Error Validating form')
     return render(request, 'staff_lib_temp/changePasswordStaff_lib.html', {'form': form,'profile':profile})
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def admissionQuestion(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     context={}
@@ -83,7 +89,7 @@ def admissionQuestion(request):
     context['profile']=profile
     return render(request,'staff_lib_temp/admissionQuestion.html',context=context )
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def admissionQuestion_add(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     if request.method == 'POST':
@@ -106,7 +112,7 @@ def admissionQuestion_add(request):
 
     return render(request,'staff_lib_temp/admissionQuestion_add.html', {'form': form,'profile':profile}) 
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def admissionQuestion_update(request, id):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     question=QuestionBank.objects.get(id=id)
@@ -133,7 +139,7 @@ def admissionQuestion_update(request, id):
 
     return render(request,'staff_lib_temp/admissionQuestion_update.html', {'form': form,'profile':profile})
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def admissionQuestion_delete(request, id):
   question=QuestionBank.objects.get(id=id)
   if  question.file:
@@ -141,7 +147,7 @@ def admissionQuestion_delete(request, id):
   question.delete()
   return redirect('admissionQuestion')
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def semesterQuestion(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     context={}
@@ -156,7 +162,7 @@ def semesterQuestion(request):
     return render(request,'staff_lib_temp/semesterQuestion.html',context=context )
 
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def semesterQuestion_delete(request, id):
   question=SemesterQuestionBank.objects.get(id=id)
   if  question.file:
@@ -164,7 +170,7 @@ def semesterQuestion_delete(request, id):
   question.delete()
   return redirect('semesterQuestion')
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def semesterQuestion_add(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     if request.method == 'POST':
@@ -187,7 +193,7 @@ def semesterQuestion_add(request):
 
     return render(request,'staff_lib_temp/semesterQuestion_add.html', {'form': form,'profile':profile}) 
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def semesterQuestion_update(request, id):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     question=SemesterQuestionBank.objects.get(id=id)
@@ -218,7 +224,7 @@ def semesterQuestion_update(request, id):
 
     return render(request,'staff_lib_temp/semesterQuestion_update.html', {'form': form,'profile':profile})
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def lib_books(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     context={}
@@ -232,7 +238,7 @@ def lib_books(request):
     context['profile']=profile
     return render(request,'staff_lib_temp/lib_books.html',context=context )
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def lib_books_add(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     if request.method == 'POST':
@@ -257,13 +263,13 @@ def lib_books_add(request):
 
     return render(request,'staff_lib_temp/lib_books_add.html', {'form': form,'profile':profile})
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def lib_books_delete(request, id):
   book=Books.objects.get(id=id)
   book.delete()
   return redirect('lib_books')
 
-@login_required
+@user_passes_test(is_staffLib,login_url='/general login')
 def lib_books_update(request, id):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     book=Books.objects.get(id=id)
@@ -291,3 +297,102 @@ def lib_books_update(request, id):
         form = bookForm(instance=book)
 
     return render(request,'staff_lib_temp/lib_books_update.html', {'form': form,'profile':profile})
+
+
+@user_passes_test(is_staffLib,login_url='/general login')
+def books_student(request):
+    profile=StaffLibProfile.objects.get(email_id=request.user.id)
+    context={}
+    profiles=BooksStudentFilter(request.GET,queryset=Books.objects.exclude(student__isnull=True))
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
+
+    context['profile_page_obj']=profile_page_obj
+    context['profile']=profile
+    return render(request,'staff_lib_temp/books_student.html',context=context )
+
+@user_passes_test(is_staffLib,login_url='/general login')
+def books_student_delete(request, id):
+  book=Books.objects.get(id=id)
+  book.student=None
+  book.borrow_date=None
+  book.due_date=None
+  book.save()
+  return redirect('books_student')
+
+@user_passes_test(is_staffLib,login_url='/general login')
+def books_student_add(request):
+    profile=StaffLibProfile.objects.get(email_id=request.user.id)
+    if request.method == 'POST':
+        form = StudentbookForm(request.POST,request.FILES)
+        if form.is_valid() :
+            student_ID = form.cleaned_data.get('student_ID')
+            borrow_date=form.cleaned_data.get('borrow_date')
+            due_date=form.cleaned_data.get('due_date')
+            book_code=form.cleaned_data.get('book_code')
+            exist=Books.objects.filter(book_code=book_code).exists()
+            if exist==False:
+                 messages.error(request,'book not found')
+                 return redirect('books_student_add')
+            elif  exist==True:
+                std_exist=StudentProfile.objects.filter(student_ID=student_ID).exists()
+                book=Books.objects.get(book_code=book_code)
+                book_std=book.student
+                if std_exist==True and book_std is not None:
+                    msg=book.title+' has already been issued to '+str(book.student.student_ID)
+                    messages.error(request,msg)
+                    return redirect('books_student_add')  
+                elif std_exist ==True and book_std is None:
+                    count = Books.objects.filter(student_id__student_ID=student_ID).count()
+                    if count>=5 :
+                     messages.error(request,'Student already has five book issued')
+                     return redirect('books_student_add')
+                    else:
+                     object=Books.objects.get(book_code=book_code)
+                     student=StudentProfile.objects.get(student_ID=student_ID)
+                     object.due_date= due_date
+                     object.borrow_date=borrow_date
+                     object.student=student
+                     object.save()
+                    return redirect('books_student')
+                else:
+                    msg=student_ID+' student does not exist'
+                    messages.error(request,msg)
+                    return redirect('books_student_add')
+               
+            else:
+                messages.error(request,'Info not correct')
+            return redirect('books_student_add_add')
+        else:
+           messages.error(request,'Error validating registration please try again with correct value')
+    else:
+        form = StudentbookForm()
+
+    return render(request,'staff_lib_temp/books_student_add.html', {'form': form,'profile':profile})
+
+@user_passes_test(is_staffLib,login_url='/general login')
+def books_student_update(request, id):
+    profile=StaffLibProfile.objects.get(email_id=request.user.id)
+    book=Books.objects.get(id=id)
+    if request.method == 'POST':
+        form = bookupdateform(request.POST,instance=book)
+        if form.is_valid():
+            borrow_date = form.cleaned_data.get('borrow_date')
+            due_date=form.cleaned_data.get('due_date')
+            object=Books.objects.get(id=id)
+            object.due_date=due_date
+            object.borrow_date=borrow_date
+            object.save()
+            if  object is not None:
+                return redirect('books_student')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('books_student_update')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        form = bookupdateform(instance=book)
+
+    return render(request,'staff_lib_temp/books_student_update.html', {'form': form,'profile':profile,'book':book})
