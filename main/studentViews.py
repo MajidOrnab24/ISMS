@@ -10,18 +10,26 @@ from admin_app.models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from itertools import chain
 from main.forms import *
 import random
-
-
+def is_student(user):
+    try:
+        return user.is_authenticated and user.is_student 
+    except Student.DoesNotExist :
+        return False
+@user_passes_test(is_student,login_url='/general login')
 def studentPage(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     return render(request,'student_temp/studentPage.html',{'profile':profile})
+
+@user_passes_test(is_student,login_url='/general login')
 def studentCR_page(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     return render(request,'student_temp/studentCR_page.html',{'profile':profile})
+
+@user_passes_test(is_student,login_url='/general login')
 def changePasswordStudent(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     user=Student.objects.get(id=request.user.id)
