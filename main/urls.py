@@ -49,7 +49,6 @@ urlpatterns = [
     # student urls
     path('studentPage',student_view.studentPage, name='studentPage'),
     path('changePasswordStudent',student_view.changePasswordStudent, name='changePasswordStudent'),
-    path('studentCR_page',student_view.studentCR_page, name='studentCR_page'),
 
 
 
@@ -63,7 +62,6 @@ urlpatterns = [
     # faculty urls
     path('facultyPage',faculty_view.facultyPage, name='facultyPage'),
     path('changePasswordFaculty',faculty_view.changePasswordFaculty, name='changePasswordFaculty'),
-    path('dept_head_page',faculty_view.dept_head_page, name='dept_head_page'),
 
     
 

@@ -30,20 +30,27 @@ import random
 
 def is_faculty(user):
     try:
-        return user.is_authenticated and user.is_faculty
+        return user.is_authenticated and user.is_faculty and not user.is_admin
     except Faculty.DoesNotExist :
         return False
 
-@user_passes_test(is_faculty,login_url='/general login')
-def facultyPage(request):
-    profile=FacultyProfile.objects.get(email_id=request.user.id)
-    return render(request,'faculty_temp/facultyPage.html',{'profile':profile})
+
 
 @user_passes_test(is_faculty,login_url='/general login')
-def dept_head_page(request):
+def facultyPage(request):
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
+    context={}
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    return render(request,'faculty_temp/dept_head_page.html',{'profile':profile})
-    
+    context['profile']=profile
+    context['is_head']=is_head
+    return render(request,'faculty_temp/facultyPage.html',context=context)
+   
 @user_passes_test(is_faculty,login_url='/general login')
 def changePasswordFaculty(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)

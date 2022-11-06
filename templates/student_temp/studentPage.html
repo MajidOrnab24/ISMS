@@ -6,5 +6,8 @@
    <p>Email: {{user.email}}</p>
    <p>Department: {{profile.department}}</p>
    <p>Age: {{profile.age}}</p>
+   {% if profile.CR%}
+   <p>CR</p>
+   {% endif %}
 {%endblock%}
 
