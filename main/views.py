@@ -86,10 +86,10 @@ def signinStudent(request):
                 return redirect('signinStudent')
             elif  UserAccount is not None and UserAccount.is_student:
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
-                if(request.user.studentprofile.CR==True):
-                  return redirect('studentCR_page')
-                else:
-                  return redirect('studentPage')
+                # if(request.user.studentprofile.CR==True):
+                #   return redirect('studentCR_page')
+                # else:
+                return redirect('studentPage')
                 
             else:
                 messages.error(request,'username or password not correct')
@@ -103,7 +103,7 @@ def signinStudent(request):
 def signinFaculty(request):
     curr_user=request.user
     if  request.user.is_authenticated:
-        if curr_user.is_faculty:
+        if curr_user.is_faculty and not curr_user.is_admin:
             return redirect('facultyPage')
         elif curr_user.is_admin or curr_user.is_student or curr_user.is_staff_lib or curr_user.is_staff_med :
              return redirect('logError')
@@ -124,13 +124,8 @@ def signinFaculty(request):
                 messages.error(request,'Wrong user type, Faculty only. '+types.title()+' type not accepted')
                 return redirect('signinFaculty')
             elif  UserAccount is not None and UserAccount.is_faculty :
-                login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
-                head=DeptHeadFaculty.objects.get(dept_id=request.user.facultyprofile.department_id)
-                if(head.email):
-                    if(head.email.email.email==request.user.email):
-                     return redirect('dept_head_page')
-                else: 
-                  return redirect('facultyPage')
+                login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend') 
+                return redirect('facultyPage')
                 
             else:
                 messages.error(request,'username or password not correct')

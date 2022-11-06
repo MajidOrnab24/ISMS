@@ -26,6 +26,20 @@
                   <span class="item">Home</span>
               </a>
           </li>
+          {% if is_head %}
+          <li>
+            <a href="#" class="button-categories-link">
+                <span class="icon"><i class="fas fa-user-friends"></i></span>
+                <span class="item">Courses</span>
+            </a>
+        </li>
+          <li>
+            <a href="#" class="button-categories-link">
+                <span class="icon"><i class="fas fa-user-friends"></i></span>
+                <span class="item">Assign Courses</span>
+            </a>
+        </li>
+          {% endif%}
           <li>
               <a href="#" class="button-categories-link">
                   <span class="icon"><i class="fas fa-user-friends"></i></span>
