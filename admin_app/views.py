@@ -106,7 +106,7 @@ def changePasswordAdmin(request):
 @user_passes_test(is_admin,login_url='/general login')
 def adminStudent(request):
     context={}
-    profiles=StudentFilter(request.GET,queryset=StudentProfile.objects.all())
+    profiles=StudentFilter(request.GET,queryset=StudentProfile.objects.all().order_by('email_id'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')
@@ -267,7 +267,7 @@ def deleteStudent(request, id):
 @user_passes_test(is_admin,login_url='/general login')
 def adminFaculty(request):
     context={}
-    profiles=FacultyFilter(request.GET,queryset=FacultyProfile.objects.all())
+    profiles=FacultyFilter(request.GET,queryset=FacultyProfile.objects.all().order_by('email_id'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')
@@ -412,7 +412,7 @@ def facultyChangePass(request,id):
 @user_passes_test(is_admin,login_url='/general login') 
 def adminStaff_med(request):
     context={}
-    profiles=StaffMedFilter(request.GET,queryset=StaffMedProfile.objects.all())
+    profiles=StaffMedFilter(request.GET,queryset=StaffMedProfile.objects.all().order_by('email_id'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')
@@ -554,7 +554,7 @@ def deleteStaffMed(request, id):
 @user_passes_test(is_admin,login_url='/general login') 
 def adminStaff_lib(request):
     context={}
-    profiles=StaffLibFilter(request.GET,queryset=StaffLibProfile.objects.all())
+    profiles=StaffLibFilter(request.GET,queryset=StaffLibProfile.objects.all().order_by('email_id'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')
@@ -693,7 +693,7 @@ def staff_libChangePass(request,id):
 @user_passes_test(is_admin,login_url='/general login')
 def admin_roadmap(request):
     context={}
-    profiles=RoadmapFilter(request.GET,queryset=RoadMap.objects.all())
+    profiles=RoadmapFilter(request.GET,queryset=RoadMap.objects.all().order_by('date'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')
@@ -761,7 +761,7 @@ def update_roadmap(request, id):
 @user_passes_test(is_admin,login_url='/general login')
 def admin_faq(request):
     context={}
-    profiles=FaqFilter(request.GET,queryset=Faq.objects.all())
+    profiles=FaqFilter(request.GET,queryset=Faq.objects.all().order_by('id'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')

@@ -1,0 +1,115 @@
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    table-layout:fixed;
+  }
+  th, td {
+    background-color: #e3e8e8;
+    text-justify: auto;
+    text-align:center;
+    word-wrap:break-word;
+  }
+  table .fixed{
+      table-layout: fixed;
+width: 100%;
+  }
+  ul.pagination li {
+display: inline-block;;
+color: rgb(0, 0, 0);
+padding: 5px 10px;
+text-decoration: none;
+}
+ul.pagination li.active {
+background-color: #4CAF50;
+border-radius: 5px;
+color: white;
+}
+
+ul.pagination li:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;}
+ul.pagination li a:hover:not(.active) {
+  color: red;
+  border-radius: 5px;}
+
+
+div.pagination a.active {
+background-color: #4CAF50;
+border-radius: 5px;
+color: white;
+}
+
+div.pagination a:hover:not(.active) {
+  background-color: #ddd;
+  border-radius: 5px;}
+
+div.container {
+text-align: center;
+padding-top: 10px;
+}
+div.add_button {
+text-align: right;
+padding-top: 10px;
+}
+div.input-field{
+padding-bottom: 20px;
+}
+.btn{
+  text-align: center;
+text-decoration: none;
+border: 1px;
+padding: 6px 15px;
+border-radius: 5px;
+background-color: #3e8e41;
+color: #fff;
+box-shadow: 0 6px #999;
+
+}
+.btn:hover{
+  background-color:#3e8e41
+
+  
+  }
+.btn:active {
+    background-color: #3e8e41;
+    box-shadow: 0 3px #666;
+    transform: translateY(3px);
+  }
+.button {
+display: inline-block;
+padding: 12px 25px;
+font-size: 15px;
+cursor: pointer;
+text-align: center;
+text-decoration: none;
+outline: none;
+color: #fff;
+background-color: #4CAF50;
+border: none;
+border-radius: 15px;
+box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+background-color: #3e8e41;
+box-shadow: 0 5px #666;
+transform: translateY(4px);
+}
+.action_button{
+color: #6f57cf;
+ background-color: #fff;
+text-align: center;
+text-decoration: none;
+border: 1px;
+border-radius: 5px;
+padding: 5px 10px;
+}
+.action_button:hover{
+  color: #fff;
+  background-color: #6f57cf;
+}
+label {
+    display: flex;
+  }

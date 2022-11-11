@@ -25,11 +25,6 @@ def studentPage(request):
     return render(request,'student_temp/studentPage.html',{'profile':profile})
 
 @user_passes_test(is_student,login_url='/general login')
-def studentCR_page(request):
-    profile=StudentProfile.objects.get(email_id=request.user.id)
-    return render(request,'student_temp/studentCR_page.html',{'profile':profile})
-
-@user_passes_test(is_student,login_url='/general login')
 def changePasswordStudent(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     user=Student.objects.get(id=request.user.id)

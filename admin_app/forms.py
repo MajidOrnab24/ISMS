@@ -303,3 +303,28 @@ class bookupdateform(forms.ModelForm):
         model =Books
         fields=('borrow_date','due_date')
 
+class medlogsForm(forms.ModelForm):
+    student_id=forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control",'size': '40' }))
+    disease=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    referred_by=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    details=forms.CharField(widget=forms.Textarea(attrs={"class": "form-control",'size': '40' }))
+    date= forms.DateField(widget=forms.DateInput(attrs={'type' :'date','max':datetime.datetime.now().date(),"class": "form-control"}))
+    
+
+
+    class Meta:
+        model=MedLog
+        fields =('student_id','disease','referred_by','details','date')
+
+class medlogsUpdateForm(forms.ModelForm):
+    disease=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    referred_by=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    details=forms.CharField(widget=forms.Textarea(attrs={"class": "form-control",'size': '40' }))
+    remuneration_date=forms.DateField(widget=forms.DateInput(attrs={'type' :'date',"class": "form-control"}))
+    remuneration=forms.IntegerField(widget=forms.NumberInput(attrs={"class": "form-control",'size': '40' }))
+    
+
+
+    class Meta:
+        model=MedLog
+        fields =('disease','referred_by','details','remuneration','remuneration_date')
