@@ -1,12 +1,12 @@
-{% extends "staff_lib_temp/staff_lib_base.html" %}
+{% extends "staff_med_temp/staff_med_base.html" %}
 {% load static %}
-{% block title %}Library Students Books List{% endblock %}
+{% block title %}Med Logs{% endblock %}
 {%block content%}
 {% load admin_app_extras%}
-<link rel ="stylesheet" href="{% static '/css/admin/admin_info_table.css' %}">
+<link rel ="stylesheet" href="{% static '/css/staff_med/medlogs.css' %}">
     <div class="add_button">
-      <a href="{%url 'books_student_add'%}">
-        <button class="button"><i class="fas fa-plus"></i> Issue a book </button>
+      <a href="{%url 'medlogs_add'%}">
+        <button class="button"><i class="fas fa-plus"></i> Add Info </button>
      </a>
         
     </div>
@@ -22,48 +22,43 @@
 
 <form method="get">
     
-        <label >Title: </label>
-        {{profiles.form.title}}
-        <label >Author: </label>
-        {{profiles.form.author}}
-        <label >Due Date: </label>
-        {{profiles.form.due_date}}
-        <br>
-        <label style="margin-top: 10px;">Book Code: </label>
-        {{profiles.form.book_code}}
-        <label >Student no: </label>
+        <label >Student ID: </label>
         {{profiles.form.student_id__student_ID}}
-        <label >Borrow Date: </label>
-        {{profiles.form.borrow_date}}
-        <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 800px; margin-top: 5px;">Search</button>
+        <label >Date: </label>
+        {{profiles.form.date}}
+        <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 30px;">Search</button>
   
 </form>
 <table style="width:100%" class="fixed">
     <thead>
       <tr>
-        <th width="350px">Title</th>
-        <th>Author</th>
-        <th>Book Code</th>
-        <th>Student ID:</th>
-        <th>Student Name:</th>
-        <th>Borrow Date:</th>
-        <th>Due Date:</th>
+        <th width="220px">Name</th>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Disease</th>
+        <th>Referred By</th>
+        <th>Details</th>
+        <th>Remuneration</th>
+        <th>Remuneration Date</th>
         <th>Edit/Delete</th>
       </tr>
     </thead>
     <tbody>
       {% for user in profile_page_obj %}
         <tr>
-          <td>{{ user.title }}</td>
-          <td>{{ user.author }}</td>
-          <td>{{ user.book_code }}</td>
-          <td>{{ user.student.student_ID}}</td>
           <td>{{ user.student.name }}</td>
-          <td>{{ user.borrow_date }}</td>
-          <td>{{ user.due_date }}</td>
+          <td>{{ user.student.student_ID}}</td>
+          <td>{{ user.date }}</td>
+          <td>{{ user.disease }}</td>
+          <td>{{ user.referred_by }}</td>
+          <td>{{ user.details }}</td>
+          <td>{{ user.remuneration }}</td>
+          <td>{{ user.remuneration_date }}</td>
+
+
           <td>
-            <li style="padding-top: 5px;"><a href="/books_student_delete/{{ user.id }}" class="delete" data-confirm="Are you sure to delete this question row?"> <button class="action_button">Delete</button></a></li>
-            <li style="margin: 5px;"> <a href="/books_student_update/{{ user.id }}"> <button class="action_button">Update</button></a></li>
+            <li style="padding-top: 5px;"><a href="/medlogs_delete/{{ user.id }}" class="delete" data-confirm="Are you sure to delete this question row?"> <button class="action_button">Delete</button></a></li>
+            <li style="margin: 5px;"> <a href="/medlogs_update/{{ user.id }}"> <button class="action_button">Update</button></a></li>
           </ul>
             
            

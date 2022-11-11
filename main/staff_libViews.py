@@ -79,7 +79,7 @@ def changePasswordStaff_lib(request):
 def admissionQuestion(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     context={}
-    profiles=AdmissionQuestionFilter(request.GET,queryset=QuestionBank.objects.all())
+    profiles=AdmissionQuestionFilter(request.GET,queryset=QuestionBank.objects.all().order_by('year'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')
@@ -151,7 +151,7 @@ def admissionQuestion_delete(request, id):
 def semesterQuestion(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     context={}
-    profiles=semesterQuestionFilter(request.GET,queryset=SemesterQuestionBank.objects.all())
+    profiles=semesterQuestionFilter(request.GET,queryset=SemesterQuestionBank.objects.all().order_by('year'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')
@@ -228,7 +228,7 @@ def semesterQuestion_update(request, id):
 def lib_books(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     context={}
-    profiles=BooksFilter(request.GET,queryset=Books.objects.all())
+    profiles=BooksFilter(request.GET,queryset=Books.objects.all().order_by('shelf_no'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')
@@ -303,7 +303,7 @@ def lib_books_update(request, id):
 def books_student(request):
     profile=StaffLibProfile.objects.get(email_id=request.user.id)
     context={}
-    profiles=BooksStudentFilter(request.GET,queryset=Books.objects.exclude(student__isnull=True))
+    profiles=BooksStudentFilter(request.GET,queryset=Books.objects.exclude(student__isnull=True).order_by('shelf_no'))
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles.qs,3)
     page_number=request.GET.get('page')

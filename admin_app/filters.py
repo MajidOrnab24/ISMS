@@ -173,3 +173,25 @@ class BooksStudentFilter(django_filters.FilterSet):
             
 
         }
+
+class MedLogsFilter(django_filters.FilterSet):
+    class Meta:
+        model = MedLog
+        fields = {'student_id__student_ID' :['exact'],'date' :['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+                        models.DateField: {
+                'filter_class': django_filters.DateFilter,
+                'extra': lambda f: {
+                     'widget': forms.DateInput(attrs={'type' :'date'}),
+                    # 'lookup_expr': 'icontains',
+                },
+            },
+
+        }

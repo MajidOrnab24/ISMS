@@ -86,9 +86,6 @@ def signinStudent(request):
                 return redirect('signinStudent')
             elif  UserAccount is not None and UserAccount.is_student:
                 login(request,  UserAccount,backend='django.contrib.auth.backends.ModelBackend')
-                # if(request.user.studentprofile.CR==True):
-                #   return redirect('studentCR_page')
-                # else:
                 return redirect('studentPage')
                 
             else:

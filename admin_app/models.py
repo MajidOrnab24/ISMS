@@ -256,3 +256,16 @@ class Books(models.Model):
     @property
     def student_borrowed(self):
         return self.stduent.name
+
+class MedLog(models.Model):
+    disease=models.CharField(max_length=256)
+    student=models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
+    date= models.DateField(max_length=10, null =True)
+    remuneration_date= models.DateField(max_length=10,null=True,blank=True)
+    remuneration=models.IntegerField(null=True,blank=True)
+    referred_by=models.CharField(max_length=256)
+    details= models.TextField()
+
+    def __str__(self):
+        return "%s_%s_%s." % (self.student.name, self.disease,self.id)
+

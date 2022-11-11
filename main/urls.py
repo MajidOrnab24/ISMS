@@ -77,6 +77,14 @@ urlpatterns = [
     # Med staff urls
     path('staffMedPage',staff_med_view.staffMedPage, name='staffMedPage'),
     path('changePasswordStaff_med',staff_med_view.changePasswordStaff_med, name='changePasswordStaff_med'),
+    path('medlogs',staff_med_view.medlogs, name='medlogs'),
+    path('medlogs_add',staff_med_view.medlogs_add, name='medlogs_add'),
+    path('medlogs_update/<int:id>', staff_med_view.medlogs_update, name='medlogs_update'),
+    path('medlogs_delete/<int:id>', staff_med_view.medlogs_delete, name='medlogs_delete'),
+
+
+
+
 
 
 
