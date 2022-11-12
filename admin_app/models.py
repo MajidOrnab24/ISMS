@@ -212,7 +212,8 @@ class Courses(models.Model):
     credit =models.FloatField(null=True)
     faculty=models.ForeignKey(FacultyProfile,on_delete=models.SET_NULL,null=TRUE,blank=True,)
     students = models.ManyToManyField(StudentProfile, through='Enrollment')
-    dept_name = models.CharField(max_length=30,choices=dept_choices)
+    department = models.ForeignKey(department,on_delete=models.SET_NULL,null=True)
+    created_d_ID=models.IntegerField(null=True)
     def __str__(self):
         return self.name
   

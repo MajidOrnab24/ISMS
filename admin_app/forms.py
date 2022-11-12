@@ -328,3 +328,14 @@ class medlogsUpdateForm(forms.ModelForm):
     class Meta:
         model=MedLog
         fields =('disease','referred_by','details','remuneration','remuneration_date')
+
+class CoursesForm (forms.ModelForm):
+    name=forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",'size': '40' }))
+    semester=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=sem_choices)
+    credit=forms.FloatField(widget=forms.NumberInput(attrs={"class": "form-control",'size': '40' }))
+    faculty=forms.ModelChoiceField(widget=forms.Select(attrs={"class": "form-control" }),queryset=FacultyProfile.objects.all(),empty_label="Select Faculty")
+    department=forms.ModelChoiceField(widget=forms.Select(attrs={"class": "form-control" }),queryset=department.objects.all(),empty_label="Select Department")
+    
+    class Meta:
+        model=Courses
+        fields=('name','semester','credit','faculty','department')
