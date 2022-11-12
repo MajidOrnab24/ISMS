@@ -195,3 +195,18 @@ class MedLogsFilter(django_filters.FilterSet):
             },
 
         }
+
+class CoursesFilter(django_filters.FilterSet):
+    class Meta:
+        model = Courses
+        fields = {'name' :['exact'],'semester' :['exact'],'faculty_id__name' :['exact'],'credit' :['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+
+        }

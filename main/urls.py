@@ -62,6 +62,14 @@ urlpatterns = [
     # faculty urls
     path('facultyPage',faculty_view.facultyPage, name='facultyPage'),
     path('changePasswordFaculty',faculty_view.changePasswordFaculty, name='changePasswordFaculty'),
+    path('courses',faculty_view.courses, name='courses'),
+    path('courses_add',faculty_view.courses_add, name='courses_add'),
+    path('courses_update/<int:id>', faculty_view.courses_update, name='courses_update'),
+    path('courses_delete/<int:id>', faculty_view.courses_delete, name='courses_delete'),
+
+
+
+
 
     
 

@@ -1,0 +1,112 @@
+{% extends "faculty_temp/faculty_base.html" %}
+{% load static %}
+{% block title %}Courses{% endblock %}
+{%block content%}
+{% load admin_app_extras%}
+<link rel ="stylesheet" href="{% static '/css/admin/admin_info_table.css' %}">
+    <div class="add_button">
+      <a href="{%url 'courses_add'%}">
+        <button class="button"><i class="fas fa-plus"></i> Add Courses </button>
+     </a>
+        
+    </div>
+<style>
+    
+        label {
+           display: inline-block;
+           width: 100px;
+            color: #000000; 
+         }
+    
+</style>
+
+<form method="get">
+    
+        <label >Course:</label>
+        {{profiles.form.name}}
+        <label >Semester: </label>
+        {{profiles.form.semester}}
+        <label >Faculty: </label>
+        {{profiles.form.faculty_id__name}}
+        <br>
+        <label>Credit: </label>
+        {{profiles.form.credit}}
+
+        <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 600px; margin-top: 5px;">Search</button>
+  
+</form>
+<table style="width:100%" class="fixed">
+    <thead>
+      <tr>
+        <th width="350px">Name</th>
+        <th>Semester</th>
+        <th>Credit</th>
+        <th>Faculty</th>
+        <th>Department:</th>
+        <th>Edit/Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in profile_page_obj %}
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.semester }}</td>
+          <td>{{ user.credit }}</td>
+          <td>{{ user.faculty.name}}</td>
+          <td>{{ user.department.dept_name }}</td>
+          <td>
+            <li style="padding-top: 5px;"><a href="/courses_delete/{{ user.id }}" class="delete" data-confirm="Are you sure to delete this course?"> <button class="action_button">Delete</button></a></li>
+            <li style="margin: 5px;"> <a href="/courses_update/{{ user.id }}"> <button class="action_button">Update</button></a></li>
+          </ul>
+            
+           
+           </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+    <div class="container">
+      <ul class="pagination">
+    {% if profile_page_obj.has_previous%}
+       <li><a href="{% my_url 1 'page' request.GET.urlencode%}">&laquo;First</a></li>
+       <li> <a href="{% my_url profile_page_obj.previous_page_number 'page' request.GET.urlencode%}">&laquo;Prevous</a></li>
+      {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+
+    {% for i in profile_page_obj.paginator.page_range %}
+    {% if profile_page_obj.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+      <li><a href="{% my_url i 'page' request.GET.urlencode%}">{{ i }}</a></li>
+    {% endif %}
+   {% endfor %}
+    {% if profile_page_obj.has_next%}
+   <li> <a href="{% my_url profile_page_obj.next_page_number 'page' request.GET.urlencode%}">Next &raquo;</a></li>
+   <li><a href="{% my_url profile_page_obj.paginator.num_pages 'page' request.GET.urlencode%}">Last &raquo;</a> </li>
+   {% else %}
+         <li class="disabled"><span>&raquo;</span></li>  
+    {% endif %}
+  </ul>
+  <span class="current">
+    Page {{profile_page_obj.number}} of {{profile_page_obj.paginator.num_pages}}
+  </span>
+  </div>
+  <script>
+    var deleteLinks = document.querySelectorAll('.delete');
+
+for (var i = 0; i < deleteLinks.length; i++) {
+  deleteLinks[i].addEventListener('click', function(event) {
+      event.preventDefault();
+
+      var choice = confirm(this.getAttribute('data-confirm'));
+
+      if (choice) {
+        window.location.href = this.getAttribute('href');
+      }
+  });
+}
+  </script>
+
+{%endblock%}
