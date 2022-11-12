@@ -67,6 +67,12 @@ urlpatterns = [
     path('courses_update/<int:id>', faculty_view.courses_update, name='courses_update'),
     path('courses_delete/<int:id>', faculty_view.courses_delete, name='courses_delete'),
     path('assigned_courses',faculty_view.assigned_courses, name='assigned_courses'),
+    path('update_profile',faculty_view.update_profile, name='update_profile'),
+    path('result',faculty_view.result, name='result'),
+    path('update_result/<int:id>',faculty_view.update_result, name='update_result'),
+
+
+
 
 
 

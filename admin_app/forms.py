@@ -339,3 +339,13 @@ class CoursesForm (forms.ModelForm):
     class Meta:
         model=Courses
         fields=('name','semester','credit','faculty','department')
+
+class EnrollmentForm(forms.ModelForm):
+    result=forms.ChoiceField(widget=forms.Select(attrs={"class": "form-control"}),choices=grade_choices)
+    date_finished= forms.DateField(widget=forms.DateInput(attrs={'type' :'date','min':datetime.datetime.now().date(),"class": "form-control"}))
+
+      
+
+    class Meta:
+        model=Enrollment
+        fields=('result','date_finished')
