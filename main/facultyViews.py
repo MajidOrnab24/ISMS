@@ -214,5 +214,127 @@ def assigned_courses(request):
     context['profile']=profile
     context['is_head']=is_head
     return render(request,'faculty_temp/assigned_courses.html',context=context )
+
+
+@user_passes_test(is_faculty,login_url='/general login')
+def update_profile(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
+    context={}
+    if request.method == 'POST':
+        profile_form = facultyprofileform(request.POST, request.FILES,instance=profile)
+        if  profile_form.is_valid():
+            name=profile_form.cleaned_data.get('name')
+            address=profile_form.cleaned_data.get('address')
+            phone=profile_form.cleaned_data.get('phone')
+            image=profile_form.cleaned_data.get('image')
+            gender=profile_form.cleaned_data.get('gender')
+            date_of_birth=profile_form.cleaned_data.get('date_of_birth')
+            designation=profile_form.cleaned_data.get('designation')
+            department=profile_form.cleaned_data.get('department')
+            room =profile_form.cleaned_data.get('room')
+            education=profile_form.cleaned_data.get('education')
+
+            profile=FacultyProfile.objects.get(email=request.user.id)
+            profile.name=name
+            profile.address=address
+            profile.phone=phone
+
+            if(profile.image!=image):
+                profile.image.delete()
+
+            profile.image=image
+
+            profile.gender=gender
+            profile.date_of_birth=date_of_birth
+            profile.department=department
+            profile.designation=designation
+            profile.room=room
+            profile.education=education
+            profile.save()
+
+            if  profile is not None:
+                return redirect('facultyPage')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('updateProfile')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        profile_form =facultyprofileform(instance=profile)
+
+        context['profile']=profile
+        context['is_head']=is_head
+        context['profile_form']=profile_form
+
+    return render(request,'faculty_temp/updateProfile.html', context=context)
+
+@user_passes_test(is_faculty,login_url='/general login')
+def result(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
+    context={}
+    profiles=EnrollmentFilter(request.GET,queryset=Enrollment.objects.filter(courses__faculty__email_id=profile.email_id).order_by('id'))
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
+
+    context['profile_page_obj']=profile_page_obj
+    context['profile']=profile
+    context['is_head']=is_head
+    return render(request,'faculty_temp/result.html',context=context )
+
+
+@user_passes_test(is_faculty,login_url='/general login')
+def update_result(request,id):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
+    context={}
+    enroll=Enrollment.objects.get(id=id)
+    if request.method == 'POST':
+        form = EnrollmentForm(request.POST,instance=enroll)
+        if form.is_valid():
+            result = form.cleaned_data.get('result')
+            date_finished=form.cleaned_data.get('date_finished')
+            object=Enrollment.objects.get(id=id)
+            object.date_finished=date_finished
+            object.result=result
+            object.save()
+            if  object is not None:
+                return redirect('update_result')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('update_student_result')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        form = EnrollmentForm(instance=enroll)
+        context['profile']=profile
+        context['is_head']=is_head
+        context['form']=form
+        context['enroll']=enroll
+    return render(request,'faculty_temp/update_result.html', context=context)
+
+
+
     
 

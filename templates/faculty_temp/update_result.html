@@ -1,0 +1,40 @@
+{% extends "faculty_temp/faculty_base.html" %}
+{% load static %}
+{% block title %}Result Update{% endblock %}
+{%block content%}
+<link rel ="stylesheet" href="{% static '/css/admin/register_update.css' %}">
+<div class="container" style="padding: 10px;">
+  <div class="info">
+    <p><strong>Student name: </strong>{{enroll.students.name}}</p>
+    <p><strong>Course name: </strong>{{enroll.courses.name}}<p>
+    <p><strong>Semester: </strong>{{enroll.courses.semester}}</p>
+    <p><strong>Credit:</strong>{{enroll.courses.credit}}</p>
+    <p><strong>Date joined: </strong>{{enroll.date_joined}}</p>
+
+  </div>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <br />
+    {% for message in messages %}
+    
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+           {{ message }}
+    </div>
+
+    {% endfor %}
+    <br>
+    <button type="Submit" value="Submit"class="button_register__submit">
+      <span class="button__text">Update </span>
+  </button>
+  </form>
+
+
+</div>
+
+  
+
+
+
+{%endblock%}

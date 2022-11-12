@@ -210,3 +210,25 @@ class CoursesFilter(django_filters.FilterSet):
             },
 
         }
+
+class EnrollmentFilter(django_filters.FilterSet):
+    class Meta:
+        model = Enrollment
+        fields = {'students__name' :['exact'],'courses__name' :['exact'],'courses__semester' :['exact'],'date_joined' :['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+            models.DateField: {
+                'filter_class': django_filters.DateFilter,
+                'extra': lambda f: {
+                     'widget': forms.DateInput(attrs={'type' :'date'}),
+                    # 'lookup_expr': 'icontains',
+                },
+            },
+
+        }
