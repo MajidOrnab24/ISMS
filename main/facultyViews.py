@@ -193,5 +193,26 @@ def courses_delete(request, id):
   course.delete()
   return redirect('courses')
 
+@user_passes_test(is_faculty,login_url='/general login')
+def assigned_courses(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
+    context={}
+    profiles=CoursesFilter(request.GET,queryset=Courses.objects.filter(faculty=profile).order_by('semester'))
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
 
+    context['profile_page_obj']=profile_page_obj
+    context['profile']=profile
+    context['is_head']=is_head
+    return render(request,'faculty_temp/assigned_courses.html',context=context )
+    
 
