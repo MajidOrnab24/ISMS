@@ -55,6 +55,13 @@ def facultyPage(request):
 @user_passes_test(is_faculty,login_url='/general login')
 def changePasswordFaculty(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
     user=Faculty.objects.get(id=request.user.id)
     form = changePasswordForm(request.POST or None)
     if request.method == 'POST':
@@ -82,7 +89,7 @@ def changePasswordFaculty(request):
                 return redirect('changePasswordFaculty')
         else:
             messages.error(request,'Error Validating form')
-    return render(request, 'faculty_temp/changePasswordFaculty.html', {'form': form,'profile':profile})
+    return render(request, 'faculty_temp/changePasswordFaculty.html', {'form': form,'profile':profile,'is_head':is_head})
 
 @user_passes_test(is_faculty,login_url='/general login')
 def courses(request):
@@ -263,7 +270,7 @@ def update_profile(request):
                 return redirect('facultyPage')
             else:
                 messages.error(request,'enter valid information')
-            return redirect('updateProfile')
+            return redirect('update_profile')
         else:
            messages.error(request,'Error validating update form')
     else:
