@@ -16,8 +16,12 @@
          <div class="profile">
           <img src="{{profile.image.url}}" alt="profile_picture">
           <h4>{{user}}</h4>
-          <p>Faculty</p>
-          <p>{{profile.department}}</p>
+          <h4>Faculty</h4>
+          {% if is_head %}
+          <h4>Head of the department </h4>
+          {% endif%}
+          <h4>{{profile.department}}</h4>
+          
         </div>
         <ul>
           <li>
