@@ -39,7 +39,8 @@
           <td>{{ user.year }}</td>
           <td>{{ user.department }}</td>
           <td>{{ user.semester}}</td>
-          <td><a href="{{user.file.url}}" target="_blank">Click Here to download</a></td>
+          <td><a href="/viewSemesterPDF/{{user.id}}">Click Here to view</a></td>
+
           <td>
             <li style="padding-top: 5px;"><a href="/semesterQuestion_delete/{{ user.id }}" class="delete" data-confirm="Are you sure to delete this question row?"> <button class="action_button">Delete</button></a></li>
             <li style="margin: 5px;"> <a href="/semesterQuestion_update/{{ user.id }}"> <button class="action_button">Update</button></a></li>

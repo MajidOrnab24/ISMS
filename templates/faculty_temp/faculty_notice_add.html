@@ -1,0 +1,32 @@
+{% extends "faculty_temp/faculty_base.html" %}
+{% load static %}
+{% block title %}Notice Add{% endblock %}
+{%block content%}
+<link rel ="stylesheet" href="{% static '/css/admin/register_update.css' %}">
+<div class="container" style="padding: 10px;">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <br />
+    {% for message in messages %}
+    
+    <div class="alert alert-success">
+        <a class="close" href="#" data-dismiss="alert">×</a>
+           {{ message }}
+    </div>
+
+    {% endfor %}
+    <br>
+    <button type="Submit" value="Submit"class="button_register__submit">
+      <span class="button__text">Add Notice </span>
+  </button>
+  </form>
+
+
+</div>
+
+  
+
+
+
+{%endblock%}
