@@ -9,6 +9,8 @@ from django.urls import is_valid_path
 from main.models import UserAccount
 from admin_app.models import *
 import email
+from django.http import FileResponse
+from django.core.files.storage import FileSystemStorage
 from email.message import EmailMessage
 from pickle import TRUE
 from django.shortcuts import render
@@ -19,7 +21,7 @@ from django.contrib.auth.models import User, auth
 from main.admision_models import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login,logout
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from itertools import chain
 from main.forms import *
@@ -170,3 +172,20 @@ def signinStaff(request):
 
     
 
+def viewSemesterPDF(request,id):
+    try:
+     object=SemesterQuestionBank.objects.get(id=id)
+     path=str(object.file)
+     filepath = os.path.join('media', path)
+     return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
+    except FileNotFoundError :
+         return HttpResponseNotFound('The requested pdf was not found in our server.')
+
+def viewAdmissionPDF(request,id):
+    try:
+     object=QuestionBank.objects.get(id=id)
+     path=str(object.file)
+     filepath = os.path.join('media', path)
+     return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
+    except FileNotFoundError :
+         return HttpResponseNotFound('The requested pdf was not found in our server.')

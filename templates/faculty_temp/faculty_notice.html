@@ -1,39 +1,53 @@
-{% extends "staff_lib_temp/staff_lib_base.html" %}
+{% extends "faculty_temp/faculty_base.html" %}
 {% load static %}
-{% block title %}Admission Question{% endblock %}
+{% block title %}Notices{% endblock %}
 {%block content%}
 {% load admin_app_extras%}
 <link rel ="stylesheet" href="{% static '/css/admin/admin_info_table.css' %}">
     <div class="add_button">
-      <a href="{%url 'admissionQuestion_add'%}">
-        <button class="button"><i class="fas fa-plus"></i> Add PDF Question </button>
+      <a href="{%url 'faculty_notice_add'%}">
+        <button class="button"><i class="fas fa-plus"></i> Add Notice </button>
      </a>
         
     </div>
+<style>
+    
+        label {
+           display: inline-block;
+           width: 100px;
+            color: #000000; 
+         }
+    
+</style>
 
 <form method="get">
-  <label >Year: </label>
-  {{profiles.form.year}}
- 
+    
+        <label >Date:</label>
+        {{profiles.form.date}}
+        <label style="margin-bottom: 10px; margin-left: 20px;" >Course: </label>
+        {{profiles.form.course__name}}
 
-  <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 10px;">Search</button>
+        <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 20px; margin-top: 5px;">Search</button>
+  
 </form>
 <table style="width:100%" class="fixed">
     <thead>
       <tr>
-        <th width="400px">Year</th>
-        <th>Question</th>
+        <th width="200px">Course</th>
+        <th width="130px">Date & Time</th>
+        <th width="700px">Content</th>
         <th>Edit/Delete</th>
       </tr>
     </thead>
     <tbody>
       {% for user in profile_page_obj %}
         <tr>
-          <td>{{ user.year }}</td>
-          <td><a href="viewAdmissionPDF/{{user.id}}">Click Here to view</a></td>
+          <td>{{ user.course.name }}</td>
+          <td>{{ user.time }}<br>{{ user.date|date:'Y-m-d' }}</td>
+          <td>{{ user.content }}</td>
           <td>
-            <li style="padding-top: 5px;"><a href="/admissionQuestion_delete/{{ user.id }}" class="delete" data-confirm="Are you sure to delete this question row?"> <button class="action_button">Delete</button></a></li>
-            <li style="margin: 5px;"> <a href="/admissionQuestion_update/{{ user.id }}"> <button class="action_button">Update</button></a></li>
+            <li style="padding-top: 5px;"><a href="/faculty_notice_delete/{{ user.id }}" class="delete" data-confirm="Are you sure to delete this notice?"> <button class="action_button">Delete</button></a></li>
+            <li style="margin: 5px;"> <a href="/faculty_notice_update/{{ user.id }}"> <button class="action_button">Update</button></a></li>
           </ul>
             
            

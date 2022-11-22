@@ -349,3 +349,12 @@ class EnrollmentForm(forms.ModelForm):
     class Meta:
         model=Enrollment
         fields=('result','date_finished')
+
+
+class NoticeForm(forms.ModelForm):
+    course=forms.ModelChoiceField(widget=forms.Select(attrs={"class": "form-control" }),queryset=Courses.objects.all(),empty_label="Select Course")
+    content=forms.CharField(widget=forms.Textarea(attrs={"class": "form-control",'style': 'width: 60em;''height: 30em;' }))
+
+    class Meta:
+        model=notice
+        fields=('course','content')

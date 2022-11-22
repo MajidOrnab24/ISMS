@@ -14,6 +14,9 @@ from admin_app import views as admin_view
 urlpatterns = [
     path('',views.home, name='home'),
     path('general login',views.general_login, name='general_login'),
+    path('viewSemesterPDF/<str:id>', views.viewSemesterPDF, name='viewSemesterPDF'),
+    path('viewAdmissionPDF/<str:id>', views.viewAdmissionPDF, name='viewAdmissionPDF'),
+
 
 
     # Admission urls
@@ -70,6 +73,13 @@ urlpatterns = [
     path('update_profile',faculty_view.update_profile, name='update_profile'),
     path('result',faculty_view.result, name='result'),
     path('update_result/<int:id>',faculty_view.update_result, name='update_result'),
+    path('faculty_notice',faculty_view.faculty_notice, name='faculty_notice'),
+    path('faculty_notice_add',faculty_view.faculty_notice_add, name='faculty_notice_add'),
+    path('faculty_notice_delete/<int:id>', faculty_view.faculty_notice_delete, name='faculty_notice_delete'),
+    path('faculty_notice_update/<int:id>', faculty_view.faculty_notice_update, name='faculty_notice_update'),
+    
+
+
 
 
 

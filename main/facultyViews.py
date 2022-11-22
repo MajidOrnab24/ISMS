@@ -327,10 +327,10 @@ def update_result(request,id):
             object.result=result
             object.save()
             if  object is not None:
-                return redirect('update_result')
+                return redirect('result')
             else:
                 messages.error(request,'enter valid information')
-            return redirect('update_student_result')
+            return redirect('update_result')
         else:
            messages.error(request,'Error validating update form')
     else:
@@ -342,6 +342,114 @@ def update_result(request,id):
     return render(request,'faculty_temp/update_result.html', context=context)
 
 
+@user_passes_test(is_faculty,login_url='/general login')
+def faculty_notice(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
+    context={}
+    profiles=NoticeFilter(request.GET,queryset=notice.objects.filter(faculty_id=profile.email_id).order_by('time'))
+    context['profiles']=profiles
+    paginated_profiles=Paginator(profiles.qs,3)
+    page_number=request.GET.get('page')
+    profile_page_obj=paginated_profiles.get_page(page_number)
 
+    context['profile_page_obj']=profile_page_obj
+    context['profile']=profile
+    context['is_head']=is_head
+    return render(request,'faculty_temp/faculty_notice.html',context=context )
     
 
+@user_passes_test(is_faculty,login_url='/general login')
+def faculty_notice_add(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
+    context={}
+    if request.method == 'POST':
+        form = NoticeForm(request.POST,request.FILES)
+        form.fields['course'].queryset = Courses.objects.filter(faculty_id=profile.email_id)
+        if form.is_valid() :
+            user = form.save(commit=False)
+            user.time=datetime.datetime.now().strftime('%H:%M:%S')  
+            user.faculty=profile
+            user.date=datetime.datetime.now().strftime('%Y-%m-%d')  
+            user.save()
+            if user is None:
+                 messages.error(request,'notice not added')
+                 return redirect('faculty_notice_add')
+            elif  user is not None:
+                return redirect('faculty_notice')
+            else:
+                messages.error(request,'Info not correct')
+            return redirect('faculty_notice_add')
+        else:
+           messages.error(request,'Error validating registration please try again with correct value')
+    else:
+        form =NoticeForm()
+        form.fields['course'].queryset = Courses.objects.filter(faculty_id=profile.email_id)
+
+
+    context['profile']=profile
+    context['is_head']=is_head
+    context['form']=form
+    return render(request,'faculty_temp/faculty_notice_add.html', context=context)
+
+@user_passes_test(is_faculty,login_url='/general login')
+def faculty_notice_delete(request, id):
+  object=notice.objects.get(id=id)
+  object.delete()
+  return redirect('faculty_notice')
+
+@user_passes_test(is_faculty,login_url='/general login')
+def faculty_notice_update(request, id):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    is_head=False
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    if(head.email):
+        if(head.email.email.email==request.user.email):
+            is_head=True
+        else:
+            is_head=False
+    context={}
+    notice_=notice.objects.get(id=id)
+    if request.method == 'POST':
+        form = NoticeForm(request.POST,instance=notice_)
+        form.fields['course'].queryset = Courses.objects.filter(faculty_id=profile.email_id)
+
+        if form.is_valid():
+            content = form.cleaned_data.get('content')
+            course = form.cleaned_data.get('course')
+            object=notice.objects.get(id=id)
+            object.course=course
+            object.content=content
+            object.update=True
+            object.update_time=datetime.datetime.now().strftime('%H:%M:%S')  
+            object.update_date=datetime.datetime.now().strftime('%Y-%m-%d')  
+            object.save()
+            if  object is not None:
+                return redirect('faculty_notice')
+            else:
+                messages.error(request,'enter valid information')
+            return redirect('faculty_notice_update')
+        else:
+           messages.error(request,'Error validating update form')
+    else:
+        form = NoticeForm(instance=notice_)
+        form.fields['course'].queryset = Courses.objects.filter(faculty_id=profile.email_id)
+
+
+        context['profile']=profile
+        context['is_head']=is_head
+        context['form']=form
+    return render(request,'faculty_temp/faculty_notice_update.html', context=context)

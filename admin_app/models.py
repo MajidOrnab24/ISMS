@@ -270,3 +270,19 @@ class MedLog(models.Model):
     def __str__(self):
         return "%s_%s_%s." % (self.student.name, self.disease,self.id)
 
+
+class notice(models.Model):
+   course = models.ForeignKey(Courses, on_delete=models.CASCADE)
+   faculty=models.ForeignKey(FacultyProfile,on_delete=models.CASCADE)
+   content=models.TextField()
+   date=models.DateField()
+   time= models.TimeField()
+   update=models.BooleanField(default=False)
+   update_time=models.TimeField(null=True,blank=True)
+   update_date=models.DateField(null=True,blank=True)
+
+   def __str__(self):
+        return "%s_%s_%s." % (self.course.name,self.faculty.name ,datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+   
+
+

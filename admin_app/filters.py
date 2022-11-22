@@ -232,3 +232,25 @@ class EnrollmentFilter(django_filters.FilterSet):
             },
 
         }
+
+class NoticeFilter(django_filters.FilterSet):
+    class Meta:
+        model = notice
+        fields = {'date' :['exact'],'course__name' :['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+            models.DateField: {
+                'filter_class': django_filters.DateFilter,
+                'extra': lambda f: {
+                     'widget': forms.DateInput(attrs={'type' :'date'}),
+                    # 'lookup_expr': 'icontains',
+                },
+            },
+
+        }
