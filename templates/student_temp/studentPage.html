@@ -1,13 +1,19 @@
 {% extends "student_temp/student_base.html" %}
 {% block title %}{{profile.name}} page{% endblock %}
 	{%block content%}
-   <p>Student Name:  {{profile.name}}</p>
-   <p>Student ID:    {{profile.student_ID}} </p>
-   <p>Email: {{user.email}}</p>
-   <p>Department: {{profile.department}}</p>
-   <p>Age: {{profile.age}}</p>
-   {% if profile.CR%}
-   <p>CR</p>
-   {% endif %}
+   <p> <strong>Name:</strong> &nbsp;&nbsp;{{profile.name}}</p>
+   <p>  <strong>Student ID:</strong>  &nbsp;&nbsp;{{profile.student_ID}} </p>
+   <p><strong>Email:</strong>&nbsp;&nbsp; {{user.email}}</p>
+   <p><strong>Department:</strong>&nbsp;&nbsp; {{profile.department}}</p>
+   <p><strong>Age:</strong> &nbsp;&nbsp;{{profile.age}}</p>
+   <p> <strong>Father's Name:</strong> &nbsp;&nbsp;{{profile.father_name}}</p>
+   <p> <strong>Mother's Name:</strong> &nbsp;&nbsp;{{profile.mother_name}}</p>
+   <p> <strong>Semester:</strong> &nbsp;&nbsp;{{profile.semester}}</p>
+   <p> <strong>Phone:</strong> &nbsp;&nbsp;{{profile.phone}}</p>
+   <p> <strong>Date of Birth:</strong> &nbsp;&nbsp;{{profile.date_of_birth|date:'d-m-Y'}}</p>
+
+
+
+
 {%endblock%}
 

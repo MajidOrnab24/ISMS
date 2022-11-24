@@ -172,7 +172,7 @@ def official_notice(request):
     course_list=[]
     for i in std_courses:
         course_list.append(i.courses.name)
-    final_notice_query=notice.objects.filter(course__name__in=course_list).order_by('-date','-time')
+    final_notice_query=notice.objects.filter(course__name__in=course_list,semester=profile.semester).order_by('-date','-time')
     context={}
     profiles=NoticeFilter(request.GET,queryset=final_notice_query)
     context['profiles']=profiles
@@ -216,7 +216,6 @@ def teacher_info(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     context={}
     profiles=FacultyProfile.objects.filter(department_id=profile.department_id).order_by('designation_hier','date_of_birth')
-    print(profiles)
     context['profiles']=profiles
     paginated_profiles=Paginator(profiles,3)
     page_number=request.GET.get('page')
@@ -224,3 +223,67 @@ def teacher_info(request):
     context['profile_page_obj']=profile_page_obj
     context['profile']=profile
     return render(request,'student_temp/teacher_info.html',context=context )
+
+class result_calculator:
+    gpa=0
+    total_credit=0
+    total_gradePoint=0
+    fail=False
+    not_finished=False
+    def __init__(self, semester):
+        self.semester = semester
+        self.course_details = []
+    def calculate(self):
+        for list in self.course_details:
+           self.total_credit=self.total_credit+list[1]
+           if list[3] is None:
+             self.total_gradePoint=self.total_gradePoint+ list[1]*0
+             self.not_finished=True
+           else:
+             self.total_gradePoint=self.total_gradePoint+ list[1]*list[2]
+             if(list[2]==0):
+                self.fail=True
+
+        if(self.fail):
+         self.gpa=0      
+        else:
+         self.gpa=self.total_gradePoint/self.total_credit   
+           
+@user_passes_test(is_student,login_url='/general login')
+def result(request):
+    profile=StudentProfile.objects.get(email_id=request.user.id)
+    context={}
+    profiles=[]
+    for i in range(1, 9): 
+       profiles.append(Enrollment.objects.filter(students_id=profile.email_id,courses__semester=i).order_by('courses__name'))  
+    
+    global_cgpa=0.0
+    global_credit=0.0
+    global_gradePoint=0.0
+
+    semester_result=[]
+    for i in range(1, 9):
+        if profile.semester < i:
+             break
+        data = result_calculator(i)
+        for s in profiles[i-1]:
+           data.course_details.append([s.courses.name,s.courses.credit,s.result,s.date_finished])
+
+        data.calculate()
+        semester_result.append(data)
+
+        if(data.fail==False and data.not_finished==False):
+          global_credit=global_credit+data.total_credit
+          global_gradePoint=global_gradePoint+data.total_gradePoint
+
+        
+    global_cgpa=global_gradePoint/global_credit
+
+    for list in semester_result[0].course_details:
+       print(list)
+
+    context['semester_result']=semester_result
+    context['global_cgpa']=global_cgpa
+    context['semester_result']=semester_result
+    context['profile']=profile
+    return render(request,'student_temp/result.html',context=context )

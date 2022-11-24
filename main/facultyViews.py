@@ -213,7 +213,7 @@ def assigned_courses(request):
     context={}
     profiles=CoursesFilter(request.GET,queryset=Courses.objects.filter(faculty=profile).order_by('semester'))
     context['profiles']=profiles
-    paginated_profiles=Paginator(profiles.qs,3)
+    paginated_profiles=Paginator(profiles.qs,10)
     page_number=request.GET.get('page')
     profile_page_obj=paginated_profiles.get_page(page_number)
 
@@ -383,6 +383,7 @@ def faculty_notice_add(request):
             user = form.save(commit=False)
             user.time=datetime.datetime.now().strftime('%H:%M:%S')  
             user.faculty=profile
+            user.semester=user.course.semester
             user.date=datetime.datetime.now().strftime('%Y-%m-%d')  
             user.save()
             if user is None:
@@ -432,6 +433,7 @@ def faculty_notice_update(request, id):
             course = form.cleaned_data.get('course')
             object=notice.objects.get(id=id)
             object.course=course
+            object.semester=course.semester
             object.content=content
             object.update=True
             object.update_time=datetime.datetime.now().strftime('%H:%M:%S')  

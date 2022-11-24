@@ -1,20 +1,26 @@
 {% extends "admin_temp/admin_base.html" %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
+<style>
+.ad_home{
+  /* margin: 0;
+  padding: 0; */
+  background-image: url(/static/images/base_login.jpg);
+  /* background-size:     cover;                      
+  background-repeat:   no-repeat;
+  background-position: center center;
+  height: 100vh;
+  overflow: hidden; */
+}
+</style>
+<div class="ad_home">
 	{%block content%}
-	<p>Welcome to ISMS Admin</p><br>
-	<p>Majidul Islam Chowdhury</p><br>
-   <h3>{{user.email}}</h3><br>
-{%endblock%}
-</body>
-</html>
+	<h1>Welcome to ISMS</h1>
+  <h2>Admin</h2><br>
+	<h4>Majidul Islam Chowdhury</h4>
+   {%endblock%}
+
+</div>
+
+
 
 
 

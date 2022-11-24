@@ -221,7 +221,7 @@ class Courses(models.Model):
 class Enrollment(models.Model):
     students = models.ForeignKey(StudentProfile, on_delete=models.CASCADE)
     courses = models.ForeignKey(Courses, on_delete=models.CASCADE)
-    result = models.FloatField(choices=grade_choices,null=True,blank=True)
+    result = models.FloatField(choices=grade_choices,null=True,blank=True,default=0.0)
     date_joined = models.DateField(max_length=10, null =True)
     date_finished = models.DateField(max_length=10,null=True,blank=True)
     def __str__(self):
@@ -278,6 +278,7 @@ class MedLog(models.Model):
 class notice(models.Model):
    course = models.ForeignKey(Courses, on_delete=models.CASCADE)
    faculty=models.ForeignKey(FacultyProfile,on_delete=models.CASCADE)
+   semester=models.IntegerField(default=1)
    content=models.TextField()
    date=models.DateField()
    time= models.TimeField()

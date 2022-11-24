@@ -1,7 +1,10 @@
 {% extends "staff_lib_temp/staff_lib_base.html" %}
 {% block title %}{{profile.name}} page{% endblock %}
 	{%block content%}
-   <p>Staff Name:  {{profile.name}}</p>
-   <p>Email: {{user.email}}</p>
+   <p> <strong>Name:</strong> &nbsp;&nbsp;{{profile.name}}</p>
+   <p><strong>Email:</strong>&nbsp;&nbsp; {{profile.email}}</p>
+   <p><strong>Designation:</strong>&nbsp;&nbsp; {{profile.designation}}</p>
+   <p><strong>Phone:</strong>&nbsp;&nbsp; {{profile.phone}}</p>
+   <p><strong>Duty:</strong>&nbsp;&nbsp; {{profile.duty}}</p>
 {%endblock%}
 
