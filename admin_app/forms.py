@@ -358,3 +358,10 @@ class NoticeForm(forms.ModelForm):
     class Meta:
         model=notice
         fields=('course','content')
+
+
+class CRNoticeForm(forms.ModelForm):
+    content=forms.CharField(widget=forms.Textarea(attrs={"class": "form-control",'style': 'width: 60em;''height: 30em;' }))
+    class Meta:
+        model=student_notice
+        fields=('content',)

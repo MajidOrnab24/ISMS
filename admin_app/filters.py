@@ -254,3 +254,25 @@ class NoticeFilter(django_filters.FilterSet):
             },
 
         }
+
+class CRNoticeFilter(django_filters.FilterSet):
+    class Meta:
+        model = student_notice
+        fields = {'date' :['exact']}
+
+        filter_overrides = {
+            models.CharField: {
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+            models.DateField: {
+                'filter_class': django_filters.DateFilter,
+                'extra': lambda f: {
+                     'widget': forms.DateInput(attrs={'type' :'date'}),
+                    # 'lookup_expr': 'icontains',
+                },
+            },
+
+        }

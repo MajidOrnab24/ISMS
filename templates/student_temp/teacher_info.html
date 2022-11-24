@@ -1,24 +1,18 @@
-{% extends "admin_temp/admin_base.html" %}
+{% extends "student_temp/student_base.html" %}
 {% load static %}
-{% block title %}Admin Faculty Panel{% endblock %}
+{% block title %}Teacher Info{% endblock %}
 {%block content%}
 {% load admin_app_extras%}
-<link rel ="stylesheet" href="{% static '/css/admin/admin_info_table.css' %}">
-    <div class="add_button">
-      <a href="{%url 'facultyregister'%}">
-        <button class="button"><i class="fas fa-plus"></i> Add Faculty</button>
-     </a>
-        
-    </div>
-
-<form method="get">
-  <label >Name: </label>
-  {{profiles.form.name}}
-  <label style="margin-left: 5px;">Department: </label>
-  {{profiles.form.department}}
-
-  <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 10px;">Search</button>
-</form>
+<link rel ="stylesheet" href="{% static '/css/student/cr_notice.css' %}">
+<style>
+    
+        label {
+           display: inline-block;
+           width: 100px;
+            color: #000000; 
+         }
+    
+</style>
 <table style="width:100%" class="fixed">
     <thead>
       <tr>
@@ -30,7 +24,6 @@
         <th>Phone</th>
         <th >Education</th>
         <th style="height:fit-content; width:fit-content">Image</th>
-        <th>Edit/Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -44,18 +37,11 @@
           <td>{{ user.phone }}</td>
           <td style="height: 100px;">{{ user.education}}</td>
           <td><img src="{{ user.image.url}}" alt="" height=100 width=100 /></td>
-
-          <td>
-           <ul>
-            <li style="padding-top: 5px;"><a href="/deleteFaculty/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this faculty?"> <button class="action_button">Delete</button></a></li>
-            <li style="padding-top: 5px;"><a href="/facultyUpdate/{{ user.email_id }}"> <button class="action_button">Update</button></a></li>
-            <li style="padding-top: 5px;"><a href="/facultyChangePass/{{ user.email_id }}"> <button class="action_button">Change Password</button></a></li>
-          </ul>
-           </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
+
   
     <div class="container">
       <ul class="pagination">
@@ -84,20 +70,6 @@
     Page {{profile_page_obj.number}} of {{profile_page_obj.paginator.num_pages}}
   </span>
   </div>
-  <script>
-    var deleteLinks = document.querySelectorAll('.delete');
 
-for (var i = 0; i < deleteLinks.length; i++) {
-  deleteLinks[i].addEventListener('click', function(event) {
-      event.preventDefault();
-
-      var choice = confirm(this.getAttribute('data-confirm'));
-
-      if (choice) {
-        window.location.href = this.getAttribute('href');
-      }
-  });
-}
-  </script>
 
 {%endblock%}

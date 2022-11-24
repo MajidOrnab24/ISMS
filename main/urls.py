@@ -52,6 +52,24 @@ urlpatterns = [
     # student urls
     path('studentPage',student_view.studentPage, name='studentPage'),
     path('changePasswordStudent',student_view.changePasswordStudent, name='changePasswordStudent'),
+    path('studentCR_notice',student_view.studentCR_notice, name='studentCR_notice'),
+    path('studentCR_notice_add',student_view.studentCR_notice_add, name='studentCR_notice_add'),
+    path('studentCR_notice_delete/<int:id>',student_view.studentCR_notice_delete, name='studentCR_notice_delete'),
+    path('studentCR_notice_update/<int:id>',student_view.studentCR_notice_update, name='studentCR_notice_update'),
+    path('academic_notice',student_view.academic_notice, name='academic_notice'),
+    path('official_notice',student_view.official_notice, name='official_notice'),
+    path('medical_logs',student_view.medical_logs, name='medical_logs'),
+    path('library_book_status',student_view.library_book_status, name='library_book_status'),
+    path('teacher_info',student_view.teacher_info, name='teacher_info'),
+
+    
+
+
+
+
+
+
+
 
 
 

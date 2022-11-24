@@ -306,6 +306,14 @@ def facultyregister(request):
             profile.date_of_birth=date_of_birth
             profile.department=department
             profile.designation=designation
+            if designation=='Professor':
+                profile.designation_hier=1
+            elif designation=='Associate Professor':
+                profile.designation_hier=2
+            elif designation=='Assistant Professor':
+                profile.designation_hier=3
+            elif designation=='Lecturer':
+                profile.designation_hier=4
             profile.room=room
             profile.education=education
             profile.save()
@@ -343,6 +351,7 @@ def facultyUpdate(request,id):
             gender=profile_form.cleaned_data.get('gender')
             date_of_birth=profile_form.cleaned_data.get('date_of_birth')
             designation=profile_form.cleaned_data.get('designation')
+            
             department=profile_form.cleaned_data.get('department')
             room =profile_form.cleaned_data.get('room')
             education=profile_form.cleaned_data.get('education')
@@ -360,6 +369,14 @@ def facultyUpdate(request,id):
             profile.date_of_birth=date_of_birth
             profile.department=department
             profile.designation=designation
+            if designation=='Professor':
+                profile.designation_hier=1
+            elif designation=='Associate Professor':
+                profile.designation_hier=2
+            elif designation=='Assistant Professor':
+                profile.designation_hier=3
+            elif designation=='Lecturer':
+                profile.designation_hier=4
             profile.room=room
             profile.education=education
             profile.save()
