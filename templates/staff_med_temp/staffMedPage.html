@@ -1,7 +1,12 @@
 {% extends "staff_med_temp/staff_med_base.html" %}
 {% block title %}{{profile.name}} page{% endblock %}
 	{%block content%}
-   <p>Faculty Name:  {{profile.name}}</p>
-   <p>Email: {{user.email}}</p>
+   <p> <strong>Name:</strong> &nbsp;&nbsp;{{profile.name}}</p>
+   <p><strong>Email:</strong>&nbsp;&nbsp; {{profile.email}}</p>
+   <p><strong>Designation:</strong>&nbsp;&nbsp; {{profile.designation}}</p>
+   <p><strong>Phone:</strong>&nbsp;&nbsp; {{profile.phone}}</p>
+   <p><strong>Duty:</strong>&nbsp;&nbsp; {{profile.duty}}</p>
+
+   
 {%endblock%}
 

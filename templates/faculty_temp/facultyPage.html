@@ -1,8 +1,12 @@
 {% extends "faculty_temp/faculty_base.html" %}
 {% block title %}{{profile.name}} page{% endblock %}
 	{%block content%}
-   <p>Faculty Name:  {{profile.name}}</p>
-   <p>Email: {{user.email}}</p>
-   <p>Department: {{profile.department}}</p>
+   <p> <strong>Name:</strong> &nbsp;&nbsp;{{profile.name}}</p>
+   <p><strong>Email:</strong>&nbsp;&nbsp; {{profile.email}}</p>
+   <p><strong>Department:</strong>&nbsp;&nbsp; {{profile.department}}</p>
+   <p><strong>Designation:</strong>&nbsp;&nbsp; {{profile.designation}}</p>
+   <p><strong>Room no:</strong>&nbsp;&nbsp; {{profile.room}}</p>
+
+
 {%endblock%}
 
