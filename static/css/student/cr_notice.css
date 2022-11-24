@@ -3,8 +3,13 @@ table, th, td {
     border-collapse: collapse;
     table-layout:fixed;
   }
-  th, td {
-    background-color: #c0dddd;
+  th{
+    background-color: #b7c6c6;
+    text-justify: auto;
+    text-align:center;
+    word-wrap:break-word;
+  } td {
+    background-color: #e2ebeb;
     text-justify: auto;
     text-align:center;
     word-wrap:break-word;
@@ -110,6 +115,8 @@ padding: 5px 10px;
   color: #fff;
   background-color: #6f57cf;
 }
+
+
 input {
   padding: 3px 10px;
   box-shadow: 0 0 0 .2px rgba(122, 124, 130, 0.8);

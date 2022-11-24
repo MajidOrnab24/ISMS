@@ -1,56 +1,54 @@
-{% extends "admin_temp/admin_base.html" %}
+{% extends "student_temp/student_base.html" %}
 {% load static %}
-{% block title %}Admin Faculty Panel{% endblock %}
+{% block title %}Publish Notices{% endblock %}
 {%block content%}
 {% load admin_app_extras%}
-<link rel ="stylesheet" href="{% static '/css/admin/admin_info_table.css' %}">
+<link rel ="stylesheet" href="{% static '/css/student/cr_notice.css' %}">
     <div class="add_button">
-      <a href="{%url 'facultyregister'%}">
-        <button class="button"><i class="fas fa-plus"></i> Add Faculty</button>
+      <a href="{%url 'studentCR_notice_add'%}">
+        <button class="button"><i class="fas fa-plus"></i> Add Notice </button>
      </a>
         
     </div>
+<style>
+    
+        label {
+           display: inline-block;
+           width: 100px;
+            color: #000000; 
+         }
+    
+</style>
 
 <form method="get">
-  <label >Name: </label>
-  {{profiles.form.name}}
-  <label style="margin-left: 5px;">Department: </label>
-  {{profiles.form.department}}
+    
+        <label >Date:</label>
+        {{profiles.form.date}}
 
-  <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 10px;">Search</button>
+        <button class="btn" type="submit" name="action" style="margin-bottom: 10px; margin-left: 20px; margin-top: 5px;">Search</button>
+  
 </form>
 <table style="width:100%" class="fixed">
     <thead>
       <tr>
-        <th width="250px">Name</th>
-        <th>Designation</th>
-        <th>Email</th>
-        <th>Department</th>
-        <th>Room no</th>
-        <th>Phone</th>
-        <th >Education</th>
-        <th style="height:fit-content; width:fit-content">Image</th>
+        <th width="200px">Semester</th>
+        <th width="130px">Date & Time</th>
+        <th width="700px">Content</th>
         <th>Edit/Delete</th>
       </tr>
     </thead>
     <tbody>
       {% for user in profile_page_obj %}
         <tr>
-          <td>{{ user.name }}</td>
-          <td>{{ user.designation }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.department }}</td>
-          <td>{{ user.room }}</td>
-          <td>{{ user.phone }}</td>
-          <td style="height: 100px;">{{ user.education}}</td>
-          <td><img src="{{ user.image.url}}" alt="" height=100 width=100 /></td>
-
+          <td>{{ user.semester }}</td>
+          <td>{{ user.time }}<br>{{ user.date|date:'Y-m-d' }}</td>
+          <td>{{ user.content }}</td>
           <td>
-           <ul>
-            <li style="padding-top: 5px;"><a href="/deleteFaculty/{{ user.email_id }}" class="delete" data-confirm="Are you sure to delete this faculty?"> <button class="action_button">Delete</button></a></li>
-            <li style="padding-top: 5px;"><a href="/facultyUpdate/{{ user.email_id }}"> <button class="action_button">Update</button></a></li>
-            <li style="padding-top: 5px;"><a href="/facultyChangePass/{{ user.email_id }}"> <button class="action_button">Change Password</button></a></li>
+            <li style="padding-top: 5px;"><a href="/studentCR_notice_delete/{{ user.id }}" class="delete" data-confirm="Are you sure to delete this notice?"> <button class="action_button">Delete</button></a></li>
+            <li style="margin: 5px;"> <a href="/studentCR_notice_update/{{ user.id }}"> <button class="action_button">Update</button></a></li>
           </ul>
+            
+           
            </td>
         </tr>
       {% endfor %}

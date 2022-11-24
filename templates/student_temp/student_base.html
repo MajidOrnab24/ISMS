@@ -33,44 +33,38 @@
           </li>
           {% if profile.CR %}
           <li>
-            <a href="#" class="button-categories-link">
+            <a href="{%url 'studentCR_notice'%}" class="button-categories-link">
                 <span class="icon"><i class="fas fa-user-friends"></i></span>
                 <span class="item">Publish Notice</span>
             </a>
         </li>
           {% endif %}
           <li>
-              <a href="#" class="button-categories-link">
+              <a href="{%url 'academic_notice'%}" class="button-categories-link">
                   <span class="icon"><i class=" fas fa-chalkboard-teacher"></i></span>
                   <span class="item">Academic Notice</span>
               </a>
           </li>
           <li>
-              <a href="#" class="button-categories-link">
+              <a href="{%url 'official_notice'%}" class="button-categories-link">
                   <span class="icon"><i class="fas fa-clinic-medical"></i></span>
                   <span class="item">Official Notice</span>
               </a>
           </li>
           <li>
-              <a href="#" class="button-categories-link">
+              <a href="{% url 'library_book_status'%}" class="button-categories-link">
                   <span class="icon"><i class="fas fa-book-reader"></i></span>
                   <span class="item">Library Book    Status</span>
               </a>
           </li>
           <li>
-              <a href="#" class="button-categories-link">
+              <a href="{% url 'medical_logs'%}" class="button-categories-link">
                   <span class="icon"><i class="fas fa-chart-line"></i></span>
                   <span class="item">Medical Logs</span>
               </a>
           </li>
-          <li>
-            <a href="#" class="button-categories-link">
-                <span class="icon"><i class="fas fa-chart-line"></i></span>
-                <span class="item">Tuition Fee</span>
-            </a>
-        </li>
         <li>
-            <a href="#" class="button-categories-link">
+            <a href="{% url 'teacher_info' %}" class="button-categories-link">
                 <span class="icon"><i class="fas fa-chart-line"></i></span>
                 <span class="item">Teacher Info</span>
             </a>

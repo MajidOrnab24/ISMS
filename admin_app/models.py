@@ -128,6 +128,7 @@ class FacultyProfile(models.Model):
     date_of_birth = models.DateField(max_length=10, null =True)
     department = models.ForeignKey(department,on_delete=models.CASCADE,null=True)
     education = models.TextField()
+    designation_hier=models.IntegerField(default=1)
 
     @property
     def email_faculty(self):
@@ -257,6 +258,9 @@ class Books(models.Model):
     @property
     def student_borrowed(self):
         return self.stduent.name
+    @property
+    def is_past_due(self):
+     return date.today() > self.due_date
 
 class MedLog(models.Model):
     disease=models.CharField(max_length=256)
@@ -284,5 +288,20 @@ class notice(models.Model):
    def __str__(self):
         return "%s_%s_%s." % (self.course.name,self.faculty.name ,datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
    
+class student_notice(models.Model):
+   student=models.ForeignKey(StudentProfile,on_delete=models.CASCADE)
+   department=models.ForeignKey(department,on_delete=models.SET_NULL,null=True)
+   content=models.TextField()
+   semester=models.IntegerField()
+   section=models.IntegerField()
+   date=models.DateField()
+   time= models.TimeField()
+   update=models.BooleanField(default=False)
+   update_time=models.TimeField(null=True,blank=True)
+   update_date=models.DateField(null=True,blank=True)
 
+   def __str__(self):
+        return "%s_%s_%s." % (self.student.name,self.department.dept_name ,datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+    
+    
 

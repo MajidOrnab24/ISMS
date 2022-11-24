@@ -26,3 +26,5 @@ admin.site.register(Courses)
 admin.site.register(Books)
 admin.site.register(MedLog)
 admin.site.register(notice)
+admin.site.register(student_notice)
+
