@@ -34,6 +34,10 @@ def is_student(user):
 @user_passes_test(is_student,login_url='/general login')
 def studentPage(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
+    # obj=Courses.objects.get(id=12)
+    # membership = Enrollment(courses=obj,students=profile,date_joined=datetime.datetime.now())
+    # membership.save()
+    # print(membership.students)
     return render(request,'student_temp/studentPage.html',{'profile':profile})
 
 @user_passes_test(is_student,login_url='/general login')
@@ -250,7 +254,7 @@ class result_calculator:
          self.gpa=self.total_gradePoint/self.total_credit   
            
 @user_passes_test(is_student,login_url='/general login')
-def result(request):
+def student_result(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
     context={}
     profiles=[]
@@ -279,10 +283,8 @@ def result(request):
         
     global_cgpa=global_gradePoint/global_credit
 
-    for list in semester_result[0].course_details:
-       print(list)
 
-    context['semester_result']=semester_result
+
     context['global_cgpa']=global_cgpa
     context['semester_result']=semester_result
     context['profile']=profile

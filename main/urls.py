@@ -61,7 +61,7 @@ urlpatterns = [
     path('medical_logs',student_view.medical_logs, name='medical_logs'),
     path('library_book_status',student_view.library_book_status, name='library_book_status'),
     path('teacher_info',student_view.teacher_info, name='teacher_info'),
-    path('result',student_view.result, name='result'),
+    path('student_result',student_view.student_result, name='student_result'),
 
 
     
