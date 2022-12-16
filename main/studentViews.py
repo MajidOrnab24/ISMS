@@ -294,7 +294,6 @@ def student_result(request):
       global_cgpa=global_gradePoint/global_credit
 
 
-
     context['global_cgpa']=global_cgpa
     context['semester_result']=semester_result
     context['profile']=profile
