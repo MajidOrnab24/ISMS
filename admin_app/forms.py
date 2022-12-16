@@ -365,3 +365,10 @@ class CRNoticeForm(forms.ModelForm):
     class Meta:
         model=student_notice
         fields=('content',)
+
+
+class CourseAssignerForm(forms.ModelForm):
+    faculty=forms.ModelChoiceField(widget=forms.Select(attrs={"class": "form-control" }),queryset=FacultyProfile.objects.all(),empty_label="Select Faculty")
+    class Meta:
+        model=course_assigner
+        fields=('faculty',)

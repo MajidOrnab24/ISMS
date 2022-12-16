@@ -341,8 +341,16 @@ def books_student_add(request):
                 book=Books.objects.get(book_code=book_code)
                 book_std=book.student
                 if std_exist==True and book_std is not None:
-                    msg=book.title+' has already been issued to '+str(book.student.student_ID)
+                    msg='dsfuikhgudk'
+                    msg=book.title+' has already been issued to:'
                     messages.error(request,msg)
+                    messages.error(request, f'{"Name: "}{book.student.name}')
+                    messages.error(request, f'{"Student ID: "}{book.student.student_ID}')
+                    msg='Please come back after '+str(book.due_date.strftime("%d-%B-%Y"))+ ' hopefully'
+                    messages.error(request,msg)
+
+
+
                     return redirect('books_student_add')  
                 elif std_exist ==True and book_std is None:
                     count = Books.objects.filter(student_id__student_ID=student_ID).count()

@@ -35,33 +35,65 @@ def is_faculty(user):
     except Faculty.DoesNotExist :
         return False
 
-
+def is_course_assigner(obj):
+    try:
+        prof=course_assigner.objects.get(faculty_id=obj.email_id,department_id=obj.department_id)
+        if prof is not None:
+            return True
+        else:
+            return False
+    except course_assigner.DoesNotExist :
+        return False
+def is_head_func(head,profile):
+    try:
+     if(head.email):
+        if(head.email_id==profile.email_id):
+            return True
+        else:
+            return False
+    except DeptHeadFaculty.DoesNotExist :
+        return False
 
 @user_passes_test(is_faculty,login_url='/general login')
 def facultyPage(request):
-    is_head=False
-    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
-    context={}
     profile=FacultyProfile.objects.get(email_id=request.user.id)
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
+    context={}
     context['profile']=profile
     context['is_head']=is_head
+    context['is_assigner']=is_assigner
     return render(request,'faculty_temp/facultyPage.html',context=context)
+    
+
+@user_passes_test(is_faculty,login_url='/general login')
+def forward_semester(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    students=StudentProfile.objects.filter(department_id=profile.department_id)
+    for student in students:
+      if student.semester < 8 and student.semester >=1:
+        student.semester=student.semester+1
+        student.save()
+        courses=Courses.objects.filter(semester=student.semester,department_id=student.department_id)
+        if courses is not None:
+            for course in courses:
+                membership = Enrollment(courses=course,students=student,date_joined=datetime.datetime.now())
+                membership.save()
+      elif student.semester == 8:
+        student.semester=0
+        student.save()
+
+
+    return redirect('facultyPage')
    
 @user_passes_test(is_faculty,login_url='/general login')
 def changePasswordFaculty(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
     user=Faculty.objects.get(id=request.user.id)
     form = changePasswordForm(request.POST or None)
     if request.method == 'POST':
@@ -89,18 +121,73 @@ def changePasswordFaculty(request):
                 return redirect('changePasswordFaculty')
         else:
             messages.error(request,'Error Validating form')
-    return render(request, 'faculty_temp/changePasswordFaculty.html', {'form': form,'profile':profile,'is_head':is_head})
+    return render(request, 'faculty_temp/changePasswordFaculty.html', {'form': form,'profile':profile,'is_head':is_head,'is_assigner':is_assigner})
+
+@user_passes_test(is_faculty,login_url='/general login')
+def courses_assigner_page(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
+    if is_head == False:
+        return redirect('facultyPage')
+    context={}
+    profiles=course_assigner.objects.filter(department_id=profile.department_id)
+    context['profiles']=profiles
+    context['profile']=profile
+    context['is_head']=is_head
+    context['is_assigner']=is_assigner
+    return render(request,'faculty_temp/courses_assigner_page.html',context=context )
+
+@user_passes_test(is_faculty,login_url='/general login')
+def courses_assigner_delete(request, id):
+  assgnr=course_assigner.objects.get(id=id)
+  assgnr.delete()
+  return redirect('courses_assigner_page')
+
+@user_passes_test(is_faculty,login_url='/general login')
+def courses_assigner_add(request):
+    profile=FacultyProfile.objects.get(email_id=request.user.id)
+    head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
+    if is_head == False:
+        return redirect('facultyPage')
+    context={}
+    if request.method == 'POST':
+        form = CourseAssignerForm(request.POST)
+        form.fields['faculty'].queryset = FacultyProfile.objects.filter(department=request.user.facultyprofile.department_id)
+        if form.is_valid() :
+            user = form.save(commit=False)
+            user.department=request.user.facultyprofile.department
+            user.save()
+            if user is None:
+                 messages.error(request,'course assigner not added')
+                 return redirect('courses_assigner_add')
+            elif  user is not None:
+                return redirect('courses_assigner_page')
+            else:
+                messages.error(request,'Info not correct')
+            return redirect('courses_assigner_add')
+        else:
+           messages.error(request,'Error validating registration please try again with correct value')
+    else:
+        form =CourseAssignerForm()
+        form.fields['faculty'].queryset = FacultyProfile.objects.filter(department=request.user.facultyprofile.department_id)
+    context['profile']=profile
+    context['is_head']=is_head
+    context['is_assigner']=is_assigner
+    context['form']=form
+    return render(request,'faculty_temp/courses_assigner_add.html', context=context)
 
 @user_passes_test(is_faculty,login_url='/general login')
 def courses(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
+    if is_assigner == False:
+        return redirect('facultyPage')
     context={}
     profiles=CoursesFilter(request.GET,queryset=Courses.objects.filter(created_d_ID=profile.department.dept_id).order_by('semester'))
     context['profiles']=profiles
@@ -111,18 +198,17 @@ def courses(request):
     context['profile_page_obj']=profile_page_obj
     context['profile']=profile
     context['is_head']=is_head
+    context['is_assigner']=is_assigner
     return render(request,'faculty_temp/courses.html',context=context )
 
 @user_passes_test(is_faculty,login_url='/general login')
 def courses_add(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
+    if is_assigner == False:
+        return redirect('facultyPage')
     context={}
     if request.method == 'POST':
         form = CoursesForm(request.POST,request.FILES)
@@ -146,19 +232,18 @@ def courses_add(request):
         form.fields['faculty'].queryset = FacultyProfile.objects.filter(department=request.user.facultyprofile.department_id)
     context['profile']=profile
     context['is_head']=is_head
+    context['is_assigner']=is_assigner
     context['form']=form
     return render(request,'faculty_temp/courses_add.html', context=context)
 
 @user_passes_test(is_faculty,login_url='/general login')
 def courses_update(request, id):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
+    if is_assigner == False:
+        return redirect('facultyPage')
     context={}
     course=Courses.objects.get(id=id)
     if request.method == 'POST':
@@ -190,6 +275,7 @@ def courses_update(request, id):
 
         context['profile']=profile
         context['is_head']=is_head
+        context['is_assigner']=is_assigner
         context['form']=form
     return render(request,'faculty_temp/courses_update.html', context=context)
 
@@ -203,13 +289,9 @@ def courses_delete(request, id):
 @user_passes_test(is_faculty,login_url='/general login')
 def assigned_courses(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
     context={}
     profiles=CoursesFilter(request.GET,queryset=Courses.objects.filter(faculty=profile).order_by('semester'))
     context['profiles']=profiles
@@ -220,19 +302,16 @@ def assigned_courses(request):
     context['profile_page_obj']=profile_page_obj
     context['profile']=profile
     context['is_head']=is_head
+    context['is_assigner']=is_assigner
     return render(request,'faculty_temp/assigned_courses.html',context=context )
 
 
 @user_passes_test(is_faculty,login_url='/general login')
 def update_profile(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
     context={}
     if request.method == 'POST':
         profile_form = facultyprofileform(request.POST, request.FILES,instance=profile)
@@ -278,6 +357,7 @@ def update_profile(request):
 
         context['profile']=profile
         context['is_head']=is_head
+        context['is_assigner']=is_assigner
         context['profile_form']=profile_form
 
     return render(request,'faculty_temp/updateProfile.html', context=context)
@@ -285,13 +365,9 @@ def update_profile(request):
 @user_passes_test(is_faculty,login_url='/general login')
 def result(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
     context={}
     profiles=EnrollmentFilter(request.GET,queryset=Enrollment.objects.filter(courses__faculty__email_id=profile.email_id).order_by('id'))
     context['profiles']=profiles
@@ -302,19 +378,16 @@ def result(request):
     context['profile_page_obj']=profile_page_obj
     context['profile']=profile
     context['is_head']=is_head
+    context['is_assigner']=is_assigner
     return render(request,'faculty_temp/result.html',context=context )
 
 
 @user_passes_test(is_faculty,login_url='/general login')
 def update_result(request,id):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
     context={}
     enroll=Enrollment.objects.get(id=id)
     if request.method == 'POST':
@@ -338,6 +411,7 @@ def update_result(request,id):
         context['profile']=profile
         context['is_head']=is_head
         context['form']=form
+        context['is_assigner']=is_assigner
         context['enroll']=enroll
     return render(request,'faculty_temp/update_result.html', context=context)
 
@@ -345,13 +419,9 @@ def update_result(request,id):
 @user_passes_test(is_faculty,login_url='/general login')
 def faculty_notice(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
     context={}
     profiles=NoticeFilter(request.GET,queryset=notice.objects.filter(faculty_id=profile.email_id).order_by('time'))
     context['profiles']=profiles
@@ -362,19 +432,16 @@ def faculty_notice(request):
     context['profile_page_obj']=profile_page_obj
     context['profile']=profile
     context['is_head']=is_head
+    context['is_assigner']=is_assigner
     return render(request,'faculty_temp/faculty_notice.html',context=context )
     
 
 @user_passes_test(is_faculty,login_url='/general login')
 def faculty_notice_add(request):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
     context={}
     if request.method == 'POST':
         form = NoticeForm(request.POST,request.FILES)
@@ -403,6 +470,7 @@ def faculty_notice_add(request):
 
     context['profile']=profile
     context['is_head']=is_head
+    context['is_assigner']=is_assigner
     context['form']=form
     return render(request,'faculty_temp/faculty_notice_add.html', context=context)
 
@@ -415,13 +483,9 @@ def faculty_notice_delete(request, id):
 @user_passes_test(is_faculty,login_url='/general login')
 def faculty_notice_update(request, id):
     profile=FacultyProfile.objects.get(email_id=request.user.id)
-    is_head=False
     head=DeptHeadFaculty.objects.get(dept_id= request.user.facultyprofile.department_id)
-    if(head.email):
-        if(head.email.email.email==request.user.email):
-            is_head=True
-        else:
-            is_head=False
+    is_head=is_head_func(head,profile)
+    is_assigner=is_course_assigner(profile)
     context={}
     notice_=notice.objects.get(id=id)
     if request.method == 'POST':
@@ -453,5 +517,6 @@ def faculty_notice_update(request, id):
 
         context['profile']=profile
         context['is_head']=is_head
+        context['is_assigner']=is_assigner
         context['form']=form
     return render(request,'faculty_temp/faculty_notice_update.html', context=context)
