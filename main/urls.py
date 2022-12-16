@@ -64,6 +64,7 @@ urlpatterns = [
     path('student_result',student_view.student_result, name='student_result'),
 
 
+
     
 
 
@@ -97,6 +98,13 @@ urlpatterns = [
     path('faculty_notice_add',faculty_view.faculty_notice_add, name='faculty_notice_add'),
     path('faculty_notice_delete/<int:id>', faculty_view.faculty_notice_delete, name='faculty_notice_delete'),
     path('faculty_notice_update/<int:id>', faculty_view.faculty_notice_update, name='faculty_notice_update'),
+    path('courses_assigner_page',faculty_view.courses_assigner_page, name='courses_assigner_page'),
+    path('courses_assigner_add',faculty_view.courses_assigner_add, name='courses_assigner_add'),
+    path('courses_assigner_delete/<int:id>', faculty_view.courses_assigner_delete, name='courses_assigner_delete'),
+    path('forward_semester',faculty_view.forward_semester, name='forward_semester'),
+
+
+
     
 
 

@@ -6,7 +6,65 @@
    <p><strong>Department:</strong>&nbsp;&nbsp; {{profile.department}}</p>
    <p><strong>Designation:</strong>&nbsp;&nbsp; {{profile.designation}}</p>
    <p><strong>Room no:</strong>&nbsp;&nbsp; {{profile.room}}</p>
+   <style>
+      .bn632-hover {
+  width: 160px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  height: 55px;
+  text-align:center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 50px;
+  -moz-transition: all .4s ease-in-out; 
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+  margin-top: 100px;
+  margin-left: 700px;
+}
+
+.bn632-hover:hover {
+  background-position: 100% 0;
+  -moz-transition: all .4s ease-in-out;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+.bn632-hover:focus {
+  outline: none;
+}
+
+.bn632-hover.bn26 {
+  background-image: linear-gradient(
+    to right,
+    #25aae1,
+    #4481eb,
+    #04befe,
+    #3f86ed
+  );
+  box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+}
+   </style>
+{% if is_head %}
+  <li> <a href="/forward_semester"  class="confirmation"><button class="bn632-hover bn26">Forward Semester</button></a></li>
+  <script type="text/javascript">
+   var elems = document.getElementsByClassName('confirmation');
+   var confirmIt = function (e) {
+       if (!confirm('Are you sure to forward all students semester by 1? This action is irrersible.')) e.preventDefault();
+   };
+   for (var i = 0, l = elems.length; i < l; i++) {
+       elems[i].addEventListener('click', confirmIt, false);
+   }
+</script>
+   {% endif%}
 
 
 {%endblock%}
+
+
 

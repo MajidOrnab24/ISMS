@@ -165,6 +165,11 @@ def studentregister(request):
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [user.email,]
                 send_mail( subject, message, email_from, recipient_list )
+                courses=Courses.objects.filter(semester=profile.semester,department_id=profile.department_id)
+                if courses is not None:
+                  for course in courses:
+                    membership = Enrollment(courses=course,students=profile,date_joined=datetime.datetime.now())
+                    membership.save()
                 return redirect('adminStudent')
             else:
                 messages.error(request,'username or password not correct')

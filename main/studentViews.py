@@ -256,9 +256,15 @@ class result_calculator:
 @user_passes_test(is_student,login_url='/general login')
 def student_result(request):
     profile=StudentProfile.objects.get(email_id=request.user.id)
+    flag=False
+    if profile.semester==0:
+        profile.semester=8
+        profile.save()
+        flag=TRUE
+
     context={}
     profiles=[]
-    for i in range(1, 9): 
+    for i in range(1, profile.semester+1): 
        profiles.append(Enrollment.objects.filter(students_id=profile.email_id,courses__semester=i).order_by('courses__name'))  
     
     global_cgpa=0.0
@@ -274,18 +280,25 @@ def student_result(request):
            data.course_details.append([s.courses.name,s.courses.credit,s.result,s.date_finished])
 
         data.calculate()
+        print(data.total_credit)
+        print(data.total_gradePoint)
         semester_result.append(data)
 
         if(data.fail==False and data.not_finished==False):
           global_credit=global_credit+data.total_credit
           global_gradePoint=global_gradePoint+data.total_gradePoint
 
-        
-    global_cgpa=global_gradePoint/global_credit
+    if(data.not_finished==True):
+        global_cgpa=0.0
+    else:
+      global_cgpa=global_gradePoint/global_credit
 
 
 
     context['global_cgpa']=global_cgpa
     context['semester_result']=semester_result
     context['profile']=profile
+    if flag==True:
+        profile.semester=0
+        profile.save()
     return render(request,'student_temp/result.html',context=context )

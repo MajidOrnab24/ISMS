@@ -306,3 +306,8 @@ class student_notice(models.Model):
     
     
 
+class course_assigner(models.Model):
+    faculty=models.ForeignKey(FacultyProfile,on_delete=models.CASCADE)
+    department = models.ForeignKey(department,on_delete=models.CASCADE)
+    def __str__(self):
+        return "%s_%s" % (self.faculty.name,self.department.dept_name )

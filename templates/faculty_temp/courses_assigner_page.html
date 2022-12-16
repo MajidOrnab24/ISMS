@@ -1,0 +1,64 @@
+{% extends "faculty_temp/faculty_base.html" %}
+{% load static %}
+{% block title %}Course Assigner{% endblock %}
+{%block content%}
+{% load admin_app_extras%}
+<link rel ="stylesheet" href="{% static '/css/admin/admin_info_table.css' %}">
+    <div class="add_button" style="margin-bottom: 20px;">
+      <a href="{%url 'courses_assigner_add'%}">
+        <button class="button"><i class="fas fa-plus"></i> Add Course Assigner </button>
+     </a>
+        
+    </div>
+<style>
+    
+        label {
+           display: inline-block;
+           width: 100px;
+            color: #000000; 
+         }
+
+    
+</style>
+<table style="width:100%" class="fixed">
+    <thead>
+      <tr>
+        <th width="350px">Name</th>
+        <th>Email</th>
+        <th>Phone no</th>
+        <th>Department:</th>
+        <th>Edit/Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in profiles %}
+        <tr>
+          <td>{{ user.faculty.name }}</td>
+          <td>{{ user.faculty.email }}</td>
+          <td>{{ user.faculty.phone }}</td>
+          <td>{{ user.department.dept_name }}</td>
+          <td>
+            <li style="padding-top: 5px; padding-bottom: 5px;"><a href="/courses_assigner_delete/{{ user.id }}" class="delete" data-confirm="Are you sure to delete this course assigner?"> <button class="action_button">Delete</button></a></li>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <script>
+    var deleteLinks = document.querySelectorAll('.delete');
+
+for (var i = 0; i < deleteLinks.length; i++) {
+  deleteLinks[i].addEventListener('click', function(event) {
+      event.preventDefault();
+
+      var choice = confirm(this.getAttribute('data-confirm'));
+
+      if (choice) {
+        window.location.href = this.getAttribute('href');
+      }
+  });
+}
+  </script>
+
+{%endblock%}

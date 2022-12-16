@@ -114,3 +114,41 @@ padding: 5px 10px;
   color: #fff;
   background-color: #6f57cf;
 }
+input {
+  padding: 3px 10px;
+  box-shadow: 0 0 0 .2px rgba(122, 124, 130, 0.8);
+  background-color: rgb(248, 244, 244);
+  size: 20px;
+  border-radius: 5px;
+}
+input:focus {
+ border-color: rgb(27, 50, 218);
+ box-shadow: 0 0 0 1px rgba(18, 82, 219, 0.8);
+ outline: 1px solid transparent;
+}
+select {
+background-color: rgb(248, 244, 244);
+size: 20px;
+padding: 3px 10px;
+box-shadow: 0 0 0 .3px rgba(122, 124, 130, 0.8);
+border-radius: 5px;
+}
+input[type="date"] {
+font-size: 15px;
+size: 20px;
+background-color: rgb(248, 244, 244);
+border-radius: 5px;
+}
+input[type="time"] {
+  font-size: 15px;
+  size: 20px;
+  background-color: rgb(248, 244, 244);
+  padding: 3px 5px;
+  border-radius: 5px;
+  }
+
+select:focus {
+  border-color: rgb(27, 50, 218);
+  box-shadow: 0 0 0 1px rgba(18, 82, 219, 0.8);
+  outline: 2px solid transparent;
+}
