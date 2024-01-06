@@ -4,62 +4,66 @@
 
 ISMS (IUT Student Management System) is a web-based application built using Django as the backend framework and MySQL as the database. The system is designed to manage various aspects of student information, admissions, faculty, and staff activities within the context of the Islamic University of Technology (IUT).
 
-## 2. Folder Structure
+# 2. Project Structure
+## Project Root
+- **.gitignore**
+- **README.md**
+- **manage.py**
 
-ISMS
-|-- admin_app
-| |-- init.py
-| |-- admin.py
-| |-- apps.py
-| |-- filters.py
-| |-- forms.py
-| |-- models.py
-| |-- tests.py
-| |-- views.py
-|-- isms
-| |-- init.py
-| |-- asgi.py
-| |-- settings.py
-| |-- urls.py
-| |-- wsgi.py
-|-- main
-| |-- init.py
-| |-- admin.py
-| |-- admission_models.py
-| |-- admission_forms.py
-| |-- apps.py
-| |-- facultyViews.py
-| |-- forms.py
-| |-- models.py
-| |-- staff_libViews.py
-| |-- staff_medViews.py
-| |-- studentViews.py
-| |-- tests.py
-| |-- urls.py
-| |-- views.py
-|-- static
-| |-- css
-| | |-- style.css
-| |-- images
-| | |-- logo.png
-| |-- pdf
-|-- templates
-| |-- admin_temp
-| |-- admission_temp
-| |-- faculty_temp
-| |-- staff_lib_temp
-| |-- staff_med_temp
-| |-- student_temp
-| |-- baselogin.html
-| |-- general_login.html
-| |-- homepage.html
-| |-- logError.html
-| |-- signinFaculty.html
-| |-- signinStaff.html
-| |-- signinStudent.html
-|-- .gitignore
-|-- README.md
-|-- manage.py
+## `admin_app` App
+- **init.py**
+- **admin.py**
+- **apps.py**
+- **filters.py**
+- **forms.py**
+- **models.py**
+- **tests.py**
+- **views.py**
+
+## `isms` App
+- **init.py**
+- **asgi.py**
+- **settings.py**
+- **urls.py**
+- **wsgi.py**
+
+## `main` App
+- **init.py**
+- **admin.py**
+- **admission_models.py**
+- **admission_forms.py**
+- **apps.py**
+- **facultyViews.py**
+- **forms.py**
+- **models.py**
+- **staff_libViews.py**
+- **staff_medViews.py**
+- **studentViews.py**
+- **tests.py**
+- **urls.py**
+- **views.py**
+
+## `static` Directory
+### css
+- **style.css**
+### images
+- **logo.png**
+### pdf
+
+## `templates` Directory
+### admin_temp
+### admission_temp
+### faculty_temp
+### staff_lib_temp
+### staff_med_temp
+### student_temp
+- **baselogin.html**
+- **general_login.html**
+- **homepage.html**
+- **logError.html**
+- **signinFaculty.html**
+- **signinStaff.html**
+- **signinStudent.html**
 
 ## 3. Project Components
 
