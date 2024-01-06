@@ -1,0 +1,16 @@
+pip3 install py3DNS  
+pip install django-ckeditor  
+pip install django-markdown
+pipenv install markdown==3.2.1 
+pip install django-bootstrap-datepicker-plus 
+pip install django-widget-tweaks
+pip install django-filter
+pip install validate_email
+python.exe -m pip install --upgrade pip 
+pip install pyDNS
+pip install django-crispy-forms
+pip install crispy-tailwind
+pip install crispy-bulma
+python -m pip install Pillow  
+pip install mysqlclient 
+pip install mysql-python 
